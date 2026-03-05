@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+// Simple wrapper that works
+const { main } = require('../dist/interfaces/cli-wrapper.js');
+
+process.env.WZRD_ROOT = __dirname;
+
+main().catch(error => {
+  console.error('Fatal error:', error);
+  process.exit(1);
+});

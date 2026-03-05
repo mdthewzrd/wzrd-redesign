@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+/**
+ * WZRD CLI - Topic-Aware Command Line Interface
+ * 
+ * Main entry point for CLI wrapper
+ */
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { main } from '../dist/interfaces/cli-wrapper.js';
+
+// Set up paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+process.env.NODE_PATH = path.join(__dirname, '..', 'node_modules') + ':' + process.env.NODE_PATH || '';
+process.env.WZRD_ROOT = __dirname;
+
+console.log('[CLI] Starting WZRD CLI wrapper');
+console.log('[CLI] Current directory:', process.cwd());
+console.log('[CLI] Node arguments:', process.argv.slice(0, 3));
+
+// Run main function
+main().catch(error => {
+  console.error('Fatal error:', error);
+  process.exit(1);
+});

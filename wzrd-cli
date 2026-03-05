@@ -1,0 +1,6 @@
+#!/bin/bash
+# WZRD.dev CLI Wrapper Script
+# Topic-aware CLI for WZRD.dev platform
+
+cd "$(dirname "$0")"
+node bin/wzrd-cli "$@"

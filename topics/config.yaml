@@ -1,0 +1,27 @@
+"system":
+  name: "System Design"
+  description: "System architecture and design discussions"
+  discord_channel_id: undefined
+  web_ui_tab: "system-design"
+  cli_alias: "system"
+  project_path: undefined
+  tags: undefined
+  is_active: undefined
+"dilution":
+  name: "Dilution Agent"
+  description: "SEC filings and due diligence agent"
+  discord_channel_id: undefined
+  web_ui_tab: "dilution"
+  cli_alias: "dilution"
+  project_path: "/projects/dilution-agent"
+  tags: undefined
+  is_active: undefined
+parallel-background-agents:
+  name: Parallel Background Agents
+  description: True parallel agent execution system
+  discord_channel_id: undefined
+  web_ui_tab: undefined
+  cli_alias: parallel-background-agents
+  project_path: undefined
+  tags: 
+  is_active: true

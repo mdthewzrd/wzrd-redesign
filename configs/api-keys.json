@@ -1,0 +1,36 @@
+{
+  "openrouter": {
+    "keys": {
+      "main": "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",
+      "backup": "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"
+    },
+    "current": "main",
+    "usage": {
+      "main": {
+        "daily_limit": 100,
+        "used_today": 15,
+        "last_reset": "2026-03-05",
+        "total_used": 1515
+      },
+      "backup": {
+        "daily_limit": 100,
+        "used_today": 0,
+        "last_reset": "2026-03-04",
+        "total_used": 50
+      }
+    },
+    "auto_switch": true,
+    "switch_threshold": 90,
+    "notify_on_switch": true
+  },
+  "discord": {
+    "bot_token": "MTQ3Mzc1MDc5MjkyMTAyNjcwMA.GstCJX.TfXjF-Xm1ocfhfvwgVTjnZ7SFnggBqFDndH1j4",
+    "client_id": "677335430336610315",
+    "guild_id": "1473755847548207195"
+  },
+  "webhook_urls": {
+    "discord_webhook": "",
+    "slack_webhook": "",
+    "telegram_bot_token": ""
+  }
+}

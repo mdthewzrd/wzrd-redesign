@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.js.map
+*.d.ts
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+coverage/
+.nyc_output/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+test-results/
+coverage-report/
+
+# Temporary files
+*.tmp
+.tmp/
+Untitled
+
+# Cost tracking data (security)
+configs/cost-tracker.json.backup
+
+# Skill cache (if any)
+.skill-cache/
+
+# Topic memory backups (can be large)
+topics/backups/

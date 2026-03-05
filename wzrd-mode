@@ -209,7 +209,12 @@ if [[ ${#PROMPT_ARGS[@]} -eq 0 ]]; then
 else
   # Has args = run command with mode context
   echo "💬 Running with prompt: ${PROMPT_ARGS[*]}"
-  
+
+  # Show smart skill loading analysis
+  echo ""
+  node bin/smart-skill-loader.js --mode "$MODE" --message "${PROMPT_ARGS[*]}"
+  echo ""
+
   # Enhanced prompt with mode context
   ENHANCED_PROMPT="[MODE: $MODE] [SKILLS: "
   case $MODE in
@@ -221,6 +226,15 @@ else
     *) ENHANCED_PROMPT+="general" ;;
   esac
   ENHANCED_PROMPT+="] ${PROMPT_ARGS[*]}"
-  
+
+  # Run OpenCode command
   opencode --model "$MODEL" $AGENT run "$ENHANCED_PROMPT"
+
+  # Show token visibility dashboard after query
+  EXIT_CODE=$?
+  echo ""
+  node bin/token-dashboard.js --mode "$MODE"
+  echo ""
+
+  exit $EXIT_CODE
 fi

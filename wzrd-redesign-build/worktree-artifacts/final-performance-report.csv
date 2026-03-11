@@ -1,0 +1,21 @@
+Test Case,Loader,Avg Time (ms),Avg Skills,Success Rate,Min Time,Max Time
+Simple greeting,Old (SmartSkillLoader),0.1,8.0,100.0%,0.0,0.2
+Simple greeting,New (AsyncSkillLoader),0.6,5.0,100.0%,0.0,1.2
+Simple greeting,Bridge (Compatibility),0.1,5.0,100.0%,0.1,0.2
+Simple greeting,Full Pipeline,1000.9,5.0,100.0%,1000.2,1001.5
+Coding task,Old (SmartSkillLoader),0.2,13.0,100.0%,0.1,0.2
+Coding task,New (AsyncSkillLoader),1.4,6.5,100.0%,0.2,2.5
+Coding task,Bridge (Compatibility),0.6,6.5,100.0%,0.3,0.8
+Coding task,Full Pipeline,1000.4,6.5,100.0%,998.7,1002.0
+Design task,Old (SmartSkillLoader),0.1,13.0,100.0%,0.1,0.2
+Design task,New (AsyncSkillLoader),1.0,6.0,100.0%,0.3,1.7
+Design task,Bridge (Compatibility),0.4,6.0,100.0%,0.2,0.6
+Design task,Full Pipeline,999.6,6.0,100.0%,999.6,999.7
+Research task,Old (SmartSkillLoader),0.1,11.0,100.0%,0.1,0.1
+Research task,New (AsyncSkillLoader),0.8,4.0,100.0%,0.3,1.3
+Research task,Bridge (Compatibility),0.4,4.0,100.0%,0.2,0.5
+Research task,Full Pipeline,1000.6,4.0,100.0%,1000.1,1001.1
+Debug task,Old (SmartSkillLoader),0.1,13.0,100.0%,0.1,0.1
+Debug task,New (AsyncSkillLoader),0.8,6.0,100.0%,0.1,1.5
+Debug task,Bridge (Compatibility),0.4,6.0,100.0%,0.1,0.8
+Debug task,Full Pipeline,1000.5,6.0,100.0%,1000.0,1001.0

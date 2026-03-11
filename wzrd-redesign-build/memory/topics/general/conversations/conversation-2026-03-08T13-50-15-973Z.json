@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "capturedAt": "2026-03-08T13:50:15.973Z",
+    "topic": "general/conversations",
+    "source": "wzrd-query",
+    "participants": [
+      "user",
+      "remi"
+    ],
+    "duration": 0,
+    "tokenEstimate": 28
+  },
+  "summary": " (Mode: chat, Response successful)",
+  "keyPoints": [],
+  "rawEntry": {
+    "conversation": " (Mode: chat, Response successful)",
+    "source": "wzrd-query",
+    "participants": [
+      "user",
+      "remi"
+    ]
+  }
+}

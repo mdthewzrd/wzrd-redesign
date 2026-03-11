@@ -1,0 +1,440 @@
+# WZRD.dev Blueprint Engine
+# Based on Stripe Minions "Blueprint Engine" Component
+
+version: "1.0"
+description: "Predictable workflows integrating context optimization and validation"
+
+# Blueprint Templates
+templates:
+  
+  # Feature Implementation Blueprint
+  feature_implementation:
+    description: "Complete workflow for implementing new features"
+    phases:
+      - name: "requirements_analysis"
+        description: "Analyze and clarify requirements"
+        steps:
+          - id: "extract_requirements"
+            description: "Extract functional and non-functional requirements"
+            tools: ["context-optimizer", "mode-detection"]
+            validation: "pre_execution"
+            success_criteria: "Clear requirements document"
+            
+          - id: "define_scope"
+            description: "Define what's in/out of scope"
+            tools: ["context-rules"]
+            validation: "pre_execution"
+            success_criteria: "Signed off scope definition"
+            
+          - id: "architecture_design"
+            description: "Design architectural approach"
+            tools: ["context-rules", "mode-detection"]
+            validation: "pre_execution"
+            success_criteria: "Architecture design document"
+        
+      - name: "implementation_planning"
+        description: "Plan implementation approach"
+        steps:
+          - id: "task_breakdown"
+            description: "Break into manageable tasks"
+            tools: ["context-optimizer"]
+            validation: "pre_execution"
+            success_criteria: "Task breakdown with estimates"
+            
+          - id: "dependency_mapping"
+            description: "Map task dependencies"
+            tools: ["context-rules"]
+            validation: "pre_execution"
+            success_criteria: "Dependency graph"
+            
+          - id: "resource_allocation"
+            description: "Allocate skills and tokens"
+            tools: ["context-optimizer", "validation-pipeline"]
+            validation: "pre_execution"
+            success_criteria: "Resource allocation plan"
+        
+      - name: "implementation_execution"
+        description: "Execute implementation"
+        steps:
+          - id: "environment_setup"
+            description: "Set up execution environment"
+            tools: ["bash", "skill-loader"]
+            validation: "mid_execution"
+            success_criteria: "Environment ready"
+            
+          - id: "incremental_implementation"
+            description: "Implement tasks incrementally"
+            tools: ["coding-tools", "context-optimizer", "validation-pipeline"]
+            validation: "mid_execution"
+            success_criteria: "All tasks implemented"
+            
+          - id: "integration_testing"
+            description: "Test integration with existing systems"
+            tools: ["testing-tools", "validation-pipeline"]
+            validation: "mid_execution"
+            success_criteria: "Integration tests pass"
+        
+      - name: "quality_assurance"
+        description: "Ensure quality standards"
+        steps:
+          - id: "automated_testing"
+            description: "Run automated tests"
+            tools: ["testing-tools"]
+            validation: "post_execution"
+            success_criteria: "All automated tests pass"
+            
+          - id: "manual_verification"
+            description: "Manual verification and review"
+            tools: ["validation-pipeline"]
+            validation: "post_execution"
+            success_criteria: "Manual verification complete"
+            
+          - id: "performance_validation"
+            description: "Validate performance meets requirements"
+            tools: ["performance-tools", "validation-pipeline"]
+            validation: "post_execution"
+            success_criteria: "Performance requirements met"
+        
+      - name: "deployment_documentation"
+        description: "Prepare for deployment"
+        steps:
+          - id: "deployment_preparation"
+            description: "Prepare deployment artifacts"
+            tools: ["deployment-tools"]
+            validation: "post_execution"
+            success_criteria: "Deployment artifacts ready"
+            
+          - id: "documentation"
+            description: "Create user and technical documentation"
+            tools: ["documentation-tools"]
+            validation: "post_execution"
+            success_criteria: "Documentation complete"
+            
+          - id: "knowledge_integration"
+            description: "Integrate learnings into framework"
+            tools: ["context-rules", "conductor-tools"]
+            validation: "post_execution"
+            success_criteria: "Knowledge integrated"
+    
+    mode: "coding"
+    token_budget: 30000
+    required_skills: ["git", "file-ops", "system-health", "testing"]
+    validation_gates: ["pre_execution", "mid_execution", "post_execution"]
+  
+  # Bug Fixing Blueprint
+  bug_fixing:
+    description: "Workflow for fixing bugs and issues"
+    phases:
+      - name: "problem_analysis"
+        description: "Analyze the bug or issue"
+        steps:
+          - id: "error_reproduction"
+            description: "Reproduce the error or issue"
+            tools: ["debugging-tools"]
+            validation: "pre_execution"
+            success_criteria: "Error consistently reproducible"
+            
+          - id: "root_cause_analysis"
+            description: "Analyze root cause"
+            tools: ["context-optimizer", "debugging-tools"]
+            validation: "pre_execution"
+            success_criteria: "Root cause identified"
+            
+          - id: "impact_assessment"
+            description: "Assess impact and severity"
+            tools: ["context-rules"]
+            validation: "pre_execution"
+            success_criteria: "Impact assessment complete"
+        
+      - name: "fix_implementation"
+        description: "Implement and test the fix"
+        steps:
+          - id: "fix_design"
+            description: "Design the fix"
+            tools: ["context-optimizer"]
+            validation: "mid_execution"
+            success_criteria: "Fix design approved"
+            
+          - id: "fix_implementation"
+            description: "Implement the fix"
+            tools: ["coding-tools"]
+            validation: "mid_execution"
+            success_criteria: "Fix implemented"
+            
+          - id: "regression_testing"
+            description: "Test for regressions"
+            tools: ["testing-tools", "validation-pipeline"]
+            validation: "mid_execution"
+            success_criteria: "No regressions detected"
+        
+      - name: "verification_deployment"
+        description: "Verify and deploy the fix"
+        steps:
+          - id: "verification_testing"
+            description: "Verify fix resolves issue"
+            tools: ["testing-tools", "validation-pipeline"]
+            validation: "post_execution"
+            success_criteria: "Issue resolved"
+            
+          - id: "documentation"
+            description: "Document the fix"
+            tools: ["documentation-tools"]
+            validation: "post_execution"
+            success_criteria: "Fix documented"
+            
+          - id: "preventive_measures"
+            description: "Add preventive measures"
+            tools: ["context-rules", "testing-tools"]
+            validation: "post_execution"
+            success_criteria: "Preventive measures added"
+    
+    mode: "debugging"
+    token_budget: 15000
+    required_skills: ["debugging", "testing", "git"]
+    validation_gates: ["pre_execution", "post_execution"]
+  
+  # Research Blueprint
+  research:
+    description: "Workflow for research and analysis tasks"
+    phases:
+      - name: "scope_definition"
+        description: "Define research scope"
+        steps:
+          - id: "topic_clarification"
+            description: "Clarify research topic"
+            tools: ["context-optimizer"]
+            validation: "pre_execution"
+            success_criteria: "Research topic clearly defined"
+            
+          - id: "scope_boundaries"
+            description: "Define scope boundaries"
+            tools: ["context-rules"]
+            validation: "pre_execution"
+            success_criteria: "Scope boundaries defined"
+            
+          - id: "success_criteria"
+            description: "Define research success criteria"
+            tools: ["validation-pipeline"]
+            validation: "pre_execution"
+            success_criteria: "Success criteria defined"
+        
+      - name: "information_gathering"
+        description: "Gather and analyze information"
+        steps:
+          - id: "source_identification"
+            description: "Identify credible sources"
+            tools: ["research-tools"]
+            validation: "mid_execution"
+            success_criteria: "Multiple credible sources identified"
+            
+          - id: "information_analysis"
+            description: "Analyze gathered information"
+            tools: ["context-optimizer", "research-tools"]
+            validation: "mid_execution"
+            success_criteria: "Information analyzed"
+            
+          - id: "perspective_synthesis"
+            description: "Synthesize multiple perspectives"
+            tools: ["context-rules"]
+            validation: "mid_execution"
+            success_criteria: "Multiple perspectives considered"
+        
+      - name: "conclusion_documentation"
+        description: "Document conclusions and recommendations"
+        steps:
+          - id: "conclusion_synthesis"
+            description: "Synthesize conclusions"
+            tools: ["context-optimizer"]
+            validation: "post_execution"
+            success_criteria: "Conclusions synthesized"
+            
+          - id: "recommendation_development"
+            description: "Develop recommendations"
+            tools: ["context-rules"]
+            validation: "post_execution"
+            success_criteria: "Recommendations developed"
+            
+          - id: "documentation"
+            description: "Document research findings"
+            tools: ["documentation-tools", "validation-pipeline"]
+            validation: "post_execution"
+            success_criteria: "Research documented"
+    
+    mode: "research"
+    token_budget: 20000
+    required_skills: ["research", "documentation"]
+    validation_gates: ["pre_execution", "post_execution"]
+  
+  # Planning Blueprint
+  planning:
+    description: "Workflow for system design and planning"
+    phases:
+      - name: "problem_analysis"
+        description: "Analyze the problem space"
+        steps:
+          - id: "stakeholder_needs"
+            description: "Identify stakeholder needs"
+            tools: ["context-optimizer"]
+            validation: "pre_execution"
+            success_criteria: "Stakeholder needs identified"
+            
+          - id: "constraints_identification"
+            description: "Identify constraints"
+            tools: ["context-rules"]
+            validation: "pre_execution"
+            success_criteria: "Constraints identified"
+            
+          - id: "success_metrics"
+            description: "Define success metrics"
+            tools: ["validation-pipeline"]
+            validation: "pre_execution"
+            success_criteria: "Success metrics defined"
+        
+      - name: "solution_design"
+        description: "Design solution architecture"
+        steps:
+          - id: "architecture_options"
+            description: "Generate architecture options"
+            tools: ["context-optimizer"]
+            validation: "mid_execution"
+            success_criteria: "Multiple architecture options"
+            
+          - id: "tradeoff_analysis"
+            description: "Analyze tradeoffs"
+            tools: ["context-rules"]
+            validation: "mid_execution"
+            success_criteria: "Tradeoffs analyzed"
+            
+          - id: "architecture_selection"
+            description: "Select optimal architecture"
+            tools: ["validation-pipeline"]
+            validation: "mid_execution"
+            success_criteria: "Architecture selected"
+        
+      - name: "implementation_planning"
+        description: "Plan implementation"
+        steps:
+          - id: "task_breakdown"
+            description: "Break into implementation tasks"
+            tools: ["context-optimizer"]
+            validation: "post_execution"
+            success_criteria: "Task breakdown complete"
+            
+          - id: "dependency_analysis"
+            description: "Analyze dependencies"
+            tools: ["context-rules"]
+            validation: "post_execution"
+            success_criteria: "Dependencies analyzed"
+            
+          - id: "risk_mitigation"
+            description: "Plan risk mitigation"
+            tools: ["validation-pipeline"]
+            validation: "post_execution"
+            success_criteria: "Risk mitigation planned"
+    
+    mode: "planning"
+    token_budget: 15000
+    required_skills: ["architecture", "planning"]
+    validation_gates: ["pre_execution", "mid_execution", "post_execution"]
+
+# Blueprint Selection Rules
+selection_rules:
+  
+  mode_mapping:
+    coding: "feature_implementation"
+    debugging: "bug_fixing"
+    research: "research"
+    planning: "planning"
+    thinker: "planning"  # Thinker mode uses planning blueprint
+  
+  complexity_mapping:
+    simple:
+      token_budget: 5000
+      validation_gates: ["post_execution"]
+    
+    medium:
+      token_budget: 15000
+      validation_gates: ["mid_execution", "post_execution"]
+    
+    complex:
+      token_budget: 30000
+      validation_gates: ["pre_execution", "mid_execution", "post_execution"]
+  
+  auto_detection:
+    keywords:
+      feature_implementation: ["implement", "create", "build", "add feature", "develop"]
+      bug_fixing: ["fix", "bug", "error", "broken", "issue", "debug"]
+      research: ["research", "analyze", "investigate", "study", "compare"]
+      planning: ["design", "plan", "architecture", "structure", "system"]
+
+# Blueprint Execution Rules
+execution_rules:
+  
+  phase_transitions:
+    - "Complete all steps in phase before moving to next"
+    - "Run validation gates at phase boundaries"
+    - "Document phase completion"
+  
+  step_execution:
+    - "Execute steps sequentially"
+    - "Validate step success before proceeding"
+    - "Log step execution details"
+  
+  validation_integration:
+    - "Run pre-execution validation at blueprint start"
+    - "Run mid-execution validation at phase boundaries"
+    - "Run post-execution validation at blueprint completion"
+    - "Run regression validation for changes affecting existing systems"
+  
+  context_optimization:
+    - "Apply context optimization rules based on mode"
+    - "Enforce token budgets per phase"
+    - "Optimize context retention based on blueprint phase"
+  
+  error_handling:
+    - "If validation fails, pause and report"
+    - "Provide guidance for fixing validation failures"
+    - "Allow retry after addressing validation issues"
+    - "Abort if critical validation failures cannot be resolved"
+
+# Blueprint Metrics
+metrics:
+  
+  execution_time:
+    target: "< 10 minutes for simple blueprints"
+    measurement: "Start to completion time"
+  
+  success_rate:
+    target: "> 90% blueprint completion rate"
+    measurement: "Completed blueprints / Started blueprints"
+  
+  validation_catch_rate:
+    target: "> 80% of issues caught by validation"
+    measurement: "Issues caught by validation / Total issues"
+  
+  user_satisfaction:
+    target: "> 4.0 / 5.0 satisfaction rating"
+    measurement: "Post-blueprint user feedback"
+
+# Integration Configuration
+integration:
+  
+  with_context_rules:
+    - "Auto-detect mode for blueprint selection"
+    - "Apply mode-specific context optimization"
+    - "Enforce token budgets from context rules"
+  
+  with_validation_pipeline:
+    - "Auto-insert validation gates at phase boundaries"
+    - "Use validation pipeline for quality checks"
+    - "Report validation results in blueprint log"
+  
+  with_skill_system:
+    - "Auto-load required skills for blueprint"
+    - "Verify skill availability before starting"
+    - "Log skill usage during execution"
+  
+  with_conductor_system:
+    - "Update conductor context with blueprint progress"
+    - "Document blueprint execution in conductor logs"
+    - "Integrate learnings into conductor knowledge base"

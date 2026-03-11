@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "capturedAt": "2026-03-06T20:36:09.861Z",
+    "topic": "general/conversations",
+    "source": "wzrd-fast",
+    "participants": [
+      "user",
+      "remi"
+    ],
+    "duration": 0,
+    "tokenEstimate": 24
+  },
+  "summary": "status (Mode: chat)",
+  "keyPoints": [],
+  "rawEntry": {
+    "conversation": "status (Mode: chat)",
+    "source": "wzrd-fast",
+    "participants": [
+      "user",
+      "remi"
+    ]
+  }
+}

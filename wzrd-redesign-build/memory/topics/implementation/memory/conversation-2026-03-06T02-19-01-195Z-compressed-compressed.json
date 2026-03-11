@@ -1,0 +1,18 @@
+{
+  "metadata": {
+    "capturedAt": "2026-03-06T02:19:01.195Z",
+    "topic": "implementation/memory",
+    "source": "test",
+    "participants": [
+      "tester",
+      "system"
+    ],
+    "duration": 0,
+    "tokenEstimate": 32
+  },
+  "summary": "Test conversation about memory system implementation.",
+  "keyPoints": [],
+  "compressed": true,
+  "originalSize": 308,
+  "compressedSize": 306
+}

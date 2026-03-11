@@ -1,0 +1,5 @@
+#!/bin/bash
+# WZRD Compact Command - Easy to use from within OpenCode
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+"$SCRIPT_DIR/wzrd-compact-solution.sh" compact

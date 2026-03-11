@@ -1,0 +1,9 @@
+{
+  "metadata": {
+    "created": "$(date -Iseconds)",
+    "totalSkills": 0,
+    "sources": ["local", "lock"],
+    "version": "1.0"
+  },
+  "skills": {}
+}

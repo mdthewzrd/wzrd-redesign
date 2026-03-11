@@ -1,0 +1,12 @@
+{
+  "date": "2026-03-10",
+  "total_cost": 0.06029999999999999,
+  "tokens_used": 8040,
+  "costs_by_model": {
+    "claude-3-opus": 0.06029999999999999
+  },
+  "tasks": 4,
+  "warnings": 0,
+  "circuit_breaker_active": false,
+  "updated_at": 1773168537977
+}

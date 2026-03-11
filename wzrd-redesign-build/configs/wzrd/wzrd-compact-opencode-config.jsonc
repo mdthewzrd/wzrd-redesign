@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  
+  "commands": {
+    "wzrd-compact": {
+      "description": "Enhanced compaction with WZRD memory system and true TUI reset",
+      "agent": "remi",
+      "template": "# WZRD Enhanced Compaction\n\n## Current Context\nWorking directory: {{PWD}}\nGit branch: {{GIT_BRANCH}}\nDate: {{DATE}}\n\n## Step 1: Detect Topic\nDetecting current topic based on project state...\n\nTopic identified: {{TOPIC_NAME}} ({{TOPIC_HASH}})\n\n## Step 2: Save Conversation to Memory\nSaving current conversation to topic memory system:\n- Location: /home/mdwzrd/wzrd-redesign/topics/{{TOPIC_HASH}}/\n- Extracting key patterns and learnings\n- Updating unified memory\n\n## Step 3: Execute TUI Context Reset\nExecuting: /new\nStarting fresh TUI session...\n\n## Step 4: Load Memory Summary\nLoading condensed memory from topic {{TOPIC_NAME}}:\n{{MEMORY_SUMMARY}}\n\n## Step 5: Continue with Context\nBased on our conversation about {{TOPIC_SUMMARY}}, continue with next steps or ask for clarification if unsure how to proceed.\n\n## Key Features\n✅ True context reset (prevents accumulation slowdown)\n✅ Conversation preserved in unified memory\n✅ Token-optimized continuation\n✅ Maintains performance over time",
+      "subtask": false,
+      "hints": ["$PWD", "$GIT_BRANCH", "$DATE", "$TOPIC_NAME", "$TOPIC_HASH", "$MEMORY_SUMMARY", "$TOPIC_SUMMARY"]
+    }
+  }
+}

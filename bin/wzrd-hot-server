@@ -1,0 +1,89 @@
+#!/bin/bash
+# 🚀 WZRD Hot Server - Persistent OpenCode server for instant connections
+# Starts OpenCode once, keeps it running, clients attach via network
+
+set -e
+
+# Configuration
+PORT=${PORT:-8080}
+HOSTNAME=${HOSTNAME:-localhost}
+SERVER_PID_FILE="$HOME/.cache/wzrd-hot/server.pid"
+LOG_FILE="$HOME/.cache/wzrd-hot/server.log"
+SERVER_URL="http://$HOSTNAME:$PORT"
+
+# Create cache directory
+mkdir -p "$HOME/.cache/wzrd-hot"
+
+echo "🚀 WZRD Hot Server"
+echo "=================="
+echo "Port: $PORT"
+echo "Hostname: $HOSTNAME"
+echo "Server URL: $SERVER_URL"
+echo ""
+
+# Check if server is already running
+if [ -f "$SERVER_PID_FILE" ]; then
+    SERVER_PID=$(cat "$SERVER_PID_FILE")
+    if kill -0 "$SERVER_PID" 2>/dev/null; then
+        echo "✅ Server already running (PID: $SERVER_PID)"
+        echo "Connect with: opencode attach $SERVER_URL"
+        exit 0
+    else
+        echo "⚠️  Stale PID file, removing..."
+        rm -f "$SERVER_PID_FILE"
+    fi
+fi
+
+# Check for existing OpenCode processes
+EXISTING_PID=$(pgrep -f "opencode serve.*--port $PORT" | head -1)
+if [ -n "$EXISTING_PID" ]; then
+    echo "✅ Found existing OpenCode server (PID: $EXISTING_PID)"
+    echo "$EXISTING_PID" > "$SERVER_PID_FILE"
+    echo "Connect with: opencode attach $SERVER_URL"
+    exit 0
+fi
+
+# Start server
+echo "🚀 Starting OpenCode server..."
+echo "Command: opencode serve --port $PORT --hostname $HOSTNAME"
+echo "Logs: $LOG_FILE"
+echo ""
+
+# Start server in background
+nohup opencode serve --port "$PORT" --hostname "$HOSTNAME" > "$LOG_FILE" 2>&1 &
+SERVER_PID=$!
+
+# Save PID
+echo "$SERVER_PID" > "$SERVER_PID_FILE"
+
+echo "✅ Server started (PID: $SERVER_PID)"
+echo "✅ PID saved: $SERVER_PID_FILE"
+echo "✅ Log file: $LOG_FILE"
+echo ""
+echo "🌐 Connect with:"
+echo "  opencode attach $SERVER_URL"
+echo ""
+echo "📊 Monitor logs:"
+echo "  tail -f $LOG_FILE"
+echo ""
+echo "🛑 Stop server:"
+echo "  kill $SERVER_PID"
+echo "  rm -f $SERVER_PID_FILE"
+echo ""
+echo "🔧 Test connection:"
+echo "  curl $SERVER_URL/health 2>/dev/null && echo '✅ Server healthy' || echo '❌ Server not responding'"
+
+# Wait briefly to ensure server starts
+sleep 2
+
+# Verify server is running
+if curl -s "$SERVER_URL/health" >/dev/null 2>&1; then
+    echo ""
+    echo "🎉 SERVER STARTED SUCCESSFULLY!"
+    echo "Connect now for instant (~100ms) commands instead of 13.4s cold starts!"
+else
+    echo ""
+    echo "⚠️  Server may still be starting..."
+    echo "Check logs: tail -f $LOG_FILE"
+    echo "Wait 5-10 seconds for full startup"
+fi

@@ -1,0 +1,24 @@
+{
+  "name": "wzrd-redesign",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "node test-phase1.sh"
+  },
+  "dependencies": {
+    "@tarquinen/opencode-dcp": "^2.1.8",
+    "cron": "^4.4.0",
+    "discord.js": "^14.14.1",
+    "jotai": "^2.18.0",
+    "js-yaml": "^4.1.0",
+    "natural": "^8.1.1",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/ws": "^8.5.10",
+    "typescript": "^5.5.4"
+  }
+}

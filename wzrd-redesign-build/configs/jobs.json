@@ -1,0 +1,56 @@
+{
+  "enabled": true,
+  "maxConcurrentJobs": 3,
+  "alertOnFailure": true,
+  "alertEmail": "admin@wzrd.dev",
+  "timezone": "America/Los_Angeles",
+  
+  "customJobs": [
+    {
+      "id": "pattern-extraction",
+      "name": "Pattern Extraction",
+      "schedule": "0 1 * * *",  // Daily at 1 AM
+      "timeout": 240,
+      "command": "node bin/extract-patterns.js",
+      "description": "Extract patterns from recent queries and update pattern library",
+      "critical": false
+    },
+    {
+      "id": "user-preference-learning",
+      "name": "User Preference Learning",
+      "schedule": "0 5 * * *",  // Daily at 5 AM
+      "timeout": 180,
+      "command": "node bin/learn-user-preferences.js",
+      "description": "Analyze user interactions to learn preferences and optimize skill loading",
+      "critical": false
+    },
+    {
+      "id": "model-performance-tracking",
+      "name": "Model Performance Tracking",
+      "schedule": "0 12 * * *",  // Daily at noon
+      "timeout": 120,
+      "command": "node bin/track-model-performance.js",
+      "description": "Track performance metrics for different AI models",
+      "critical": false
+    }
+  ],
+  
+  "notificationSettings": {
+    "emailAlerts": true,
+    "slackAlerts": false,
+    "discordAlerts": false,
+    "minimumSeverity": "high"
+  },
+  
+  "retryPolicy": {
+    "maxRetries": 3,
+    "retryDelay": 300,  // 5 minutes in seconds
+    "exponentialBackoff": true
+  },
+  
+  "logging": {
+    "level": "info",
+    "retentionDays": 90,
+    "compressionEnabled": true
+  }
+}

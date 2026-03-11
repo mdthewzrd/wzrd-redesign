@@ -1,0 +1,327 @@
+#!/bin/bash
+# 🚀 WZRD Performance Enhancer - Comprehensive speed optimization
+# Implements all performance enhancements: hot server, caching, parallel processes
+
+set -e
+
+# Configuration
+SERVER_URL="http://mdwzrd:8080"
+CACHE_DIR="$HOME/.cache/wzrd-performance"
+PERF_LOG="$CACHE_DIR/performance.csv"
+CONFIG_FILE="$HOME/.config/wzrd-performance.conf"
+
+# Initialize
+mkdir -p "$CACHE_DIR"
+touch "$PERF_LOG"
+
+# Load configuration
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+else
+    # Default configuration
+    ENABLE_HOT_SERVER=true
+    ENABLE_CACHING=true
+    ENABLE_PARALLEL=true
+    CACHE_TTL=300  # 5 minutes
+    MAX_PARALLEL=4
+fi
+
+echo "🚀 WZRD Performance Enhancer"
+echo "============================"
+echo "Mode: $1"
+echo ""
+
+# Performance monitoring
+track_performance() {
+    local command="$1"
+    local start_time="$2"
+    local end_time="$3"
+    local method="$4"
+    
+    local runtime_ms=$(( (end_time - start_time) / 1000000 ))
+    
+    # Log to CSV
+    echo "$(date '+%Y-%m-%d %H:%M:%S'),$command,$runtime_ms,$method" >> "$PERF_LOG"
+    
+    # Display
+    echo "  Method: $method"
+    echo "  Time: ${runtime_ms}ms"
+    
+    # Compare to baseline
+    BASELINE=13400  # 13.4 seconds baseline
+    if [ "$runtime_ms" -gt 0 ]; then
+        SPEEDUP=$(echo "scale=0; $BASELINE / $runtime_ms" | bc)
+        echo "  Speedup: ~${SPEEDUP}× faster than cold start!"
+    fi
+}
+
+# Check server status
+check_server() {
+    echo "🔍 Checking hot server..."
+    
+    # Method 1: Check health endpoint
+    if curl -s "$SERVER_URL/health" >/dev/null 2>&1; then
+        echo "✅ Hot server healthy at $SERVER_URL"
+        return 0
+    fi
+    
+    # Method 2: Check process
+    if ps aux | grep -q "opencode serve.*--port 8080"; then
+        echo "✅ OpenCode server process running"
+        return 0
+    fi
+    
+    echo "❌ No hot server found"
+    return 1
+}
+
+# Start server if not running
+ensure_server() {
+    if ! check_server; then
+        echo ""
+        echo "🚀 Starting hot server..."
+        nohup ./wzrd-hot-server > /dev/null 2>&1 &
+        sleep 3
+        echo "✅ Hot server started"
+    fi
+}
+
+# Cached command execution
+cached_execute() {
+    local command="$1"
+    local cache_key=$(echo "$command" | md5sum | cut -d' ' -f1)
+    local cache_file="$CACHE_DIR/$cache_key"
+    local cache_age=999999
+    
+    # Check cache
+    if [ -f "$cache_file.timestamp" ]; then
+        local cache_timestamp=$(cat "$cache_file.timestamp")
+        local now=$(date +%s)
+        cache_age=$((now - cache_timestamp))
+    fi
+    
+    # Use cache if fresh
+    if [ "$cache_age" -lt "$CACHE_TTL" ] && [ -f "$cache_file" ]; then
+        echo "📦 Using cached response (age: ${cache_age}s)"
+        cat "$cache_file"
+        return 0
+    fi
+    
+    # Execute and cache
+    echo "⚡ Executing fresh..."
+    START_TIME=$(date +%s%N)
+    
+    # Execute with hot server
+    export OPENCODE_URL="$SERVER_URL"
+    OUTPUT=$(opencode "$command" 2>&1)
+    EXIT_CODE=$?
+    
+    END_TIME=$(date +%s%N)
+    
+    # Cache if successful
+    if [ $EXIT_CODE -eq 0 ]; then
+        echo "$OUTPUT" > "$cache_file"
+        date +%s > "$cache_file.timestamp"
+        echo "💾 Response cached for ${CACHE_TTL}s"
+    fi
+    
+    # Display output
+    echo "$OUTPUT"
+    
+    # Track performance
+    track_performance "$command" "$START_TIME" "$END_TIME" "hot+cached"
+    
+    return $EXIT_CODE
+}
+
+# Parallel process execution
+parallel_execute() {
+    local commands=("$@")
+    local pids=()
+    local results=()
+    
+    echo "🔄 Executing ${#commands[@]} commands in parallel..."
+    
+    START_TIME=$(date +%s%N)
+    
+    # Start all commands
+    for i in "${!commands[@]}"; do
+        (
+            export OPENCODE_URL="$SERVER_URL"
+            opencode "${commands[$i]}" > "$CACHE_DIR/parallel-$i.out" 2>&1
+            echo $? > "$CACHE_DIR/parallel-$i.exit"
+        ) &
+        pids[$i]=$!
+    done
+    
+    # Wait for all
+    for pid in "${pids[@]}"; do
+        wait $pid
+    done
+    
+    END_TIME=$(date +%s%N)
+    
+    # Collect results
+    for i in "${!commands[@]}"; do
+        if [ -f "$CACHE_DIR/parallel-$i.out" ]; then
+            results[$i]=$(cat "$CACHE_DIR/parallel-$i.out")
+            rm -f "$CACHE_DIR/parallel-$i.out" "$CACHE_DIR/parallel-$i.exit"
+        fi
+    done
+    
+    # Display first result
+    if [ ${#results[@]} -gt 0 ]; then
+        echo "📋 First result:"
+        echo "${results[0]}" | head -10
+    fi
+    
+    track_performance "parallel:${#commands[@]} commands" "$START_TIME" "$END_TIME" "parallel"
+    
+    return 0
+}
+
+# Main command routing
+case "$1" in
+    "start-server")
+        ensure_server
+        ;;
+        
+    "status")
+        ensure_server
+        cached_execute "--model nvidia/z-ai/glm4.7 run 'status'"
+        ;;
+        
+    "health")
+        ensure_server
+        cached_execute "--model nvidia/z-ai/glm4.7 run 'health'"
+        ;;
+        
+    "performance")
+        echo "📊 Performance Report"
+        echo "===================="
+        echo ""
+        
+        # Show recent performance
+        echo "Recent Performance:"
+        tail -10 "$PERF_LOG" | awk -F',' '{printf "%-20s %-8s %-6sx\n", $2, $3"ms", $4}'
+        
+        echo ""
+        echo "Cache Statistics:"
+        CACHE_COUNT=$(find "$CACHE_DIR" -name "*.timestamp" 2>/dev/null | wc -l)
+        echo "  Cached responses: $CACHE_COUNT"
+        
+        echo ""
+        echo "Server Status:"
+        if check_server; then
+            echo "  ✅ Hot server running"
+        else
+            echo "  ❌ No hot server"
+        fi
+        ;;
+        
+    "optimize")
+        echo "🔧 Running optimizations..."
+        echo ""
+        
+        # 1. Ensure hot server
+        ensure_server
+        
+        # 2. Warm up cache
+        echo "🔥 Warming up cache..."
+        for cmd in "status" "health" "--version"; do
+            cached_execute "--model nvidia/z-ai/glm4.7 run '$cmd'" >/dev/null 2>&1
+            echo "  ✅ $cmd cached"
+        done
+        
+        # 3. Test parallel execution
+        echo "🔄 Testing parallel execution..."
+        parallel_execute \
+            "--model nvidia/z-ai/glm4.7 run 'echo test1'" \
+            "--model nvidia/z-ai/glm4.7 run 'echo test2'" \
+            "--model nvidia/z-ai/glm4.7 run 'echo test3'"
+        
+        echo ""
+        echo "🎉 Optimization complete!"
+        ;;
+        
+    "benchmark")
+        echo "📈 Performance Benchmark"
+        echo "======================="
+        echo ""
+        
+        # Cold start baseline
+        echo "1. Cold Start Baseline:"
+        START_TIME=$(date +%s%N)
+        opencode --model nvidia/z-ai/glm4.7 run "echo 'benchmark'" >/dev/null 2>&1
+        END_TIME=$(date +%s%N)
+        COLD_MS=$(( (END_TIME - START_TIME) / 1000000 ))
+        echo "   Time: ${COLD_MS}ms"
+        echo ""
+        
+        # Hot server
+        ensure_server
+        echo "2. Hot Server:"
+        START_TIME=$(date +%s%N)
+        export OPENCODE_URL="$SERVER_URL"
+        opencode --model nvidia/z-ai/glm4.7 run "echo 'benchmark'" >/dev/null 2>&1
+        END_TIME=$(date +%s%N)
+        HOT_MS=$(( (END_TIME - START_TIME) / 1000000 ))
+        echo "   Time: ${HOT_MS}ms"
+        SPEEDUP=$(echo "scale=0; $COLD_MS / $HOT_MS" | bc)
+        echo "   Speedup: ${SPEEDUP}×"
+        echo ""
+        
+        # Cached
+        echo "3. Cached (2nd run):"
+        START_TIME=$(date +%s%N)
+        cached_execute "--model nvidia/z-ai/glm4.7 run 'echo benchmark'" >/dev/null 2>&1
+        END_TIME=$(date +%s%N)
+        CACHED_MS=$(( (END_TIME - START_TIME) / 1000000 ))
+        echo "   Time: ${CACHED_MS}ms"
+        SPEEDUP=$(echo "scale=0; $COLD_MS / $CACHED_MS" | bc)
+        echo "   Speedup: ${SPEEDUP}×"
+        echo ""
+        
+        echo "📊 SUMMARY:"
+        echo "  Cold: ${COLD_MS}ms (baseline)"
+        echo "  Hot: ${HOT_MS}ms (${SPEEDUP}× faster)"
+        echo "  Cached: ${CACHED_MS}ms ($(echo "scale=0; $COLD_MS / $CACHED_MS" | bc)× faster)"
+        ;;
+        
+    "clear-cache")
+        echo "🧹 Clearing cache..."
+        rm -rf "$CACHE_DIR"/*
+        echo "✅ Cache cleared"
+        ;;
+        
+    "config")
+        echo "⚙️  Current Configuration:"
+        echo "  ENABLE_HOT_SERVER: $ENABLE_HOT_SERVER"
+        echo "  ENABLE_CACHING: $ENABLE_CACHING"
+        echo "  ENABLE_PARALLEL: $ENABLE_PARALLEL"
+        echo "  CACHE_TTL: ${CACHE_TTL}s"
+        echo "  MAX_PARALLEL: $MAX_PARALLEL"
+        echo ""
+        echo "Config file: $CONFIG_FILE"
+        ;;
+        
+    *)
+        echo "Usage: ./wzrd-performance-enhancer [command]"
+        echo ""
+        echo "Performance Enhancement Commands:"
+        echo "  start-server    Ensure hot server is running"
+        echo "  status          Ultra-fast status (cached + hot)"
+        echo "  health          Ultra-fast health check"
+        echo "  performance     Show performance metrics"
+        echo "  optimize        Run all optimizations"
+        echo "  benchmark       Run performance benchmarks"
+        echo "  clear-cache     Clear performance cache"
+        echo "  config          Show configuration"
+        echo ""
+        echo "Examples:"
+        echo "  ./wzrd-performance-enhancer status    # Instant status"
+        echo "  ./wzrd-performance-enhancer optimize  # Optimize everything"
+        echo "  ./wzrd-performance-enhancer benchmark # Compare performance"
+        exit 1
+        ;;
+esac

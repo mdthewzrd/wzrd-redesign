@@ -1,0 +1,73 @@
+# Discord Bot Configuration
+# Maps Discord channels to WZRD topics
+
+discord:
+  # Bot credentials
+  bot_token: "MTQ3Mzc1MDc5MjkyMTAyNjcwMA.GstCJX.TfXjF-Xm1ocfhfvwgVTjnZ7SFnggBqFDndH1j4"
+  client_id: "677335430336610315"
+  client_secret: ""  # Not needed for bot
+  
+  # Server configuration
+  guild_id: "1473755847548207195"  # Your Remi server
+  
+  # Channel to topic mappings
+  channels:
+    # System topics (for WZRD management)
+    system-design: "112233445566778899"      # Placeholder - replace with actual channel ID
+    implementation: "998877665544332211"     # Placeholder - replace with actual channel ID
+    planning: "556677889900112233"           # Placeholder - replace with actual channel ID
+    
+    # Project topics (existing WZRD projects)
+    edge-dev: "667788990011223344"           # Placeholder - replace with actual channel ID
+    dilution-agent: "778899001122334455"     # Placeholder - replace with actual channel ID
+    press-agent: "889900112233445566"        # Placeholder - replace with actual channel ID
+    
+    # Utility channels
+    logs: "990011223344556677"               # Placeholder - replace with actual channel ID
+    alerts: "001122334455667788"             # Placeholder - replace with actual channel ID
+    general: "112233445566778899"            # Placeholder - replace with actual channel ID
+  
+  # Bot permissions
+  permissions:
+    remi: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES"]
+    users: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY"]
+    projects: ["VIEW_CHANNEL"]  # Project agents can only view
+    
+  # Topic management
+  topic_auto_create: true
+  topic_sync_interval: 5000  # Sync every 5 seconds
+  
+  # Bot behavior
+  response_delay: 1000  # 1 second delay before responding
+  message_history_size: 50  # Keep last 50 messages per channel
+  
+  # Command prefix
+  command_prefix: "!wzrd"
+  
+  # Features
+  features:
+    topic_switching: true
+    progress_syncing: true
+    memory_access: true
+    file_upload: true
+    cost_tracking: true
+    
+  # Rate limiting
+  rate_limits:
+    messages_per_minute: 30
+    commands_per_minute: 10
+    topic_switches_per_hour: 20
+    
+  # Security
+  allowed_users: []  # Empty means all users allowed
+  blocked_users: []
+  admin_users: []    # Users with admin privileges
+  
+  # Logging
+  log_level: "info"
+  log_file: "/home/mdwzrd/wzrd-redesign/logs/discord.log"
+  
+  # Monitoring
+  health_check_interval: 30000  # 30 seconds
+  reconnect_attempts: 10
+  reconnect_delay: 5000  # 5 seconds

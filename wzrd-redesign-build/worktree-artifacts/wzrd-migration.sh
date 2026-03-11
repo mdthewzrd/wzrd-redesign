@@ -1,0 +1,270 @@
+#!/bin/bash
+# WZRD.DEV MIGRATION - SAFE AND INCREMENTAL
+# Migrates from wzrd.dev (old) to wzrd-redesign (new)
+# Usage: ./wzrd-migration.sh [--phase backup|stop|copy|cron|start|all]
+
+set -e
+
+PHASE="all"
+if [ "$1" == "--phase" ]; then
+    PHASE="$2"
+    echo "=== RUNNING PHASE: $PHASE ==="
+else
+    echo "=== WZRD.DEV MIGRATION STARTED $(date) ==="
+fi
+echo ""
+
+# Configuration
+OLD_DIR="/home/mdwzrd/wzrd.dev"
+NEW_DIR="/home/mdwzrd/wzrd-redesign"
+BACKUP_DIR="/home/mdwzrd/backups"
+LOG_FILE="$NEW_DIR/logs/migration-$(date +%Y%m%d).log"
+
+mkdir -p "$BACKUP_DIR"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+exec > >(tee -a "$LOG_FILE") 2>&1
+
+echo "Logging to: $LOG_FILE"
+echo ""
+
+# ===== PHASE DISPATCH =====
+if [ "$PHASE" != "all" ]; then
+    case "$PHASE" in
+        backup) run_phase_backup; exit ;;
+        stop) run_phase_stop; exit ;;
+        copy) run_phase_copy; exit ;;
+        cron) run_phase_cron; exit ;;
+        start) run_phase_start; exit ;;
+        *) echo "Unknown phase: $PHASE"; exit 1 ;;
+    esac
+fi
+
+# ===== PHASE 1: PRE-MIGRATION CHECKS =====
+echo "=== PHASE 1: PRE-MIGRATION CHECKS ==="
+
+# Check disk space
+free_gb=$(df -h /home/mdwzrd | awk 'NR==2 {print $4}' | sed 's/G//')
+echo "Free disk space: ${free_gb}GB"
+if [ "$free_gb" -lt 10 ]; then
+    echo "⚠️ WARNING: Less than 10GB free. Migration may fail."
+    read -p "Continue anyway? (y/N): " -n 1 -r
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Migration cancelled."
+        exit 1
+    fi
+fi
+
+# Check running services
+echo ""
+echo "Currently running services:"
+ps aux | grep -E "(wzrd|bot-health|opencode)" | grep -v grep || true
+
+# Document current state
+echo ""
+echo "Documenting current state..."
+crontab -l > "$BACKUP_DIR/cron-backup-$(date +%Y%m%d).txt"
+ps aux > "$BACKUP_DIR/processes-backup-$(date +%Y%m%d).txt"
+
+echo "Checking for hardcoded paths in old system..."
+hardcoded_paths=$(grep -r "wzrd\.dev" "$OLD_DIR/scripts/" 2>/dev/null | head -5 || true)
+if [ -n "$hardcoded_paths" ]; then
+    echo "   ⚠️ Found hardcoded paths in old scripts:"
+    echo "$hardcoded_paths"
+    echo "   These will need manual updates after migration"
+else
+    echo "   ✅ No hardcoded paths found"
+fi
+
+# ===== PHASE 2: GRACEFUL SHUTDOWN =====
+echo ""
+echo "=== PHASE 2: GRACEFUL SHUTDOWN ==="
+
+echo "1. Documenting ALL wzrd processes..."
+echo "   Current processes:"
+ps aux | grep -E "(wzrd|remi|opencode|gateway|bot-health)" | grep -v grep | grep -v migration || true
+
+echo "2. Stopping bot health monitor..."
+if pkill -f "bot-health-monitor.sh"; then
+    echo "   ✅ Stopped bot-health-monitor.sh"
+    sleep 2
+else
+    echo "   ℹ️ bot-health-monitor.sh not running"
+fi
+
+echo "3. Stopping process monitor..."
+if pkill -f "wzrd-process-monitor.js"; then
+    echo "   ✅ Stopped wzrd-process-monitor.js"
+    sleep 2
+else
+    echo "   ℹ️ wzrd-process-monitor.js not running"
+fi
+
+echo "3. Checking for opencode processes..."
+if pgrep -f "opencode" >/dev/null; then
+    echo "   ⚠️ opencode processes running"
+    echo "   PIDs: $(pgrep -f 'opencode' | tr '\n' ' ')"
+    read -p "Stop opencode processes? (y/N): " -n 1 -r
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        pkill -f "opencode"
+        sleep 2
+        echo "   ✅ opencode stopped"
+    else
+        echo "   ⚠️ opencode left running (may cause data issues)"
+    fi
+else
+    echo "   ✅ opencode not running"
+fi
+
+echo "4. Checking for PM2 managed services..."
+if command -v pm2 >/dev/null 2>&1; then
+    pm2_status=$(pm2 list 2>/dev/null | grep -E "(wzrd|remi|gateway)" || true)
+    if [ -n "$pm2_status" ]; then
+        echo "   ⚠️ PM2 manages services:"
+        echo "$pm2_status"
+        read -p "Stop PM2 services? (y/N): " -n 1 -r
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            pm2 stop all
+            sleep 3
+            echo "   ✅ PM2 services stopped"
+        else
+            echo "   ⚠️ PM2 services left running"
+        fi
+    else
+        echo "   ✅ No PM2 wzrd services"
+    fi
+else
+    echo "   ✅ PM2 not installed"
+fi
+
+# ===== PHASE 3: DATA MIGRATION =====
+echo ""
+echo "=== PHASE 3: DATA MIGRATION ==="
+
+echo "1. Creating backups..."
+tar -czf "$BACKUP_DIR/wzrd.dev-backup-$(date +%Y%m%d-%H%M).tar.gz" -C /home/mdwzrd wzrd.dev 2>/dev/null &
+tar -czf "$BACKUP_DIR/wzrd-redesign-backup-$(date +%Y%m%d-%H%M).tar.gz" -C /home/mdwzrd wzrd-redesign 2>/dev/null &
+wait
+echo "   ✅ Backups created"
+
+echo "2. Migrating projects (3.9GB)..."
+if [ -d "$OLD_DIR/projects" ]; then
+    rsync -av --progress "$OLD_DIR/projects/" "$NEW_DIR/projects/" 2>&1 | tail -5
+    echo "   ✅ Projects migrated"
+else
+    echo "   ℹ️ No projects directory found"
+fi
+
+echo "3. Migrating opencode (3.0GB)..."
+if [ -d "$OLD_DIR/opencode" ]; then
+    rsync -av --progress "$OLD_DIR/opencode/" "$NEW_DIR/opencode/" 2>&1 | tail -5
+    echo "   ✅ Opencode migrated"
+else
+    echo "   ℹ️ No opencode directory found"
+fi
+
+echo "4. Merging memory systems..."
+if [ -d "$OLD_DIR/memory-system" ]; then
+    mkdir -p "$NEW_DIR/memory/"
+    rsync -av --progress "$OLD_DIR/memory-system/" "$NEW_DIR/memory/" 2>&1 | tail -5
+    echo "   ✅ Memory merged"
+else
+    echo "   ℹ️ No memory-system directory found"
+fi
+
+echo "5. Migrating bot scripts..."
+if [ -f "$OLD_DIR/bot-health-monitor.sh" ]; then
+    cp "$OLD_DIR/bot-health-monitor.sh" "$NEW_DIR/scripts/"
+    echo "   ✅ Bot monitor script copied"
+fi
+
+# ===== PHASE 4: AUTOMATION UPDATE =====
+echo ""
+echo "=== PHASE 4: AUTOMATION UPDATE ==="
+
+echo "1. Updating cron jobs..."
+TEMP_CRON=$(mktemp)
+crontab -l > "$TEMP_CRON" 2>/dev/null || echo "# Empty crontab" > "$TEMP_CRON"
+
+# Update paths
+sed -i "s|$OLD_DIR|$NEW_DIR|g" "$TEMP_CRON"
+sed -i "s|/home/mdwzrd/wzrd\.dev|$NEW_DIR|g" "$TEMP_CRON"
+
+# Install updated cron
+crontab "$TEMP_CRON"
+rm "$TEMP_CRON"
+echo "   ✅ Cron jobs updated"
+
+echo "2. Verifying cron jobs..."
+crontab -l | grep -E "(wzrd|memory|health)" || echo "   ℹ️ No wzrd cron jobs found"
+
+# ===== PHASE 5: VALIDATION =====
+echo ""
+echo "=== PHASE 5: VALIDATION ==="
+
+echo "1. Checking data integrity..."
+projects_old=$(find "$OLD_DIR/projects" -type f 2>/dev/null | wc -l)
+projects_new=$(find "$NEW_DIR/projects" -type f 2>/dev/null | wc -l)
+echo "   Projects: Old=$projects_old, New=$projects_new"
+
+memory_old=$(find "$OLD_DIR/memory-system" -type f 2>/dev/null | wc -l)
+memory_new=$(find "$NEW_DIR/memory" -type f 2>/dev/null | wc -l)
+echo "   Memory: Old=$memory_old, New=$memory_new"
+
+echo "2. Testing scripts..."
+if [ -f "$NEW_DIR/scripts/bot-health-monitor.sh" ]; then
+    chmod +x "$NEW_DIR/scripts/bot-health-monitor.sh"
+    echo "   ✅ Bot script executable"
+fi
+
+# ===== PHASE 6: SOFT LAUNCH =====
+echo ""
+echo "=== PHASE 6: SOFT LAUNCH ==="
+
+echo "1. Starting new services..."
+cd "$NEW_DIR"
+if [ -f "scripts/bot-health-monitor.sh" ]; then
+    nohup ./scripts/bot-health-monitor.sh --daemon > logs/bot-daemon.log 2>&1 &
+    echo "   ✅ Bot monitor started"
+fi
+
+echo "2. Starting health checks..."
+if [ -f "scripts/remi-monitor.js" ]; then
+    node scripts/remi-monitor.js --test > logs/monitor-test.log 2>&1 &
+    echo "   ✅ Health monitor started"
+fi
+
+# ===== PHASE 7: NEXT STEPS =====
+echo ""
+echo "=== PHASE 7: NEXT STEPS ==="
+echo ""
+echo "✅ MIGRATION COMPLETE!"
+echo ""
+echo "NEXT ACTIONS:"
+echo ""
+echo "1. MONITOR FOR 24 HOURS:"
+echo "   tail -f $NEW_DIR/logs/bot-daemon.log"
+echo "   tail -f $NEW_DIR/logs/migration-$(date +%Y%m%d).log"
+echo ""
+echo "2. VERIFY SERVICES:"
+echo "   ps aux | grep wzrd-redesign"
+echo "   Check Discord for bot messages"
+echo ""
+echo "3. TEST AUTOMATION:"
+echo "   Wait for next cron job (check logs)"
+echo ""
+echo "4. AFTER 24H SUCCESS:"
+echo "   # Archive old system"
+echo "   mv $OLD_DIR $OLD_DIR.archive"
+echo ""
+echo "   # Rename new to final"
+echo "   mv $NEW_DIR /home/mdwzrd/wzrd.dev"
+echo ""
+echo "   # Update final paths"
+echo "   sed -i 's|wzrd-redesign|wzrd.dev|g' /home/mdwzrd/wzrd.dev/**/*.sh"
+echo ""
+echo "⚠️ DO NOT RENAME YET! Run both systems for 24h."
+echo ""
+echo "=== MIGRATION ENDED $(date) ==="
+echo "Log: $LOG_FILE"
+echo "Backups: $BACKUP_DIR/"

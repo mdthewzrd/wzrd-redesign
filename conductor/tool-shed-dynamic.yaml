@@ -1,0 +1,253 @@
+# WZRD.dev Tool Shed - Dynamic Configuration
+# Auto-generated on Wed Mar 11 01:59:47 PM UTC 2026
+# Total skills: 180
+
+version: "1.0"
+description: "Auto-generated skill registry"
+
+# Skill Counts by Category
+skill_counts:
+  total: 180
+  development: 91
+  architecture: 33
+  infrastructure: 15
+  security: 17
+  ai_ml: 8
+  business: 10
+  ui_ux: 3
+  data: 3
+
+# Auto-categorized Skills
+categories:
+  ui_ux:
+    description: "Auto-categorized ui_ux skills"
+    count: 3
+    skills:
+      - "accessibility-compliance"
+      - "bazel-build-optimization"
+      - "wcag-audit-patterns"
+
+  development:
+    description: "Auto-categorized development skills"
+    count: 91
+    skills:
+      - "agent-browser"
+      - "angular-migration"
+      - "async-python-patterns"
+      - "auth-implementation-patterns"
+      - "backtesting-frameworks"
+      - "bash-defensive-patterns"
+      - "bats-testing-patterns"
+      - "changelog-automation"
+      - "code-review-excellence"
+      - "coding"
+      - "context"
+      - "context-driven-development"
+      - "cost-optimization"
+      - "debugging"
+      - "debugging-strategies"
+      - "dependency-upgrade"
+      - "documentation"
+      - "dogfood"
+      - "dotnet-backend-patterns"
+      - "e2e-testing-patterns"
+      - "electron"
+      - "employment-contract-templates"
+      - "error-handling-patterns"
+      - "file-ops"
+      - "finishing-a-development-branch"
+      - "git"
+      - "git-advanced-workflows"
+      - "github-actions-templates"
+      - "gitlab-ci-patterns"
+      - "gitops-workflow"
+      - "go-concurrency-patterns"
+      - "godot-gdscript-patterns"
+      - "gold-standard"
+      - "grafana-dashboards"
+      - "javascript-testing-patterns"
+      - "modern-javascript-patterns"
+      - "monorepo-management"
+      - "nextjs-app-router-patterns"
+      - "nodejs-backend-patterns"
+      - "nx-workspace-patterns"
+      - "on-call-handoff-patterns"
+      - "parallel-debugging"
+      - "parallel-feature-development"
+      - "postmortem-writing"
+      - "prometheus-configuration"
+      - "python-anti-patterns"
+      - "python-background-jobs"
+      - "python-code-style"
+      - "python-configuration"
+      - "python-design-patterns"
+      - "python-error-handling"
+      - "python-observability"
+      - "python-packaging"
+      - "python-performance-optimization"
+      - "python-project-structure"
+      - "python-resilience"
+      - "python-resource-management"
+      - "python-testing-patterns"
+      - "python-type-safety"
+      - "react-modernization"
+      - "react-native-architecture"
+      - "react-native-design"
+      - "react-state-management"
+      - "react-ui-master"
+      - "receiving-code-review"
+      - "requesting-code-review"
+      - "rust-async-patterns"
+      - "screen-reader-testing"
+      - "shellcheck-configuration"
+      - "slack"
+      - "slo-implementation"
+      - "systematic-debugging"
+      - "system-health"
+      - "task-coordination-strategies"
+      - "temporal-python-testing"
+      - "test-driven-development"
+      - "testing"
+      - "track-management"
+      - "turborepo-caching"
+      - "typescript-advanced-types"
+      - "unity-ecs-patterns"
+      - "using-git-worktrees"
+      - "using-superpowers"
+      - "uv-package-manager"
+      - "validation"
+      - "vercel-composition-patterns"
+      - "vercel-react-best-practices"
+      - "vercel-react-native-skills"
+      - "verification-before-completion"
+      - "web3-testing"
+      - "writing-skills"
+
+  ai_ml:
+    description: "Auto-categorized ai_ml skills"
+    count: 8
+    skills:
+      - "brainstorming"
+      - "embedding-strategies"
+      - "hybrid-search-implementation"
+      - "llm-evaluation"
+      - "prompt-engineering-patterns"
+      - "rag-implementation"
+      - "similarity-search-patterns"
+      - "vector-index-tuning"
+
+  security:
+    description: "Auto-categorized security skills"
+    count: 17
+    skills:
+      - "anti-reversing-techniques"
+      - "attack-tree-construction"
+      - "binary-analysis-patterns"
+      - "defi-protocol-templates"
+      - "gdpr-data-handling"
+      - "memory-forensics"
+      - "memory-safety-patterns"
+      - "mtls-configuration"
+      - "protocol-reverse-engineering"
+      - "sast-configuration"
+      - "secrets-management"
+      - "security"
+      - "security-requirement-extraction"
+      - "solidity-security"
+      - "stride-analysis-patterns"
+      - "team-communication-protocols"
+      - "threat-mitigation-mapping"
+
+  architecture:
+    description: "Auto-categorized architecture skills"
+    count: 33
+    skills:
+      - "api-design-principles"
+      - "architecture"
+      - "architecture-decision-records"
+      - "architecture-patterns"
+      - "cqrs-implementation"
+      - "database-migration"
+      - "deployment-pipeline-design"
+      - "design-system-patterns"
+      - "event-store-design"
+      - "executing-plans"
+      - "fastapi-templates"
+      - "interaction-design"
+      - "kpi-dashboard-design"
+      - "langchain-architecture"
+      - "microservices-patterns"
+      - "ml-pipeline-workflow"
+      - "mobile-android-design"
+      - "mobile-ios-design"
+      - "multi-cloud-architecture"
+      - "openapi-spec-generation"
+      - "planning"
+      - "postgresql-table-design"
+      - "projection-patterns"
+      - "responsive-design"
+      - "saga-orchestration"
+      - "sql-optimization-patterns"
+      - "tailwind-design-system"
+      - "visual-design-foundations"
+      - "web-component-design"
+      - "web-design-guidelines"
+      - "workflow-orchestration-patterns"
+      - "workflow-patterns"
+      - "writing-plans"
+
+  infrastructure:
+    description: "Auto-categorized infrastructure skills"
+    count: 15
+    skills:
+      - "airflow-dag-patterns"
+      - "distributed-tracing"
+      - "helm-chart-scaffolding"
+      - "hybrid-cloud-networking"
+      - "incident-runbook-templates"
+      - "istio-traffic-management"
+      - "k8s-manifest-generator"
+      - "k8s-security-policies"
+      - "linkerd-patterns"
+      - "multi-reviewer-patterns"
+      - "pci-compliance"
+      - "service-mesh-observability"
+      - "spark-optimization"
+      - "startup-financial-modeling"
+      - "terraform-module-library"
+
+  data:
+    description: "Auto-categorized data skills"
+    count: 3
+    skills:
+      - "data-quality-frameworks"
+      - "data-storytelling"
+      - "dbt-transformation-patterns"
+
+  business:
+    description: "Auto-categorized business skills"
+    count: 10
+    skills:
+      - "billing-automation"
+      - "competitive-landscape"
+      - "market-sizing-analysis"
+      - "nft-standards"
+      - "paypal-integration"
+      - "risk-metrics-calculation"
+      - "startup-metrics-framework"
+      - "stripe-integration"
+      - "team-composition-analysis"
+      - "team-composition-patterns"
+
+# Discovery Metadata
+discovery:
+  last_updated: "2026-03-11T13:59:48+00:00"
+  source_directory: "/home/mdwzrd/wzrd-redesign/.agents/skills"
+  auto_categorization: "keyword-based"
+  update_frequency: "on_change"
+
+# Integration Instructions
+integration:
+  with_tool_shed_sh: "This file is automatically included by tool-shed.sh"
+  with_skill_loader: "Skills are auto-discovered during loading"
+  with_blueprint_engine: "Skill recommendations use this categorization"

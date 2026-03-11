@@ -1,0 +1,55 @@
+{
+  "history": [],
+  "current": {
+    "usage": 0.06029999999999999,
+    "tokens": 8040,
+    "costs": {
+      "claude-3-opus": 0.06029999999999999
+    },
+    "tasks": [
+      {
+        "id": "task_1773168535291_lep5rfdk4",
+        "timestamp": 1773168535291,
+        "contentLength": 0,
+        "estimatedTokens": 1004,
+        "actualTokens": 1004,
+        "model": "claude-3-opus",
+        "cost": 0.015059999999999999,
+        "taskType": "search"
+      },
+      {
+        "id": "task_1773168536156_sotyhs1ki",
+        "timestamp": 1773168536156,
+        "contentLength": 0,
+        "estimatedTokens": 1006,
+        "actualTokens": 1006,
+        "model": "claude-3-opus",
+        "cost": 0.01509,
+        "taskType": "search"
+      },
+      {
+        "id": "task_1773168537022_jeoj20le4",
+        "timestamp": 1773168537022,
+        "contentLength": 0,
+        "estimatedTokens": 1004,
+        "actualTokens": 1004,
+        "model": "claude-3-opus",
+        "cost": 0.015059999999999999,
+        "taskType": "search"
+      },
+      {
+        "id": "task_1773168537977_obkcmee30",
+        "timestamp": 1773168537977,
+        "contentLength": 0,
+        "estimatedTokens": 1006,
+        "actualTokens": 1006,
+        "model": "claude-3-opus",
+        "cost": 0.01509,
+        "taskType": "search"
+      }
+    ],
+    "warnings": [],
+    "circuitBreakerActive": false
+  },
+  "updated_at": 1773168537977
+}

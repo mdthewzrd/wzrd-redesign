@@ -1,0 +1,97 @@
+#!/bin/bash
+# wzrd-mode-fast - Simplified OpenCode wrapper with mode switching
+# Performance-optimized version without heavy Node.js process calls
+
+cd /home/mdwzrd/wzrd-redesign
+
+# Show help
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+  echo "Usage: wzrd [OPTIONS] [PROMPT]"
+  echo "Options:"
+  echo "  --mode MODE    Set mode (chat, thinker, coder, debug, research)"
+  echo "  --model MODEL  Override model (default: from mode config)"
+  echo "  --health       Show system health report"
+  echo "  --validate     Run Phase 1 validation"
+  echo "  --skills       List skills for current mode"
+  echo "  --help, -h     Show this help"
+  echo "  (no args)      Launch OpenCode TUI"
+  echo ""
+  echo "Examples:"
+  echo "  wzrd                         # Launch TUI in chat mode"
+  echo "  wzrd --mode thinker          # Launch TUI in thinker mode"
+  echo "  wzrd --mode coder 'Fix bug'  # Run prompt in coder mode"
+  echo "  wzrd --health                # Show system health"
+  echo "  wzrd --validate              # Validate Phase 1 systems"
+  exit 0
+fi
+
+# Default mode
+MODE="chat"
+MODEL=""
+PROMPT_ARGS=()
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --mode)
+      MODE="$2"
+      shift 2
+      ;;
+    --model)
+      MODEL="$2"
+      shift 2
+      ;;
+    *)
+      PROMPT_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Load mode configuration
+MODES_DIR="./remi/modes"
+MODE_FILE="$MODES_DIR/$MODE.md"
+
+if [[ ! -f "$MODE_FILE" ]]; then
+  echo "❌ Mode '$MODE' not found. Available modes:"
+  ls "$MODES_DIR"/*.md | sed 's|.*/||' | sed 's/\.md//'
+  exit 1
+fi
+
+# Extract model from mode file if not specified
+if [[ -z "$MODEL" ]]; then
+  MODEL=$(grep -E "^primary_model:" "$MODE_FILE" | cut -d: -f2 | tr -d ' ')
+  if [[ -z "$MODEL" ]]; then
+    MODEL="nvidia/z-ai/glm4.7"  # Default fallback
+  fi
+fi
+
+echo "🚀 WZRD.dev (fast mode)"
+echo "🤖 Mode: $MODE"
+echo "🧠 Model: $MODEL"
+
+# Check if Remi agent exists
+if [[ -f "./remi/SOUL.md" ]]; then
+  AGENT="--agent remi"
+else
+  echo "⚠️  Remi agent not found"
+  AGENT=""
+fi
+
+# Launch OpenCode
+if [[ ${#PROMPT_ARGS[@]} -eq 0 ]]; then
+  # No args = launch OpenCode TUI
+  echo "🌐 Launching OpenCode TUI..."
+  opencode --model "$MODEL" $AGENT
+else
+  # Has args = run command with mode context
+  echo "💬 Running with prompt: ${PROMPT_ARGS[*]}"
+  
+  # Enhanced prompt with mode context only (no skill analysis, no token dashboard)
+  ENHANCED_PROMPT="[MODE: $MODE] ${PROMPT_ARGS[*]}"
+  
+  # Run OpenCode command directly
+  opencode --model "$MODEL" $AGENT run "$ENHANCED_PROMPT"
+  
+  exit $?
+fi

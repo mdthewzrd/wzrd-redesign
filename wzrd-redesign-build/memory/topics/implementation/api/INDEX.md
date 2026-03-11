@@ -1,0 +1,4 @@
+{"file":"conversation-2026-03-08T13-27-35-924Z.json","summary":"How should I design this API? (Mode: thinker, Starting query)","captured":"2026-03-08T13:27:35.924Z"}
+{"file":"conversation-2026-03-08T13-27-35-921Z.json","summary":"How should I design this API? (Mode: thinker)","captured":"2026-03-08T13:27:35.922Z"}
+{"file":"conversation-2026-03-08T13-24-13-175Z.json","summary":"How should I design this API? (Mode: thinker, Starting query)","captured":"2026-03-08T13:24:13.182Z"}
+{"file":"conversation-2026-03-08T13-24-13-174Z.json","summary":"How should I design this API? (Mode: thinker)","captured":"2026-03-08T13:24:13.175Z"}

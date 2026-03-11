@@ -1,0 +1,61 @@
+// Project-specific OpenCode permissions for wzrd-redesign
+// This should be placed in ~/.config/opencode/projects/wzrd-redesign.jsonc
+
+{
+  "$schema": "https://opencode.ai/config.json",
+  
+  "permission": {
+    "*": "allow",
+    
+    "bash": {
+      "*": "allow"
+    },
+    
+    "read": {
+      "*": "allow"
+    },
+    "edit": {
+      "*": "allow"
+    },
+    "write": {
+      "*": "allow"
+    },
+    "glob": {
+      "*": "allow"
+    },
+    "grep": {
+      "*": "allow"
+    },
+    "list": {
+      "*": "allow"
+    },
+    
+    "task": "allow",
+    "skill": "allow",
+    "todoread": "allow",
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "codesearch": "allow",
+    
+    "external_directory": {
+      "/home/mdwzrd/wzrd-redesign/**": "allow",
+      "/home/mdwzrd/wzrd.dev/**": "allow",
+      "~/.claude/**": "allow",
+      "~/.opencode/**": "allow"
+    },
+    
+    "doom_loop": "ask"
+  },
+  
+  "agent": {
+    "remi": {
+      "permission": {
+        "*": "allow",
+        "bash": {
+          "*": "allow"
+        }
+      }
+    }
+  }
+}

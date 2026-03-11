@@ -1,0 +1,428 @@
+# WZRD.dev Sandbox Engine
+# Based on Stripe Minions "Warm Dev Box Pool" Component
+
+version: "1.0"
+description: "Automated project isolation with worktree/Docker containers, resource limits, and cleanup"
+
+# Sandbox Types
+sandbox_types:
+
+  # Git Worktree Sandbox (Lightweight)
+  git_worktree:
+    description: "Lightweight isolation using git worktrees"
+    isolation: "filesystem"
+    creation_time: "1-5 seconds"
+    cleanup_time: "instant"
+    resource_overhead: "low"
+    dependencies: ["git"]
+    
+    configuration:
+      worktree_base: "/home/mdwzrd/wzrd-redesign/.worktrees"
+      naming_pattern: "${project_name}-${timestamp}-${random_hex}"
+      git_branch: "main"
+      copy_configs: ["conductor/", "package.json", "requirements.txt"]
+      skip_directories: ["node_modules", ".git", ".next", "dist", "build"]
+      
+    resource_limits:
+      storage: "10GB"
+      max_files: "10000"
+      max_lifetime: "7d"
+      
+    health_checks:
+      - name: "worktree_exists"
+        command: "git worktree list | grep -q ${worktree_path}"
+      - name: "git_status_clean"
+        command: "cd ${worktree_path} && git status --porcelain | wc -l | grep -q '^0$'"
+      - name: "storage_within_limits"
+        command: "du -s ${worktree_path} | awk '{print $1}' | [ $(cat) -lt 10000000 ]"
+
+  # Docker Container Sandbox (Heavyweight)
+  docker_container:
+    description: "Full isolation using Docker containers"
+    isolation: "container"
+    creation_time: "10-30 seconds"
+    cleanup_time: "5-10 seconds"
+    resource_overhead: "medium"
+    dependencies: ["docker"]
+    
+    configuration:
+      base_image: "node:18-alpine"
+      container_name_pattern: "wzrd-${project_name}-${timestamp}"
+      mount_volumes: ["${host_project_path}:/app"]
+      exposed_ports: ["3000", "8080"]
+      environment_vars:
+        WZRD_SANDBOX: "true"
+        WZRD_PROJECT_NAME: "${project_name}"
+        WZRD_WORKTREE_PATH: "${worktree_path}"
+      
+    resource_limits:
+      memory: "2GB"
+      cpu_shares: "512"
+      storage: "20GB"
+      max_lifetime: "24h"
+      max_containers: "10"
+      
+    health_checks:
+      - name: "container_running"
+        command: "docker ps --filter \"name=${container_name}\" --format \"{{.Names}}\" | grep -q \"${container_name}\""
+      - name: "memory_within_limits"
+        command: "docker stats ${container_name} --no-stream --format \"{{.MemUsage}}\" | grep -oE '[0-9]+' | head -1 | [ $(cat) -lt 2000000000 ]"
+      - name: "cpu_within_limits"
+        command: "docker stats ${container_name} --no-stream --format \"{{.CPUPerc}}\" | grep -oE '[0-9]+' | head -1 | [ $(cat) -lt 80 ]"
+
+  # Process Namespace Sandbox (Medium)
+  process_namespace:
+    description: "Process isolation using namespace techniques"
+    isolation: "process"
+    creation_time: "2-10 seconds"
+    cleanup_time: "instant"
+    resource_overhead: "low"
+    dependencies: ["unshare", "nsenter"]
+    
+    configuration:
+      namespace_type: "unshare"
+      resource_groups: true
+      cgroup_v2: true
+      mount_propagation: "private"
+      uid_mapping: "0:1000:1"
+      gid_mapping: "0:1000:1"
+      
+    resource_limits:
+      memory: "1GB"
+      cpu_quota: "50%"
+      max_processes: "100"
+      max_lifetime: "12h"
+      
+    health_checks:
+      - name: "namespace_active"
+        command: "ps aux | grep -q \"[u]nshare.*${sandbox_id}\""
+      - name: "memory_within_limits"
+        command: "cat /sys/fs/cgroup/${sandbox_id}/memory.current | [ $(cat) -lt 1000000000 ]"
+      - name: "process_count_within_limits"
+        command: "cat /sys/fs/cgroup/${sandbox_id}/pids.current | [ $(cat) -lt 100 ]"
+
+# Project → Sandbox Mapping
+project_mapping:
+
+  mapping_strategy: "dynamic"
+  
+  mapping_rules:
+    - rule: "project_has_dockerfile"
+      condition: "test -f ${project_path}/Dockerfile"
+      sandbox_type: "docker_container"
+      
+    - rule: "project_has_package_json"
+      condition: "test -f ${project_path}/package.json"
+      sandbox_type: "git_worktree"
+      
+    - rule: "project_is_python"
+      condition: "test -f ${project_path}/requirements.txt || test -f ${project_path}/pyproject.toml"
+      sandbox_type: "git_worktree"
+      
+    - rule: "default_rule"
+      condition: "true"
+      sandbox_type: "git_worktree"
+      
+  mapping_registry:
+    storage: "/home/mdwzrd/wzrd-redesign/.worktrees/sandbox-registry.json"
+    format: "json"
+    update_frequency: "on_change"
+    
+    fields:
+      - project_name
+      - project_path
+      - sandbox_id
+      - sandbox_type
+      - created_at
+      - expires_at
+      - resource_usage
+      - health_status
+      - last_accessed
+      
+  mapping_cleanup:
+    auto_cleanup: true
+    cleanup_triggers:
+      - sandbox_expired
+      - resource_exceeded
+      - health_check_failed
+      - project_inactive_7d
+      
+    cleanup_actions:
+      - "Delete sandbox resources"
+      - "Update registry status"
+      - "Notify project owner"
+      - "Archive logs"
+
+# Resource Management
+resource_management:
+
+  limits:
+    global:
+      max_concurrent_sandboxes: 20
+      total_memory_limit: "32GB"
+      total_storage_limit: "100GB"
+      max_cpu_cores: 8
+      
+    per_project:
+      default_memory: "2GB"
+      default_storage: "10GB"
+      default_cpu: "2 cores"
+      max_lifetime: "7d"
+      
+  monitoring:
+    metrics_collection:
+      interval: "60s"
+      metrics:
+        - "memory_usage"
+        - "cpu_usage"
+        - "storage_usage"
+        - "process_count"
+        - "network_io"
+        - "disk_io"
+        
+    alerts:
+      - trigger: "memory_usage > 90%"
+        action: "notify_and_throttle"
+      - trigger: "storage_usage > 95%"
+        action: "cleanup_oldest_sandboxes"
+      - trigger: "cpu_usage > 80% for 5m"
+        action: "scale_down_or_alert"
+      - trigger: "sandbox_unhealthy > 3 checks"
+        action: "restart_or_recreate"
+        
+  allocation_strategy:
+    priority_based: true
+    priorities:
+      - "high_priority_projects"
+      - "active_development"
+      - "background_tasks"
+      - "research_experiments"
+      
+    resource_recycling:
+      recycle_inactive_after: "24h"
+      recycle_on_completion: true
+      preserve_state_for: "1h"
+
+# Health Monitoring
+health_monitoring:
+
+  check_types:
+    availability:
+      - name: "sandbox_reachable"
+        command: "ping -c 1 ${sandbox_hostname} || curl -s http://${sandbox_hostname}:3000/health"
+        interval: "30s"
+        timeout: "5s"
+        
+    resource_usage:
+      - name: "memory_healthy"
+        command: "check_memory_usage ${sandbox_id}"
+        threshold: "85%"
+        interval: "60s"
+        
+      - name: "storage_healthy"
+        command: "check_storage_usage ${sandbox_id}"
+        threshold: "90%"
+        interval: "300s"
+        
+    application_health:
+      - name: "application_running"
+        command: "check_application_status ${sandbox_id}"
+        interval: "30s"
+        
+      - name: "services_healthy"
+        command: "check_required_services ${sandbox_id}"
+        interval: "60s"
+        
+  alerting:
+    channels:
+      - "discord"
+      - "cli"
+      - "log_file"
+      
+    severity_levels:
+      - "critical"
+      - "warning"
+      - "info"
+      
+    escalation_rules:
+      - "critical → immediate_notification"
+      - "warning → notify_within_5m"
+      - "info → log_only"
+
+# Automatic Cleanup
+automatic_cleanup:
+
+  triggers:
+    time_based:
+      - trigger: "sandbox_age > max_lifetime"
+        action: "cleanup_sandbox"
+        grace_period: "1h"
+        
+      - trigger: "inactivity_period > 24h"
+        action: "mark_for_cleanup"
+        grace_period: "2h"
+        
+    resource_based:
+      - trigger: "memory_exceeds_limit"
+        action: "force_cleanup"
+        
+      - trigger: "storage_exceeds_limit"
+        action: "cleanup_oldest_first"
+        
+    health_based:
+      - trigger: "health_check_fails > 3 times"
+        action: "recreate_sandbox"
+        
+      - trigger: "application_crashed"
+        action: "cleanup_and_notify"
+        
+  cleanup_actions:
+    - action: "stop_processes"
+      command: "kill_processes_in_sandbox ${sandbox_id}"
+      
+    - action: "remove_resources"
+      command: "remove_sandbox_resources ${sandbox_id}"
+      
+    - action: "update_registry"
+      command: "update_sandbox_registry ${sandbox_id} status=cleaned"
+      
+    - action: "archive_logs"
+      command: "archive_sandbox_logs ${sandbox_id}"
+      
+    - action: "notify_users"
+      command: "notify_sandbox_cleanup ${sandbox_id}"
+
+# Integration Configuration
+integration:
+
+  with_topics_system:
+    - "Map topics to sandboxes"
+    - "Sandbox lifecycle tied to topic activity"
+    - "Topic context available in sandbox"
+    
+  with_conductor_system:
+    - "Sandbox creation logged in conductor"
+    - "Resource usage tracked in conductor metrics"
+    - "Cleanup actions documented in conductor"
+    
+  with_blueprint_engine:
+    - "Blueprint execution creates appropriate sandbox"
+    - "Sandbox type selected based on blueprint requirements"
+    - "Resource allocation based on blueprint complexity"
+    
+  with_validation_pipeline:
+    - "Validate sandbox before execution"
+    - "Monitor sandbox health during execution"
+    - "Validate cleanup after execution"
+    
+  with_tool_shed:
+    - "Auto-load sandbox-related skills"
+    - "Sandbox tools available in appropriate contexts"
+    - "Skill execution respects sandbox boundaries"
+
+# Sandbox Creation Workflow
+creation_workflow:
+
+  steps:
+    - step: "validate_project"
+      description: "Validate project exists and is accessible"
+      command: "validate_project_path ${project_path}"
+      
+    - step: "determine_sandbox_type"
+      description: "Determine appropriate sandbox type"
+      command: "determine_sandbox_type ${project_path}"
+      
+    - step: "check_resource_availability"
+      description: "Check if resources are available"
+      command: "check_resource_availability ${sandbox_type}"
+      
+    - step: "create_sandbox"
+      description: "Create the sandbox"
+      command: "create_sandbox ${project_path} ${sandbox_type}"
+      
+    - step: "configure_sandbox"
+      description: "Configure sandbox environment"
+      command: "configure_sandbox ${sandbox_id}"
+      
+    - step: "register_sandbox"
+      description: "Register sandbox in mapping registry"
+      command: "register_sandbox ${sandbox_id} ${project_path}"
+      
+    - step: "initialize_health_monitoring"
+      description: "Initialize health monitoring"
+      command: "initialize_health_monitoring ${sandbox_id}"
+      
+    - step: "verify_sandbox"
+      description: "Verify sandbox is functional"
+      command: "verify_sandbox ${sandbox_id}"
+      
+  success_criteria:
+    - "Sandbox created and registered"
+    - "Resource limits configured"
+    - "Health monitoring active"
+    - "Project accessible within sandbox"
+    - "Initial health checks pass"
+
+# Usage Examples
+usage_examples:
+
+  example_1:
+    description: "Create sandbox for new project"
+    command: "sandbox create --project /path/to/project --type auto"
+    
+  example_2:
+    description: "Create sandbox with specific resource limits"
+    command: "sandbox create --project /path/to/project --memory 4GB --cpu 4 --storage 20GB"
+    
+  example_3:
+    description: "List active sandboxes"
+    command: "sandbox list"
+    
+  example_4:
+    description: "Cleanup specific sandbox"
+    command: "sandbox cleanup --id sandbox-123"
+    
+  example_5:
+    description: "Force cleanup all sandboxes"
+    command: "sandbox cleanup --all --force"
+    
+  example_6:
+    description: "Check sandbox health"
+    command: "sandbox health --id sandbox-123"
+    
+  example_7:
+    description: "Execute command in sandbox"
+    command: "sandbox exec --id sandbox-123 --command 'npm test'"
+    
+  example_8:
+    description: "Monitor resource usage"
+    command: "sandbox monitor --id sandbox-123 --metrics memory,cpu,storage"
+
+# Metrics and Reporting
+metrics:
+
+  sandbox_metrics:
+    - "creation_time"
+    - "cleanup_time"
+    - "uptime"
+    - "resource_utilization"
+    - "health_check_success_rate"
+    - "user_satisfaction"
+    
+  resource_metrics:
+    - "total_memory_used"
+    - "total_storage_used"
+    - "total_cpu_used"
+    - "concurrent_sandboxes"
+    - "resource_wait_time"
+    
+  quality_metrics:
+    - "sandbox_failure_rate"
+    - "cleanup_success_rate"
+    - "health_check_failure_rate"
+    - "user_reported_issues"
+    
+  reporting:
+    frequency: "daily"
+    channels: ["discord", "cli", "web_dashboard"]
+    retention: "30d"

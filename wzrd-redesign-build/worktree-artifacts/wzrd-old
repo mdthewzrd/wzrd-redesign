@@ -1,0 +1,38 @@
+#!/bin/bash
+# WZRD CLI Wrapper Script
+# Makes wzrd command available globally
+
+cd "$(dirname "$0")"
+
+# Handle background agent commands
+if [[ "$1" == "bg-"* ]]; then
+    case "$1" in
+        bg-spawn)
+            shift
+            ./scripts/bg-agent.py spawn "$@"
+            exit $?
+            ;;
+        bg-jobs)
+            ./scripts/bg-agent.py list
+            exit $?
+            ;;
+        bg-status)
+            shift
+            ./scripts/bg-agent.py status "$@"
+            exit $?
+            ;;
+        bg-results)
+            shift
+            ./scripts/bg-agent.py results "$@"
+            exit $?
+            ;;
+        bg-kill)
+            shift
+            ./scripts/bg-agent.py kill "$@"
+            exit $?
+            ;;
+    esac
+fi
+
+# Pass through to main CLI
+./bin/wzrd-redesign "$@"

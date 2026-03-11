@@ -1,0 +1,300 @@
+# WZRD.dev Validation Pipeline
+# Based on Stripe Minions "Validation Layer" Component
+
+version: "1.0"
+description: "Quality gates for all agentic engineering work"
+
+# Pipeline Stages
+stages:
+  
+  # Stage 1: Pre-Execution Validation
+  pre_execution:
+    description: "Validate feasibility and requirements before starting"
+    checks:
+      - id: "requirements_clarity"
+        name: "Requirements Analysis"
+        description: "Ensure task requirements are clearly understood"
+        validation_method: "prompt_analysis"
+        success_criteria: "Clear scope, dependencies, success criteria defined"
+        failure_action: "Request clarification before proceeding"
+        
+      - id: "feasibility_assessment"
+        name: "Feasibility Check"
+        description: "Verify task is technically possible with current resources"
+        validation_method: "resource_check"
+        success_criteria: "Skills available, token budget sufficient, tools accessible"
+        failure_action: "Adjust scope or acquire missing resources"
+        
+      - id: "architecture_validation"
+        name: "Architecture Review"
+        description: "Ensure approach fits within system architecture"
+        validation_method: "architecture_compliance"
+        success_criteria: "Approach compatible with existing systems, follows patterns"
+        failure_action: "Redesign approach to fit architecture"
+        
+      - id: "risk_assessment"
+        name: "Risk Analysis"
+        description: "Identify potential risks and mitigation strategies"
+        validation_method: "risk_identification"
+        success_criteria: "Risks identified, mitigation strategies defined"
+        failure_action: "Add risk controls or adjust approach"
+    
+    gate_type: "hard"  # Must pass ALL checks to proceed
+    timeout: 30000  # 30 seconds max for pre-validation
+    
+  # Stage 2: Mid-Execution Validation  
+  mid_execution:
+    description: "Validate progress quality during execution"
+    triggers:
+      - "task_completion"
+      - "milestone_reached"
+      - "significant_decision"
+      - "every_5_minutes"
+    
+    checks:
+      - id: "progress_quality"
+        name: "Progress Quality Check"
+        description: "Validate work meets quality standards"
+        validation_method: "quality_assessment"
+        success_criteria: "Code/test/documentation quality meets standards"
+        failure_action: "Fix quality issues before continuing"
+        
+      - id: "scope_adherence"
+        name: "Scope Adherence"
+        description: "Ensure work stays within defined scope"
+        validation_method: "scope_comparison"
+        success_criteria: "All work within agreed scope, no scope creep"
+        failure_action: "Get scope approval for new work"
+        
+      - id: "performance_validation"
+        name: "Performance Check"
+        description: "Validate performance meets expectations"
+        validation_method: "performance_metrics"
+        success_criteria: "Response times, token usage within acceptable ranges"
+        failure_action: "Optimize performance before continuing"
+        
+      - id: "integration_check"
+        name: "Integration Validation"
+        description: "Ensure new work integrates with existing systems"
+        validation_method: "integration_test"
+        success_criteria: "No breaking changes, interfaces compatible"
+        failure_action: "Fix integration issues"
+    
+    gate_type: "soft"  # Can proceed with warnings, but must address
+    timeout: 15000  # 15 seconds max for mid-validation
+    
+  # Stage 3: Post-Execution Validation
+  post_execution:
+    description: "Validate final results and success criteria"
+    checks:
+      - id: "success_criteria_validation"
+        name: "Success Criteria Check"
+        description: "Verify all success criteria are met"
+        validation_method: "criteria_verification"
+        success_criteria: "All defined success criteria satisfied"
+        failure_action: "Complete missing criteria before finishing"
+        
+      - id: "functional_testing"
+        name: "Functional Testing"
+        description: "Test that functionality works as intended"
+        validation_method: "functional_test"
+        success_criteria: "All functions work correctly, edge cases handled"
+        failure_action: "Fix functional issues"
+        
+      - id: "regression_testing"
+        name: "Regression Testing"
+        description: "Ensure no existing functionality broken"
+        validation_method: "regression_test"
+        success_criteria: "All existing tests pass, no regressions"
+        failure_action: "Fix regression issues"
+        
+      - id: "performance_verification"
+        name: "Performance Verification"
+        description: "Verify performance meets requirements"
+        validation_method: "performance_benchmark"
+        success_criteria: "Performance metrics within acceptable ranges"
+        failure_action: "Optimize performance"
+        
+      - id: "documentation_completeness"
+        name: "Documentation Check"
+        description: "Ensure documentation is complete"
+        validation_method: "documentation_review"
+        success_criteria: "All documentation present and accurate"
+        failure_action: "Complete missing documentation"
+    
+    gate_type: "hard"  # Must pass ALL checks to mark complete
+    timeout: 45000  # 45 seconds max for post-validation
+    
+  # Stage 4: Regression Validation
+  regression:
+    description: "Validate no breaking changes to system"
+    triggers:
+      - "before_deployment"
+      - "after_significant_changes"
+      - "weekly_automated"
+    
+    checks:
+      - id: "api_compatibility"
+        name: "API Compatibility"
+        description: "Ensure API contracts unchanged"
+        validation_method: "api_contract_validation"
+        success_criteria: "All public APIs maintain backward compatibility"
+        failure_action: "Fix API compatibility or version appropriately"
+        
+      - id: "data_integrity"
+        name: "Data Integrity"
+        description: "Validate data schemas and integrity"
+        validation_method: "data_validation"
+        success_criteria: "Data schemas unchanged, integrity maintained"
+        failure_action: "Fix data integrity issues"
+        
+      - id: "security_validation"
+        name: "Security Review"
+        description: "Ensure security posture maintained"
+        validation_method: "security_assessment"
+        success_criteria: "No new security vulnerabilities introduced"
+        failure_action: "Fix security issues"
+        
+      - id: "user_experience"
+        name: "User Experience"
+        description: "Validate user experience not degraded"
+        validation_method: "ux_validation"
+        success_criteria: "User workflows unchanged or improved"
+        failure_action: "Fix UX issues"
+    
+    gate_type: "hard"  # Must pass ALL checks for deployment
+    timeout: 60000  # 60 seconds max for regression validation
+
+# Mode-Specific Validation Rules
+mode_rules:
+  
+  coding:
+    required_checks:
+      pre_execution: ["requirements_clarity", "feasibility_assessment"]
+      mid_execution: ["progress_quality", "integration_check"]
+      post_execution: ["functional_testing", "regression_testing"]
+    
+    quality_standards:
+      code_quality: "PEP8/ESLint compliance"
+      test_coverage: "> 80% line coverage"
+      documentation: "Docstrings for all public functions"
+    
+    performance_requirements:
+      response_time: "< 2 seconds for simple operations"
+      memory_usage: "< 100MB for typical operations"
+      
+  debugging:
+    required_checks:
+      pre_execution: ["requirements_clarity"]
+      mid_execution: ["progress_quality"]
+      post_execution: ["regression_testing", "functional_testing"]
+    
+    quality_standards:
+      root_cause: "Must identify root cause"
+      fix_quality: "Fix must address root cause, not symptoms"
+      test_verification: "Must add test to prevent regression"
+    
+  research:
+    required_checks:
+      pre_execution: ["requirements_clarity"]
+      post_execution: ["documentation_completeness"]
+    
+    quality_standards:
+      source_quality: "Credible sources cited"
+      analysis_depth: "Multiple perspectives considered"
+      conclusion_support: "Conclusions supported by evidence"
+    
+  planning:
+    required_checks:
+      pre_execution: ["architecture_validation", "risk_assessment"]
+      post_execution: ["documentation_completeness"]
+    
+    quality_standards:
+      structure_quality: "Clear hierarchical structure"
+      dependency_analysis: "All dependencies identified"
+      risk_coverage: "All risks identified and mitigated"
+
+# Validation Tools Integration
+tool_integration:
+  
+  automated_testing:
+    - "pytest for Python code"
+    - "jest for JavaScript/TypeScript"
+    - "playwright for E2E testing"
+    - "automated_api_tests"
+  
+  static_analysis:
+    - "pylint for Python"
+    - "eslint for JavaScript"
+    - "typescript type checking"
+    - "security_static_analysis"
+  
+  performance_testing:
+    - "load_testing"
+    - "memory_profiling"
+    - "response_time_measurement"
+    - "token_usage_tracking"
+  
+  documentation_checking:
+    - "docstring_coverage"
+    - "api_documentation_completeness"
+    - "readme_quality_check"
+
+# Validation Failure Protocols
+failure_protocols:
+  
+  pre_execution_failure:
+    - "Stop execution immediately"
+    - "Report specific validation failures"
+    - "Request missing information/resources"
+    - "Adjust plan based on validation findings"
+  
+  mid_execution_failure:
+    - "Pause execution"
+    - "Report quality/scope issues"
+    - "Fix issues before continuing"
+    - "Re-validate after fixes"
+  
+  post_execution_failure:
+    - "Do not mark task complete"
+    - "Report specific failures"
+    - "Fix all issues"
+    - "Re-run validation"
+  
+  regression_failure:
+    - "Block deployment"
+    - "Report regression issues"
+    - "Fix all issues"
+    - "Re-run regression validation"
+
+# Success Metrics
+metrics:
+  validation_coverage:
+    target: "> 95% of tasks go through validation"
+    measurement: "Tasks validated / Total tasks"
+  
+  validation_effectiveness:
+    target: "> 90% catch rate for quality issues"
+    measurement: "Issues caught by validation / Total issues"
+  
+  false_positive_rate:
+    target: "< 5% false positives"
+    measurement: "False positives / Total validation failures"
+  
+  time_to_validation:
+    target: "< 60 seconds average validation time"
+    measurement: "Total validation time / Number of validations"
+
+# Integration with Context Rules
+context_integration:
+  validation_triggers:
+    - "When token usage exceeds 50% of budget"
+    - "When task complexity exceeds threshold"
+    - "When working with critical systems"
+    - "When user requests validation"
+  
+  combined_workflow:
+    - "Apply context optimization rules"
+    - "Run validation pipeline"
+    - "Optimize based on validation results"
+    - "Ensure quality while minimizing tokens"

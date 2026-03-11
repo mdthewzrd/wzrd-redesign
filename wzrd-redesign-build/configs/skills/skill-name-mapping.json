@@ -1,0 +1,97 @@
+{
+  "skillNameMapping": {
+    "chat": {
+      "expected": ["orchestration", "communication", "topic-switcher", "auto-memory"],
+      "actual": {
+        "orchestration": ["orchestration", "saga-orchestration", "workflow-orchestration-patterns"],
+        "communication": ["team-communication-protocols"],
+        "topic-switcher": ["topic-switcher"],
+        "auto-memory": ["auto-memory"]
+      },
+      "available": ["orchestration", "topic-switcher", "auto-memory"],
+      "missing": ["communication"],
+      "alternatives": {
+        "communication": "team-communication-protocols"
+      }
+    },
+    "thinker": {
+      "expected": ["planning", "architecture", "research", "validation"],
+      "actual": {
+        "planning": ["planning"],
+        "architecture": ["architecture", "architecture-patterns"],
+        "research": ["research"],
+        "validation": ["validation"]
+      },
+      "available": ["planning", "architecture", "research", "validation"],
+      "missing": [],
+      "alternatives": {}
+    },
+    "coder": {
+      "expected": ["coding", "debugging", "testing", "github"],
+      "actual": {
+        "coding": ["coding"],
+        "debugging": ["debugging"],
+        "testing": ["testing"],
+        "github": ["github"]
+      },
+      "available": ["coding", "debugging", "testing", "github"],
+      "missing": [],
+      "alternatives": {}
+    },
+    "debug": {
+      "expected": ["debugging", "system-health", "performance", "verification-before-completion"],
+      "actual": {
+        "debugging": ["debugging"],
+        "system-health": ["system-health"],
+        "performance": ["performance"],
+        "verification-before-completion": ["verification-before-completion"]
+      },
+      "available": ["debugging", "system-health", "performance", "verification-before-completion"],
+      "missing": [],
+      "alternatives": {}
+    },
+    "research": {
+      "expected": ["research", "web-search", "documentation", "data-analysis"],
+      "actual": {
+        "research": ["research"],
+        "web-search": ["web-search"],
+        "documentation": ["documentation"],
+        "data-analysis": ["data-analysis"]
+      },
+      "available": ["research", "web-search", "documentation", "data-analysis"],
+      "missing": [],
+      "alternatives": {}
+    }
+  },
+  "coreSkills": {
+    "expected": ["using-superpowers", "context", "workflow-patterns", "documentation"],
+    "actual": {
+      "using-superpowers": ["using-superpowers"],
+      "context": ["context"],
+      "workflow-patterns": ["workflow-patterns"],
+      "documentation": ["documentation"]
+    },
+    "available": ["using-superpowers", "context", "workflow-patterns", "documentation"],
+    "missing": []
+  },
+  "metadata": {
+    "created": "2025-03-07T00:00:00Z",
+    "totalSkills": 235,
+    "localSkills": 152,
+    "lockSkills": 148,
+    "overlap": 87,
+    "uniqueLocal": 65,
+    "uniqueLock": 86,
+    "issues": [
+      "Skill 'communication' not found in any source",
+      "Skill name mismatches between expected and actual",
+      "Skills come from two different sources (local + lock)"
+    ],
+    "recommendations": [
+      "Create missing 'communication' skill or use 'team-communication-protocols' as alternative",
+      "Update smart skill loader to use actual skill names",
+      "Sync local skills with skills-lock.json",
+      "Implement deferred loading for both skill sources"
+    ]
+  }
+}

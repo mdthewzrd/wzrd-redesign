@@ -1,0 +1,680 @@
+{
+  "timestamp": "2026-03-10T17:40:52.973Z",
+  "testCases": 5,
+  "results": {
+    "Simple greeting": {
+      "Old (SmartSkillLoader)": {
+        "avgDuration": 0.10091899999999931,
+        "avgSkills": 8,
+        "successRate": 1,
+        "minDuration": 0.03371299999999877,
+        "maxDuration": 0.16812499999999986,
+        "results": [
+          {
+            "duration": 0.16812499999999986,
+            "success": true,
+            "skillCount": 8,
+            "mode": "N/A",
+            "metrics": {}
+          },
+          {
+            "duration": 0.03371299999999877,
+            "success": true,
+            "skillCount": 8,
+            "mode": "N/A",
+            "metrics": {}
+          }
+        ]
+      },
+      "New (AsyncSkillLoader)": {
+        "avgDuration": 0.6296565000000012,
+        "avgSkills": 5,
+        "successRate": 1,
+        "minDuration": 0.027767000000000763,
+        "maxDuration": 1.2315460000000016,
+        "results": [
+          {
+            "duration": 1.2315460000000016,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "loadTime": 2,
+              "skillCount": 5,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.027767000000000763,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 5,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Bridge (Compatibility)": {
+        "avgDuration": 0.12154350000000136,
+        "avgSkills": 5,
+        "successRate": 1,
+        "minDuration": 0.061818999999999846,
+        "maxDuration": 0.18126800000000287,
+        "results": [
+          {
+            "duration": 0.18126800000000287,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 5,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.061818999999999846,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 5,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Full Pipeline": {
+        "avgDuration": 1000.8662895,
+        "avgSkills": 5,
+        "successRate": 1,
+        "minDuration": 1000.230239,
+        "maxDuration": 1001.50234,
+        "results": [
+          {
+            "duration": 1001.50234,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "totalTime": 1001,
+              "skillLoadTime": 0,
+              "apiCallTime": 1001,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 5,
+              "cacheHit": false
+            }
+          },
+          {
+            "duration": 1000.230239,
+            "success": true,
+            "skillCount": 5,
+            "mode": "CHAT",
+            "metrics": {
+              "totalTime": 1001,
+              "skillLoadTime": 1,
+              "apiCallTime": 1001,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 5,
+              "cacheHit": false
+            }
+          }
+        ]
+      }
+    },
+    "Coding task": {
+      "Old (SmartSkillLoader)": {
+        "avgDuration": 0.16216400000007525,
+        "avgSkills": 13,
+        "successRate": 1,
+        "minDuration": 0.07948400000009315,
+        "maxDuration": 0.24484400000005735,
+        "results": [
+          {
+            "duration": 0.24484400000005735,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          },
+          {
+            "duration": 0.07948400000009315,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          }
+        ]
+      },
+      "New (AsyncSkillLoader)": {
+        "avgDuration": 1.3754010000000108,
+        "avgSkills": 6.5,
+        "successRate": 1,
+        "minDuration": 0.22233800000003612,
+        "maxDuration": 2.5284639999999854,
+        "results": [
+          {
+            "duration": 2.5284639999999854,
+            "success": true,
+            "skillCount": 7,
+            "mode": "CODER",
+            "metrics": {
+              "loadTime": 3,
+              "skillCount": 7,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.22233800000003612,
+            "success": true,
+            "skillCount": 6,
+            "mode": "CODER",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Bridge (Compatibility)": {
+        "avgDuration": 0.5558384999999362,
+        "avgSkills": 6.5,
+        "successRate": 1,
+        "minDuration": 0.3304939999998169,
+        "maxDuration": 0.7811830000000555,
+        "results": [
+          {
+            "duration": 0.7811830000000555,
+            "success": true,
+            "skillCount": 7,
+            "mode": "CODER",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 7,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.3304939999998169,
+            "success": true,
+            "skillCount": 6,
+            "mode": "CODER",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Full Pipeline": {
+        "avgDuration": 1000.3539514999999,
+        "avgSkills": 6.5,
+        "successRate": 1,
+        "minDuration": 998.700998,
+        "maxDuration": 1002.0069049999997,
+        "results": [
+          {
+            "duration": 998.700998,
+            "success": true,
+            "skillCount": 7,
+            "mode": "CODER",
+            "metrics": {
+              "totalTime": 999,
+              "skillLoadTime": 0,
+              "apiCallTime": 999,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 7,
+              "cacheHit": false
+            }
+          },
+          {
+            "duration": 1002.0069049999997,
+            "success": true,
+            "skillCount": 6,
+            "mode": "CODER",
+            "metrics": {
+              "totalTime": 1002,
+              "skillLoadTime": 1,
+              "apiCallTime": 1002,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 6,
+              "cacheHit": false
+            }
+          }
+        ]
+      }
+    },
+    "Design task": {
+      "Old (SmartSkillLoader)": {
+        "avgDuration": 0.1443504999997458,
+        "avgSkills": 13,
+        "successRate": 1,
+        "minDuration": 0.11487399999987247,
+        "maxDuration": 0.17382699999961915,
+        "results": [
+          {
+            "duration": 0.11487399999987247,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          },
+          {
+            "duration": 0.17382699999961915,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          }
+        ]
+      },
+      "New (AsyncSkillLoader)": {
+        "avgDuration": 0.9777670000000853,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 0.2869270000001052,
+        "maxDuration": 1.6686070000000655,
+        "results": [
+          {
+            "duration": 1.6686070000000655,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "loadTime": 2,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.2869270000001052,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Bridge (Compatibility)": {
+        "avgDuration": 0.3592529999998533,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 0.15102799999976924,
+        "maxDuration": 0.5674779999999373,
+        "results": [
+          {
+            "duration": 0.5674779999999373,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.15102799999976924,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Full Pipeline": {
+        "avgDuration": 999.6403860000003,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 999.6199700000002,
+        "maxDuration": 999.6608020000003,
+        "results": [
+          {
+            "duration": 999.6199700000002,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "totalTime": 999,
+              "skillLoadTime": 0,
+              "apiCallTime": 999,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 6,
+              "cacheHit": false
+            }
+          },
+          {
+            "duration": 999.6608020000003,
+            "success": true,
+            "skillCount": 6,
+            "mode": "THINKER",
+            "metrics": {
+              "totalTime": 1000,
+              "skillLoadTime": 1,
+              "apiCallTime": 1000,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 6,
+              "cacheHit": false
+            }
+          }
+        ]
+      }
+    },
+    "Research task": {
+      "Old (SmartSkillLoader)": {
+        "avgDuration": 0.09307099999978163,
+        "avgSkills": 11,
+        "successRate": 1,
+        "minDuration": 0.05796999999984109,
+        "maxDuration": 0.12817199999972217,
+        "results": [
+          {
+            "duration": 0.12817199999972217,
+            "success": true,
+            "skillCount": 11,
+            "mode": "N/A",
+            "metrics": {}
+          },
+          {
+            "duration": 0.05796999999984109,
+            "success": true,
+            "skillCount": 11,
+            "mode": "N/A",
+            "metrics": {}
+          }
+        ]
+      },
+      "New (AsyncSkillLoader)": {
+        "avgDuration": 0.840078000000176,
+        "avgSkills": 4,
+        "successRate": 1,
+        "minDuration": 0.3409560000000056,
+        "maxDuration": 1.3392000000003463,
+        "results": [
+          {
+            "duration": 1.3392000000003463,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 4,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.3409560000000056,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 4,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Bridge (Compatibility)": {
+        "avgDuration": 0.3554625000001579,
+        "avgSkills": 4,
+        "successRate": 1,
+        "minDuration": 0.187354000000596,
+        "maxDuration": 0.5235709999997198,
+        "results": [
+          {
+            "duration": 0.5235709999997198,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 4,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.187354000000596,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 4,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Full Pipeline": {
+        "avgDuration": 1000.6330659999999,
+        "avgSkills": 4,
+        "successRate": 1,
+        "minDuration": 1000.12338,
+        "maxDuration": 1001.1427519999997,
+        "results": [
+          {
+            "duration": 1000.12338,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "totalTime": 1000,
+              "skillLoadTime": 0,
+              "apiCallTime": 1000,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 4,
+              "cacheHit": false
+            }
+          },
+          {
+            "duration": 1001.1427519999997,
+            "success": true,
+            "skillCount": 4,
+            "mode": "RESEARCH",
+            "metrics": {
+              "totalTime": 1001,
+              "skillLoadTime": 1,
+              "apiCallTime": 1001,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 4,
+              "cacheHit": false
+            }
+          }
+        ]
+      }
+    },
+    "Debug task": {
+      "Old (SmartSkillLoader)": {
+        "avgDuration": 0.09132300000010218,
+        "avgSkills": 13,
+        "successRate": 1,
+        "minDuration": 0.07146000000011554,
+        "maxDuration": 0.11118600000008882,
+        "results": [
+          {
+            "duration": 0.11118600000008882,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          },
+          {
+            "duration": 0.07146000000011554,
+            "success": true,
+            "skillCount": 13,
+            "mode": "N/A",
+            "metrics": {}
+          }
+        ]
+      },
+      "New (AsyncSkillLoader)": {
+        "avgDuration": 0.7679690000004484,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 0.05461900000045716,
+        "maxDuration": 1.4813190000004397,
+        "results": [
+          {
+            "duration": 1.4813190000004397,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.05461900000045716,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "loadTime": 1,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Bridge (Compatibility)": {
+        "avgDuration": 0.40860849999990023,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 0.06628000000000611,
+        "maxDuration": 0.7509369999997944,
+        "results": [
+          {
+            "duration": 0.7509369999997944,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          },
+          {
+            "duration": 0.06628000000000611,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "loadTime": 0,
+              "skillCount": 6,
+              "cacheHitRate": 0
+            }
+          }
+        ]
+      },
+      "Full Pipeline": {
+        "avgDuration": 1000.4899560000003,
+        "avgSkills": 6,
+        "successRate": 1,
+        "minDuration": 999.9978370000008,
+        "maxDuration": 1000.9820749999999,
+        "results": [
+          {
+            "duration": 999.9978370000008,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "totalTime": 1000,
+              "skillLoadTime": 1,
+              "apiCallTime": 1000,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 6,
+              "cacheHit": false
+            }
+          },
+          {
+            "duration": 1000.9820749999999,
+            "success": true,
+            "skillCount": 6,
+            "mode": "DEBUG",
+            "metrics": {
+              "totalTime": 1001,
+              "skillLoadTime": 1,
+              "apiCallTime": 1001,
+              "modeDetectionTime": 0,
+              "responseProcessingTime": 0,
+              "immediateResponseSent": false,
+              "skillsLoaded": 6,
+              "cacheHit": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "summary": {
+    "loaders": {
+      "Old (SmartSkillLoader)": {
+        "avgTime": 0.11836549999994084,
+        "avgSkills": 11.6,
+        "testCount": 5
+      },
+      "New (AsyncSkillLoader)": {
+        "avgTime": 0.9181743000001443,
+        "avgSkills": 5.5,
+        "testCount": 5
+      },
+      "Bridge (Compatibility)": {
+        "avgTime": 0.3601411999999698,
+        "avgSkills": 5.5,
+        "testCount": 5
+      },
+      "Full Pipeline": {
+        "avgTime": 1000.3967298,
+        "avgSkills": 5.5,
+        "testCount": 5
+      }
+    },
+    "overall": {
+      "testCount": 5,
+      "totalImprovement": "-675.7"
+    }
+  },
+  "loaders": [
+    "Old (SmartSkillLoader)",
+    "New (AsyncSkillLoader)",
+    "Bridge (Compatibility)",
+    "Full Pipeline"
+  ]
+}

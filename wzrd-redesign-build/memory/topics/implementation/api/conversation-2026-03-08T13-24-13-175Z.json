@@ -1,0 +1,23 @@
+{
+  "metadata": {
+    "capturedAt": "2026-03-08T13:24:13.175Z",
+    "topic": "implementation/api",
+    "source": "wzrd-query",
+    "participants": [
+      "user",
+      "remi"
+    ],
+    "duration": 0,
+    "tokenEstimate": 35
+  },
+  "summary": "How should I design this API? (Mode: thinker, Starting query)",
+  "keyPoints": [],
+  "rawEntry": {
+    "conversation": "How should I design this API? (Mode: thinker, Starting query)",
+    "source": "wzrd-query",
+    "participants": [
+      "user",
+      "remi"
+    ]
+  }
+}

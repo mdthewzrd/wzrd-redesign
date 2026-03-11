@@ -1,0 +1,58 @@
+{
+  "budget": {
+    "daily_limit": 1.00,
+    "monthly_limit": 30.00,
+    "currency": "USD"
+  },
+  "models": {
+    "glm-4.7-flash": {
+      "input_cost_per_1k": 0.0008,
+      "output_cost_per_1k": 0.001,
+      "provider": "glm",
+      "context_window": 128000
+    },
+    "deepseek-v3.2": {
+      "input_cost_per_1k": 0.002,
+      "output_cost_per_1k": 0.006,
+      "provider": "openrouter",
+      "context_window": 128000
+    },
+    "qwen2.5-coder-32b": {
+      "input_cost_per_1k": 0.0024,
+      "output_cost_per_1k": 0.0072,
+      "provider": "openrouter",
+      "context_window": 128000
+    }
+  },
+  "personas": {
+    "remi-base": {
+      "model": "glm-4.7-flash",
+      "cost_multiplier": 1.0,
+      "daily_allocation": 0.50,
+      "expected_usage": 0.55
+    },
+    "coder-pro": {
+      "model": "qwen2.5-coder-32b",
+      "cost_multiplier": 3.0,
+      "daily_allocation": 0.25,
+      "expected_usage": 0.25
+    },
+    "research-deep": {
+      "model": "deepseek-v3.2",
+      "cost_multiplier": 2.5,
+      "daily_allocation": 0.25,
+      "expected_usage": 0.20
+    }
+  },
+  "cost_guards": {
+    "max_single_interaction": 0.05,
+    "daily_warning_threshold": 0.80,
+    "fallback_model": "glm-4.7-flash",
+    "auto_throttle_enabled": true
+  },
+  "tracking": {
+    "log_file": "/home/mdwzrd/wzrd-redesign/logs/cost.log",
+    "daily_summary": "/home/mdwzrd/wzrd-redesign/logs/daily-summary.json",
+    "retention_days": 30
+  }
+}

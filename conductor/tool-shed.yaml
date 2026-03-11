@@ -1,0 +1,377 @@
+# WZRD.dev Tool Shed Meta-Layer
+# Based on Stripe Minions "Tool Shed" Component
+
+version: "1.0"
+description: "Skill registry with dependency resolution and recommendation engine"
+
+# Skill Categories
+categories:
+  
+  development:
+    description: "Software development and coding skills"
+    skills:
+      - "coding"
+      - "debugging"
+      - "testing"
+      - "git"
+      - "file-ops"
+      - "documentation"
+      - "python-code-style"
+      - "python-testing-patterns"
+      - "javascript-testing-patterns"
+      - "typescript-advanced-types"
+      - "modern-javascript-patterns"
+      - "react-ui-master"
+      - "nextjs-app-router-patterns"
+      - "react-native-architecture"
+      - "react-native-design"
+      - "dotnet-backend-patterns"
+      - "go-concurrency-patterns"
+      - "rust-async-patterns"
+      - "unity-ecs-patterns"
+      - "godot-gdscript-patterns"
+      - "solidity-security"
+  
+  architecture:
+    description: "System design and architecture skills"
+    skills:
+      - "architecture"
+      - "planning"
+      - "architecture-patterns"
+      - "architecture-decision-records"
+      - "microservices-patterns"
+      - "api-design-principles"
+      - "cqrs-implementation"
+      - "saga-orchestration"
+      - "event-store-design"
+      - "projection-patterns"
+      - "workflow-orchestration-patterns"
+      - "database-migration"
+      - "postgresql-table-design"
+      - "sql-optimization-patterns"
+  
+  infrastructure:
+    description: "Infrastructure and operations skills"
+    skills:
+      - "cli"
+      - "bash-defensive-patterns"
+      - "bats-testing-patterns"
+      - "shellcheck-configuration"
+      - "docker"
+      - "k8s-manifest-generator"
+      - "terraform-module-library"
+      - "helm-chart-scaffolding"
+      - "istio-traffic-management"
+      - "linkerd-patterns"
+      - "service-mesh-observability"
+      - "multi-cloud-architecture"
+      - "hybrid-cloud-networking"
+      - "gitlab-ci-patterns"
+      - "github-actions-templates"
+      - "airflow-dag-patterns"
+      - "ml-pipeline-workflow"
+      - "spark-optimization"
+  
+  security:
+    description: "Security and compliance skills"
+    skills:
+      - "security"
+      - "stride-analysis-patterns"
+      - "attack-tree-construction"
+      - "threat-mitigation-mapping"
+      - "security-requirement-extraction"
+      - "sast-configuration"
+      - "mtls-configuration"
+      - "k8s-security-policies"
+      - "anti-reversing-techniques"
+      - "binary-analysis-patterns"
+      - "memory-forensics"
+      - "protocol-reverse-engineering"
+      - "pci-compliance"
+      - "gdpr-data-handling"
+      - "secrets-management"
+  
+  ai_ml:
+    description: "AI and machine learning skills"
+    skills:
+      - "llm-evaluation"
+      - "prompt-engineering-patterns"
+      - "rag-implementation"
+      - "embedding-strategies"
+      - "similarity-search-patterns"
+      - "vector-index-tuning"
+      - "hybrid-search-implementation"
+      - "langchain-architecture"
+  
+  business:
+    description: "Business and product development skills"
+    skills:
+      - "competitive-landscape"
+      - "market-sizing-analysis"
+      - "startup-metrics-framework"
+      - "startup-financial-modeling"
+      - "team-composition-analysis"
+      - "kpi-dashboard-design"
+      - "billing-automation"
+      - "stripe-integration"
+      - "paypal-integration"
+      - "defi-protocol-templates"
+      - "nft-standards"
+      - "backtesting-frameworks"
+      - "risk-metrics-calculation"
+  
+  ui_ux:
+    description: "User interface and experience skills"
+    skills:
+      - "ui-ux-master"
+      - "visual-design-foundations"
+      - "interaction-design"
+      - "responsive-design"
+      - "web-design-guidelines"
+      - "accessibility-compliance"
+      - "screen-reader-testing"
+      - "wcag-audit-patterns"
+      - "mobile-ios-design"
+      - "mobile-android-design"
+      - "design-system-patterns"
+      - "tailwind-design-system"
+      - "web-component-design"
+      - "shadcn-generator"
+      - "theme-generator"
+  
+  data:
+    description: "Data engineering and analytics skills"
+    skills:
+      - "data-analysis"
+      - "data-formats"
+      - "data-quality-frameworks"
+      - "data-storytelling"
+      - "dbt-transformation-patterns"
+
+# Skill Dependencies
+dependencies:
+  
+  # Core dependencies (always required)
+  core:
+    skills: ["context-driven-development", "gold-standard"]
+    description: "Required for all framework operations"
+  
+  # Mode-specific dependencies
+  by_mode:
+    coding:
+      required: ["coding", "testing", "git"]
+      recommended: ["python-code-style", "debugging-strategies"]
+    
+    debugging:
+      required: ["debugging", "testing"]
+      recommended: ["systematic-debugging", "parallel-debugging"]
+    
+    research:
+      required: ["research", "documentation"]
+      recommended: ["web-search", "github"]
+    
+    planning:
+      required: ["planning", "architecture"]
+      recommended: ["architecture-patterns", "risk-metrics-calculation"]
+    
+    thinker:
+      required: ["brainstorming", "context"]
+      recommended: ["competitive-landscape", "market-sizing-analysis"]
+  
+  # Blueprint dependencies
+  by_blueprint:
+    feature_implementation:
+      required: ["coding", "testing", "git", "file-ops"]
+      recommended: ["python-testing-patterns", "code-review-excellence", "verification-before-completion"]
+    
+    bug_fixing:
+      required: ["debugging", "testing", "git"]
+      recommended: ["systematic-debugging", "test-driven-development", "regression-testing"]
+    
+    research:
+      required: ["research", "documentation", "web-search"]
+      recommended: ["competitive-landscape", "market-sizing-analysis", "data-storytelling"]
+    
+    planning:
+      required: ["planning", "architecture", "documentation"]
+      recommended: ["architecture-patterns", "risk-assessment", "cost-optimization"]
+
+# Skill Recommendations
+recommendations:
+  
+  # By task type
+  by_task:
+    web_development:
+      skills: ["react-ui-master", "nextjs-app-router-patterns", "tailwind-design-system", "shadcn-generator", "vercel-react-best-practices", "vercel-composition-patterns"]
+      description: "Modern web development with React and Next.js"
+    
+    api_development:
+      skills: ["api-design-principles", "fastapi-templates", "nodejs-backend-patterns", "dotnet-backend-patterns", "go-concurrency-patterns", "error-handling-patterns"]
+      description: "API design and backend development"
+    
+    mobile_development:
+      skills: ["react-native-architecture", "react-native-design", "mobile-ios-design", "mobile-android-design", "vercel-react-native-skills"]
+      description: "Cross-platform mobile development"
+    
+    data_engineering:
+      skills: ["data-quality-frameworks", "dbt-transformation-patterns", "airflow-dag-patterns", "spark-optimization", "sql-optimization-patterns"]
+      description: "Data pipelines and analytics"
+    
+    devops_infrastructure:
+      skills: ["docker", "k8s-manifest-generator", "terraform-module-library", "github-actions-templates", "gitlab-ci-patterns", "prometheus-configuration", "grafana-dashboards"]
+      description: "Infrastructure and operations"
+    
+    security_compliance:
+      skills: ["security", "stride-analysis-patterns", "sast-configuration", "pci-compliance", "gdpr-data-handling", "secrets-management", "mtls-configuration"]
+      description: "Security and compliance implementation"
+    
+    ai_ml_development:
+      skills: ["llm-evaluation", "rag-implementation", "langchain-architecture", "prompt-engineering-patterns", "embedding-strategies", "vector-index-tuning"]
+      description: "AI/ML application development"
+  
+  # By complexity
+  by_complexity:
+    simple:
+      max_skills: 3
+      recommendations: ["coding", "debugging", "testing"]
+    
+    medium:
+      max_skills: 8
+      recommendations: ["coding", "debugging", "testing", "git", "file-ops", "documentation", "context", "validation"]
+    
+    complex:
+      max_skills: 15
+      recommendations: ["coding", "debugging", "testing", "git", "file-ops", "documentation", "context", "validation", "architecture", "planning", "research", "security", "performance", "automation", "monitoring"]
+  
+  # By user role
+  by_role:
+    developer:
+      skills: ["coding", "debugging", "testing", "git", "python-code-style", "test-driven-development", "code-review-excellence"]
+    
+    architect:
+      skills: ["architecture", "planning", "microservices-patterns", "api-design-principles", "database-migration", "performance"]
+    
+    researcher:
+      skills: ["research", "web-search", "competitive-landscape", "market-sizing-analysis", "data-storytelling", "documentation"]
+    
+    operator:
+      skills: ["cli", "docker", "k8s-manifest-generator", "github-actions-templates", "prometheus-configuration", "grafana-dashboards", "system-health"]
+    
+    security_engineer:
+      skills: ["security", "stride-analysis-patterns", "sast-configuration", "mtls-configuration", "secrets-management", "anti-reversing-techniques"]
+
+# Skill Compatibility Matrix
+compatibility:
+  
+  # Compatible skill pairs (work well together)
+  compatible_pairs:
+    - ["coding", "testing"]
+    - ["debugging", "systematic-debugging"]
+    - ["research", "web-search"]
+    - ["planning", "architecture"]
+    - ["docker", "k8s-manifest-generator"]
+    - ["react-ui-master", "tailwind-design-system"]
+    - ["fastapi-templates", "api-design-principles"]
+    - ["postgresql-table-design", "sql-optimization-patterns"]
+  
+  # Incompatible skill pairs (conflict or redundancy)
+  incompatible_pairs:
+    - ["test-driven-development", "verification-before-completion"]  # Overlapping validation
+    - ["systematic-debugging", "parallel-debugging"]  # Different debugging approaches
+    - ["bash-defensive-patterns", "shellcheck-configuration"]  # Overlapping shell checking
+  
+  # Required ordering (some skills must load before others)
+  load_order:
+    - "context-driven-development"  # Must load first
+    - "gold-standard"  # Must load early
+    - "coding"  # Can load after context
+    - "testing"  # Should load after coding
+    - "debugging"  # Should load after testing
+
+# Skill Usage Analytics (placeholder - would be populated by actual usage)
+analytics:
+  
+  most_used_skills:
+    - "coding"
+    - "debugging"
+    - "git"
+    - "file-ops"
+    - "context"
+  
+  least_used_skills:
+    - "anti-reversing-techniques"
+    - "binary-analysis-patterns"
+    - "memory-forensics"
+    - "protocol-reverse-engineering"
+    - "defi-protocol-templates"
+  
+  skill_coverage:
+    development: 85%
+    architecture: 70%
+    infrastructure: 65%
+    security: 60%
+    ai_ml: 55%
+    business: 50%
+    ui_ux: 75%
+    data: 60%
+
+# Integration Configuration
+integration:
+  
+  with_blueprint_engine:
+    - "Auto-select skills based on blueprint type"
+    - "Load skills in correct dependency order"
+    - "Verify skill availability before blueprint execution"
+    - "Log skill usage during blueprint execution"
+  
+  with_context_rules:
+    - "Adjust skill recommendations based on context optimization mode"
+    - "Limit skill loading based on token budget"
+    - "Optimize skill selection for current task type"
+  
+  with_validation_pipeline:
+    - "Validate skill compatibility before loading"
+    - "Check skill dependencies are met"
+    - "Report skill loading failures in validation"
+  
+  with_project_agents:
+    - "Select project-specific skill subsets"
+    - "Isolate skill loading per project"
+    - "Track skill usage per project"
+
+# Maintenance Rules
+maintenance:
+  
+  skill_updates:
+    check_frequency: "weekly"
+    update_strategy: "incremental"
+    backward_compatibility: "required"
+  
+  dependency_checks:
+    frequency: "daily"
+    validation: "automated"
+    failure_action: "alert_and_downgrade"
+  
+  usage_tracking:
+    enabled: true
+    retention: "90 days"
+    analytics: "weekly_reports"
+
+# Success Metrics
+metrics:
+  
+  skill_discovery_rate:
+    target: "> 80% of relevant skills discovered for tasks"
+    measurement: "Relevant skills used / Available relevant skills"
+  
+  dependency_resolution_rate:
+    target: "> 95% dependency resolution success"
+    measurement: "Successful skill loads / Total skill load attempts"
+  
+  skill_utilization_rate:
+    target: "> 60% of skills utilized at least monthly"
+    measurement: "Skills used monthly / Total skills"
+  
+  recommendation_accuracy:
+    target: "> 85% recommendation relevance"
+    measurement: "User-accepted recommendations / Total recommendations"

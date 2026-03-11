@@ -1,0 +1,48 @@
+models:
+  glm-4.7-flash:
+    provider: openrouter
+    cost_per_1k_tokens: 0.0008
+    avg_response_time: 1.5
+    capabilities: [general, planning, fast]
+    rate_limit: 1000
+    fallback: glm-4.7
+    max_daily_budget: 0.50
+
+  deepseek-v3.2:
+    provider: openrouter
+    cost_per_1k_tokens: 0.002
+    avg_response_time: 5.0
+    capabilities: [research, analysis, complex]
+    rate_limit: 500
+    fallback: glm-4.7-flash
+    max_daily_budget: 0.25
+
+  qwen3-coder-30b:
+    provider: openrouter
+    cost_per_1k_tokens: 0.0024
+    avg_response_time: 4.0
+    capabilities: [coding, technical, implementation]
+    rate_limit: 300
+    fallback: glm-4.7-flash
+    max_daily_budget: 0.25
+
+routing_rules:
+  - pattern: ".*code.*|.*implement.*|.*fix.*"
+    model: qwen3-coder-30b
+    priority: high
+
+  - pattern: ".*research.*|.*analyze.*|.*complex.*"
+    model: deepseek-v3.2
+    priority: medium
+
+  - pattern: ".*plan.*|.*design.*|.*simple.*"
+    model: glm-4.7-flash
+    priority: low
+
+  default: glm-4.7-flash
+
+cost_limits:
+  daily_token_limit: 30000
+  warning_threshold: 80
+  circuit_breaker: 95
+  reset_time: "00:00"

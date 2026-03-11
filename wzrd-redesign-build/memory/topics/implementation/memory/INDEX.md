@@ -1,0 +1,3 @@
+{"file":"conversation-2026-03-06T02-31-02-159Z.json","summary":"test memory integration (Mode: thinker)","captured":"2026-03-06T02:31:02.160Z"}
+{"file":"conversation-2026-03-06T02-26-29-374Z.json","summary":"test memory search (Mode: thinker)","captured":"2026-03-06T02:26:29.374Z"}
+{"file":"conversation-2026-03-06T02-19-01-195Z.json","summary":"Test conversation about memory system implementation.","captured":"2026-03-06T02:19:01.195Z"}

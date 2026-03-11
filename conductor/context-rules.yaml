@@ -1,0 +1,228 @@
+# WZRD.dev Context Optimization Rules
+# Based on Stripe Minions "Rules File" Component
+
+version: "1.0"
+description: "Token optimization rules per task type to eliminate wasted context"
+
+# Global Settings
+global:
+  max_context_tokens: 8000
+  min_retention_tokens: 1000
+  optimization_strategy: "priority-based"
+  
+# Mode-Specific Rules
+rules:
+  
+  # CODING Mode Rules
+  coding:
+    description: "Implementation tasks requiring code generation"
+    priority_order:
+      - "code_blocks"
+      - "function_signatures"
+      - "import_statements"
+      - "type_definitions"
+      - "configuration"
+      - "comments"
+      - "explanations"
+    
+    token_allocation:
+      code_content: 70%
+      structure: 20%
+      explanation: 10%
+    
+    pruning_strategy:
+      - "Remove duplicate code examples"
+      - "Prune lengthy commentary"
+      - "Keep only latest function version"
+      - "Preserve error patterns for learning"
+    
+    validation:
+      - "Must contain executable code"
+      - "Function signatures must be complete"
+      - "Imports must be valid"
+  
+  # DEBUGGING Mode Rules  
+  debugging:
+    description: "Error analysis and problem solving"
+    priority_order:
+      - "error_messages"
+      - "stack_traces"
+      - "problematic_code"
+      - "system_state"
+      - "previous_attempts"
+      - "working_code"
+    
+    token_allocation:
+      problem: 60%
+      analysis: 30%
+      solution: 10%
+    
+    pruning_strategy:
+      - "Keep error chain (root cause → symptom)"
+      - "Remove successful code sections"
+      - "Preserve system state snapshot"
+      - "Keep failed attempts for pattern recognition"
+    
+    validation:
+      - "Must include error message"
+      - "Problem must be clearly defined"
+      - "Must show attempted solutions"
+  
+  # RESEARCH Mode Rules
+  research:
+    description: "Information gathering and analysis"
+    priority_order:
+      - "source_material"
+      - "citations"
+      - "multiple_perspectives"
+      - "analysis"
+      - "synthesis"
+      - "conclusions"
+    
+    token_allocation:
+      sources: 40%
+      analysis: 30%
+      synthesis: 20%
+      conclusions: 10%
+    
+    pruning_strategy:
+      - "Keep diverse sources"
+      - "Remove redundant information"
+      - "Preserve contrasting viewpoints"
+      - "Keep citation metadata"
+    
+    validation:
+      - "Must cite sources"
+      - "Must show multiple perspectives"
+      - "Analysis must be grounded in sources"
+  
+  # PLANNING Mode Rules
+  planning:
+    description: "Architecture and system design"
+    priority_order:
+      - "structure"
+      - "dependencies"
+      - "tradeoffs"
+      - "constraints"
+      - "implementation_notes"
+      - "details"
+    
+    token_allocation:
+      structure: 50%
+      dependencies: 30%
+      validation: 20%
+    
+    pruning_strategy:
+      - "Keep architectural decisions"
+      - "Remove implementation details"
+      - "Preserve dependency graph"
+      - "Keep constraint definitions"
+    
+    validation:
+      - "Must show structure"
+      - "Must identify dependencies"
+      - "Must consider tradeoffs"
+  
+  # THINKER Mode Rules
+  thinker:
+    description: "Analysis and decision making"
+    priority_order:
+      - "analysis"
+      - "options"
+      - "criteria"
+      - "recommendations"
+      - "background"
+      - "details"
+    
+    token_allocation:
+      analysis: 40%
+      options: 30%
+      recommendations: 20%
+      background: 10%
+    
+    pruning_strategy:
+      - "Keep decision criteria"
+      - "Remove tangential information"
+      - "Preserve option comparisons"
+      - "Keep recommendation rationale"
+    
+    validation:
+      - "Must show multiple options"
+      - "Must define evaluation criteria"
+      - "Must provide reasoned recommendation"
+
+# Context Management Rules
+context_management:
+  distill_threshold: 2000  # Tokens before distillation recommended
+  prune_threshold: 500    # Tokens before pruning recommended
+  
+  always_keep:
+    - "architecture_decisions"
+    - "api_contracts"
+    - "security_constraints"
+    - "critical_dependencies"
+  
+  always_prune:
+    - "failed_approaches"
+    - "redundant_information"
+    - "temporary_exploration"
+    - "superseded_content"
+  
+  distill_patterns:
+    coding: "Extract working patterns, discard exploration"
+    debugging: "Extract root cause patterns, discard symptoms"
+    research: "Extract key insights, discard raw sources"
+    planning: "Extract architectural patterns, discard details"
+
+# Token Budget Enforcement
+token_budgets:
+  small_task:
+    max_tokens: 5000
+    categories:
+      analysis: 1000
+      implementation: 3000
+      validation: 1000
+  
+  medium_task:
+    max_tokens: 15000
+    categories:
+      analysis: 3000
+      implementation: 10000
+      validation: 2000
+  
+  large_task:
+    max_tokens: 30000
+    categories:
+      analysis: 6000
+      implementation: 20000
+      validation: 4000
+
+# Integration Rules
+integration:
+  mode_detection:
+    keywords:
+      coding: ["write", "code", "function", "implement", "create"]
+      debugging: ["error", "bug", "fix", "broken", "not working"]
+      research: ["research", "analyze", "compare", "investigate"]
+      planning: ["design", "plan", "architecture", "structure"]
+      thinker: ["how should", "what approach", "analyze", "decide"]
+  
+  auto_application:
+    - "Detect mode from user request"
+    - "Apply corresponding rules automatically"
+    - "Adjust context management strategy"
+    - "Enforce token budgets"
+
+# Success Metrics
+metrics:
+  token_efficiency:
+    target: "> 80% useful content"
+    measurement: "Useful tokens / Total tokens"
+  
+  context_relevance:
+    target: "> 90% relevant to current task"
+    measurement: "Relevant content / Total content"
+  
+  quality_score:
+    target: "> 4.0 / 5.0"
+    measurement: "User satisfaction rating"

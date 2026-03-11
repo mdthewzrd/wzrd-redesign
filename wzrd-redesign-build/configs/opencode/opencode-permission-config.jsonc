@@ -1,0 +1,65 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    // Global defaults - allow everything for wzrd-redesign
+    "*": "allow",
+    
+    // Bash permissions - allow all commands in this project
+    "bash": {
+      "*": "allow"
+    },
+    
+    // File operations - allow everything
+    "read": {
+      "*": "allow"
+    },
+    "edit": {
+      "*": "allow"
+    },
+    "write": {
+      "*": "allow"
+    },
+    "glob": {
+      "*": "allow"
+    },
+    "grep": {
+      "*": "allow"
+    },
+    "list": {
+      "*": "allow"
+    },
+    
+    // Other tools
+    "task": "allow",
+    "skill": "allow",
+    "todoread": "allow",
+    "todowrite": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "codesearch": "allow",
+    
+    // External directory access - allow access to WZRD ecosystem
+    "external_directory": {
+      "/home/mdwzrd/wzrd-redesign/**": "allow",
+      "/home/mdwzrd/wzrd.dev/**": "allow",
+      "~/.claude/**": "allow",
+      "~/.opencode/**": "allow"
+    },
+    
+    // Safety guardrails - keep doom loop protection
+    "doom_loop": "ask"
+  },
+  
+  // Agent-specific overrides
+  "agent": {
+    "remi": {
+      "permission": {
+        // Remi gets full permissions
+        "*": "allow",
+        "bash": {
+          "*": "allow"
+        }
+      }
+    }
+  }
+}

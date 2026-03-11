@@ -1,0 +1,96 @@
+#!/bin/bash
+# 🚀 WZRD Hot Wrapper - Uses running OpenCode server for instant commands
+# Sets OPENCODE_URL environment variable to connect to running server
+
+set -e
+
+# Configuration
+SERVER_URL="http://mdwzrd:8080"
+CACHE_DIR="$HOME/.cache/wzrd-hot"
+PERF_LOG="$CACHE_DIR/performance.log"
+
+# Create cache directory
+mkdir -p "$CACHE_DIR"
+
+echo "🚀 WZRD Hot Wrapper"
+echo "=================="
+
+# Check if server is running
+echo "🔍 Checking server..."
+if curl -s "$SERVER_URL/health" >/dev/null 2>&1; then
+    echo "✅ Server found at $SERVER_URL"
+else
+    echo "⚠️  Server may be running but /health endpoint not available"
+    echo "Checking process..."
+    if ps aux | grep -q "opencode serve.*--port 8080"; then
+        echo "✅ OpenCode server process is running"
+    else
+        echo "❌ No OpenCode server found"
+        echo ""
+        echo "Start server:"
+        echo "  ./wzrd-hot-server"
+        exit 1
+    fi
+fi
+
+# Extract command
+if [ $# -eq 0 ]; then
+    echo ""
+    echo "Usage: ./wzrd-hot-wrapper [open-code-command]"
+    echo ""
+    echo "Example:"
+    echo "  ./wzrd-hot-wrapper run 'echo test'"
+    echo "  ./wzrd-hot-wrapper --model opencode/big-pickle run 'status'"
+    echo ""
+    echo "This sets OPENCODE_URL=$SERVER_URL for instant connections"
+    exit 0
+fi
+
+# Performance measurement
+START_TIME=$(date +%s%N)
+
+# Execute with OPENCODE_URL set
+echo ""
+echo "⚡ Executing with hot connection..."
+echo "Command: opencode $*"
+echo "Server: $SERVER_URL"
+echo ""
+
+# Set environment variable and execute
+export OPENCODE_URL="$SERVER_URL"
+OPENCODE_OUTPUT=$(timeout 10 opencode "$@" 2>&1)
+OPENCODE_EXIT=$?
+
+END_TIME=$(date +%s%N)
+RUNTIME_MS=$(( (END_TIME - START_TIME) / 1000000 ))
+
+# Display output
+echo "📋 Output (first 20 lines):"
+echo "$OPENCODE_OUTPUT" | head -20
+
+# Performance logging
+echo "$(date '+%Y-%m-%d %H:%M:%S'),$RUNTIME_MS,$*" >> "$PERF_LOG"
+
+echo ""
+echo "📊 Performance Summary:"
+echo "  Command: opencode $*"
+echo "  Hot connection: ${RUNTIME_MS}ms"
+echo "  Cold start baseline: ~13,400ms"
+
+if [ "$RUNTIME_MS" -gt 0 ]; then
+    SPEEDUP=$(echo "scale=0; 13400 / $RUNTIME_MS" | bc)
+    echo "  Speedup: ~${SPEEDUP}× faster!"
+    
+    if [ "$SPEEDUP" -gt 10 ]; then
+        echo "  🎉 SIGNIFICANT SPEEDUP ACHIEVED!"
+    fi
+fi
+
+echo ""
+echo "💡 Tips:"
+echo "1. Server is running at $SERVER_URL"
+echo "2. Use OPENCODE_URL env var for other scripts"
+echo "3. Monitor performance: cat $PERF_LOG"
+echo "4. Stop server: kill PID (see ./wzrd-hot-server)"
+
+exit $OPENCODE_EXIT

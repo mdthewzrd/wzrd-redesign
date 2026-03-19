@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Browser Console</title>
+</head>
+<body>
+    <h1>Test Browser Console</h1>
+    <p>Open DevTools (F12) and check Console tab for errors.</p>
+    
+    <script>
+        console.log('Testing console from test page');
+        
+        // Test API connectivity
+        fetch('/api/health')
+            .then(response => response.json())
+            .then(data => console.log('API health:', data))
+            .catch(error => console.error('API fetch error:', error));
+            
+        // Test Gateway V2 connectivity  
+        fetch('/api/gateway/v2/health')
+            .then(response => response.json())
+            .then(data => console.log('Gateway V2 health:', data))
+            .catch(error => console.error('Gateway fetch error:', error));
+    </script>
+</body>
+</html>

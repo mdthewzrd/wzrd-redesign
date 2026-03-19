@@ -1,0 +1,21 @@
+{
+  "name": "wzrd-redesign-gateway",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "start-http": "node src/http-gateway.js",
+    "dev-http": "node --watch src/http-gateway.js",
+    "start-all": "concurrently \"npm run start\" \"npm run start-http\"",
+    "dev-all": "concurrently \"npm run dev\" \"npm run dev-http\""
+  },
+  "dependencies": {
+    "ws": "^8.16.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

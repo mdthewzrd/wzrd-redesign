@@ -1,0 +1,72 @@
+[
+  {
+    "id": "example_weekly_report",
+    "name": "Trigger: Weekly productivity report",
+    "schedule": "0 9 * * 5",
+    "timeout": 300,
+    "command": "wzrd \"generate weekly productivity report\"",
+    "description": "Created from trigger: @Remi every Friday at 9am, generate productivity report",
+    "createdBy": "system",
+    "createdAt": "2026-03-17T21:05:00.000Z",
+    "type": "scheduled",
+    "conditions": [],
+    "originalText": "@Remi every Friday at 9am, generate productivity report",
+    "parsedAt": "2026-03-17T21:05:00.000Z"
+  },
+  {
+    "id": "example_daily_check",
+    "name": "Trigger: Daily system check",
+    "schedule": "0 8 * * *",
+    "timeout": 180,
+    "command": "wzrd \"check system health and disk space\"",
+    "description": "Created from trigger: daily at 8am, check system health",
+    "createdBy": "system",
+    "createdAt": "2026-03-17T21:05:00.000Z",
+    "type": "scheduled",
+    "conditions": [],
+    "originalText": "daily at 8am, check system health",
+    "parsedAt": "2026-03-17T21:05:00.000Z"
+  },
+  {
+    "id": "trigger_1773794399092_jiob39fvd",
+    "name": "Trigger: check disk space daily at 9am",
+    "schedule": "0 0 9 * * *",
+    "timeout": 300,
+    "command": "echo \"Executing: check disk space daily at 9am\" && wzrd \"check disk space daily at 9am\"",
+    "description": "Created from trigger: @Remi check disk space daily at 9am",
+    "createdBy": "system",
+    "createdAt": "2026-03-18T00:39:59.092Z",
+    "type": "scheduled",
+    "conditions": [],
+    "originalText": "@Remi check disk space daily at 9am",
+    "parsedAt": "2026-03-18T00:39:59.092Z"
+  },
+  {
+    "id": "trigger_1773794399105_897ttqw0x",
+    "name": "Trigger: restart server",
+    "schedule": "* * * * *",
+    "timeout": 300,
+    "command": "echo \"Executing: restart server\" && wzrd \"restart server\"",
+    "description": "Created from trigger: if src/index.js changes, restart server",
+    "createdBy": "system",
+    "createdAt": "2026-03-18T00:39:59.105Z",
+    "type": "manual",
+    "conditions": [],
+    "originalText": "if src/index.js changes, restart server",
+    "parsedAt": "2026-03-18T00:39:59.105Z"
+  },
+  {
+    "id": "trigger_1773794399105_ufctlekl1",
+    "name": "Trigger: send weekly report",
+    "schedule": "0 0 17 * * 5",
+    "timeout": 300,
+    "command": "echo \"Executing: send weekly report\" && wzrd \"send weekly report\"",
+    "description": "Created from trigger: every Friday at 5pm, send weekly report",
+    "createdBy": "system",
+    "createdAt": "2026-03-18T00:39:59.105Z",
+    "type": "scheduled",
+    "conditions": [],
+    "originalText": "every Friday at 5pm, send weekly report",
+    "parsedAt": "2026-03-18T00:39:59.105Z"
+  }
+]

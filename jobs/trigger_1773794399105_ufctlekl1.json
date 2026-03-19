@@ -1,0 +1,19 @@
+{
+  "id": "trigger_1773794399105_ufctlekl1",
+  "name": "Trigger: send weekly report",
+  "schedule": "0 0 17 * * 5",
+  "timeout": 300,
+  "command": "echo \"Executing: send weekly report\" && wzrd \"send weekly report\"",
+  "description": "Created from trigger: every Friday at 5pm, send weekly report",
+  "createdBy": "system",
+  "createdAt": "2026-03-18T00:39:59.106Z",
+  "type": "scheduled",
+  "conditions": [],
+  "updatedAt": "2026-03-18T00:39:59.106Z",
+  "metrics": {
+    "totalRuns": 0,
+    "successCount": 0,
+    "errorCount": 0,
+    "avgDuration": 0
+  }
+}

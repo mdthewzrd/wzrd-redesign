@@ -304,6 +304,36 @@ create_sandbox() {
     register_sandbox "$sandbox_id" "$project_path" "$sandbox_type" "$sandbox_path"
     
     log_success "Sandbox created successfully"
+
+# ============================================
+# WZRD.dev Integration: Create job & trigger blueprint
+# ============================================
+echo "Creating WZRD.dev job..."
+
+# Get the script directory for relative paths
+WZRD_SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Derive topic from project path (or use default)
+TOPIC="sandbox-$(basename "$project_path")"
+
+# Create job in SQLite (use lowercase variables from function)
+JOB_ID=$(python3 "${WZRD_SCRIPT_DIR}/lib/db.py" save-job "$TOPIC" "${sandbox_type}-blueprint")
+echo "Job created: $JOB_ID"
+
+# Link sandbox to job
+python3 "${WZRD_SCRIPT_DIR}/lib/db.py" link-sandbox "$JOB_ID" "$sandbox_id"
+
+# Register sandbox in database
+python3 "${WZRD_SCRIPT_DIR}/lib/db.py" register-sandbox "$sandbox_id" "$JOB_ID" "$project_path" "$sandbox_type"
+
+# Update job status to running
+python3 "${WZRD_SCRIPT_DIR}/lib/db.py" update-status "$JOB_ID" "running"
+
+# Trigger blueprint execution (background)
+echo "Triggering blueprint..."
+"${WZRD_SCRIPT_DIR}/blueprint-engine.sh" execute "$JOB_ID" "$TOPIC" "$sandbox_id" &
+# ============================================
+
     echo "Sandbox ID: $sandbox_id"
     echo "Type: $sandbox_type"
     echo "Path: $sandbox_path"

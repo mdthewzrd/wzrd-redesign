@@ -10,10 +10,11 @@
 
 import { Client, GatewayIntentBits, Message, Channel, TextChannel } from 'discord.js';
 import TopicRegistry from '../topics/registry';
-import UnifiedMemory from '../memory/unified-memory';
-import ModelRouter from '../models/router';
-import CostTracker from '../cost/tracker';
 import { InterfaceSyncManager } from './sync-manager';
+
+// HTTP client for Gateway API
+const GATEWAY_HTTP_URL = process.env.GATEWAY_HTTP_URL || 'http://127.0.0.1:18801';
+const GATEWAY_WS_URL = process.env.GATEWAY_WS_URL || 'ws://127.0.0.1:18800';
 
 export interface DiscordConfig {
   botToken: string;
@@ -44,15 +45,13 @@ export interface DiscordResponse {
 export class TopicDiscordBot {
   private client: Client;
   private topicRegistry: TopicRegistry;
-  private memory: UnifiedMemory;
-  private modelRouter: ModelRouter;
-  private costTracker: CostTracker;
   private syncManager: InterfaceSyncManager;
   private config: DiscordConfig;
   private messageHistory: Map<string, DiscordMessage[]> = new Map();
   private topicMap: Map<string, string> = new Map(); // channelId -> topicId
   private activeTopics: Set<string> = new Set();
   private initialized: boolean = false;
+  private activeConversations: Map<string, {id: string, timestamp: number}> = new Map();
 
   constructor(config: DiscordConfig) {
     this.config = {
@@ -74,12 +73,6 @@ export class TopicDiscordBot {
 
     // Initialize WZRD systems
     this.topicRegistry = new TopicRegistry();
-    this.memory = new UnifiedMemory('/home/mdwzrd/wzrd-redesign/memory');
-    
-    // Model router and cost tracker would be initialized properly
-    // For now, use simplified versions
-    this.modelRouter = {} as ModelRouter;
-    this.costTracker = {} as CostTracker;
     this.syncManager = new InterfaceSyncManager();
   }
 
@@ -760,27 +753,72 @@ export class TopicDiscordBot {
   }
 
   /**
-   * Create response for a message
+   * Create response for a message - calls Gateway HTTP API
    */
   private async createResponse(message: DiscordMessage, topicId: string): Promise<DiscordResponse> {
-    // In production, this would use:
-    // 1. Model router to select appropriate model
-    // 2. Unified memory for context
-    // 3. Cost tracker to monitor usage
-    
     const topic = this.topicRegistry.getTopicByName(topicId);
     const topicName = topic?.config.name || topicId;
 
-    // Simple response for now
-    const response: DiscordResponse = {
-      content: `Topic: **${topicName}**\n\nI received your message: "${message.content.substring(0, 100)}${message.content.length > 100 ? '...' : ''}"\n\nThis response is from the topic-aware Discord bot integrated with WZRD systems.`,
-      topic: topicId,
-      model: 'GLM 4.7 Flash (simulated)',
-      tokens: 100,
-      cost: 0.00008,
-    };
+    try {
+      // Build conversation key for caching
+      const conversationKey = `${message.userId}:${topicId}`;
+      let conversationId = this.activeConversations.get(conversationKey)?.id;
 
-    return response;
+      // Build request payload for Gateway
+      const payload = {
+        method: 'gateway.chat',
+        params: {
+          prompt: message.content,
+          userId: message.userId,
+          platform: 'discord',
+          topic: topicName,
+          botId: 'remi',
+          dangerouslySkipPermissions: true,
+          ...(conversationId && { conversationId }),
+        },
+        id: `discord-${Date.now()}`,
+      };
+
+      // Call Gateway HTTP API
+      const response = await fetch(`${GATEWAY_HTTP_URL}/gateway`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Gateway returned ${response.status}: ${await response.text()}`);
+      }
+
+      const result = await response.json();
+
+      // Cache conversation ID if returned
+      if (result.payload?.conversationId) {
+        this.activeConversations.set(conversationKey, {
+          id: result.payload.conversationId,
+          timestamp: Date.now(),
+        });
+      }
+
+      return {
+        content: result.payload?.response || result.payload?.content || 'No response from Gateway',
+        topic: topicId,
+        model: result.payload?.model || 'Gateway',
+        tokens: result.payload?.tokens || 0,
+        cost: result.payload?.cost || 0,
+      };
+    } catch (error) {
+      console.error('[DiscordBot] Gateway API error:', error);
+      
+      // Fallback response
+      return {
+        content: `I received your message about **${topicName}**, but I'm having trouble connecting to the AI Gateway.\n\nYour message: "${message.content.substring(0, 100)}${message.content.length > 100 ? '...' : ''}"\n\n*Error: ${error instanceof Error ? error.message : 'Unknown error'}*`,
+        topic: topicId,
+        model: 'Error',
+        tokens: 0,
+        cost: 0,
+      };
+    }
   }
 
   /**

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F7D000"/>
+      <stop offset="50%" style="stop-color:#FFD700"/>
+      <stop offset="100%" style="stop-color:#FFA500"/>
+    </linearGradient>
+    <linearGradient id="darkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#darkGradient)" stroke="url(#goldGradient)" stroke-width="3"/>
+
+  <!-- WZRD Text -->
+  <text x="64" y="72" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="url(#goldGradient)">WZRD</text>
+
+  <!-- Magic sparkles -->
+  <circle cx="32" cy="32" r="3" fill="url(#goldGradient)" opacity="0.8"/>
+  <circle cx="96" cy="32" r="2" fill="url(#goldGradient)" opacity="0.6"/>
+  <circle cx="104" cy="48" r="2.5" fill="url(#goldGradient)" opacity="0.7"/>
+  <circle cx="24" cy="52" r="2" fill="url(#goldGradient)" opacity="0.5"/>
+  <circle cx="88" cy="88" r="2" fill="url(#goldGradient)" opacity="0.6"/>
+  <circle cx="40" cy="96" r="2.5" fill="url(#goldGradient)" opacity="0.7"/>
+
+  <!-- Crown/wizard hat accent -->
+  <path d="M44 38 L50 28 L64 35 L78 28 L84 38" stroke="url(#goldGradient)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="32" r="4" fill="url(#goldGradient)"/>
+</svg>

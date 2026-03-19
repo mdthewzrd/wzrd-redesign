@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview Page Debug</title>
+    <style>
+        body { font-family: monospace; background: #111; color: #0f0; margin: 20px; }
+        .section { border: 1px solid #333; padding: 20px; margin: 10px 0; }
+        .ok { color: #0f0; }
+        .error { color: #f00; }
+        pre { background: #222; padding: 10px; overflow: auto; }
+        button { background: #333; color: #fff; border: 1px solid #666; padding: 10px; margin: 5px; }
+        button:hover { background: #444; }
+    </style>
+</head>
+<body>
+    <h1>Overview Page Debug</h1>
+    
+    <div class="section">
+        <h2>Test OverviewPage.tsx API Endpoints</h2>
+        <button onclick="testEndpoint('/api/topics', 'topics')">Test /api/topics</button>
+        <button onclick="testEndpoint('/api/sandboxes', 'sandboxes')">Test /api/sandboxes</button>
+        <button onclick="testEndpoint('/api/memory/stats', 'memory')">Test /api/memory/stats</button>
+        <button onclick="testEndpoint('/api/health', 'health')">Test /api/health</button>
+        <button onclick="testEndpoint('/api/gateway/v2/health', 'gateway')">Test /api/gateway/v2/health</button>
+        <button onclick="testEndpoint('/api/gateway/v2/agent/pool', 'agent')">Test /api/gateway/v2/agent/pool</button>
+        
+        <div id="results"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Test All Endpoints (like OverviewPage.tsx)</h2>
+        <button onclick="testAllEndpoints()">Test All Like OverviewPage</button>
+        <div id="all-results"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Check Browser Console</h2>
+        <button onclick="captureConsole()">Capture Console</button>
+        <pre id="console-output">Console output will appear here...</pre>
+    </div>
+    
+    <script>
+        async function testEndpoint(url, name) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${url}:</strong> Testing...`;
+            results.appendChild(div);
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                div.innerHTML = `<strong class="ok">✅ ${url}:</strong> OK (${response.status})<pre>${JSON.stringify(data, null, 2).substring(0, 500)}</pre>`;
+            } catch (error) {
+                div.innerHTML = `<strong class="error">❌ ${url}:</strong> ${error.message}`;
+            }
+        }
+        
+        async function testAllEndpoints() {
+            const endpoints = [
+                '/api/topics',
+                '/api/sandboxes', 
+                '/api/memory/stats',
+                '/api/health',
+                '/api/gateway/v2/health',
+                '/api/gateway/v2/agent/pool'
+            ];
+            
+            const container = document.getElementById('all-results');
+            container.innerHTML = '<h3>Testing all endpoints...</h3>';
+            
+            const results = [];
+            
+            for (const url of endpoints) {
+                try {
+                    const response = await fetch(url);
+                    const ok = response.ok;
+                    results.push({ url, ok, status: response.status });
+                    container.innerHTML += `<div class="${ok ? 'ok' : 'error'}">${url}: ${ok ? '✅ OK' : '❌ FAIL'} (${response.status})</div>`;
+                } catch (error) {
+                    results.push({ url, ok: false, error: error.message });
+                    container.innerHTML += `<div class="error">${url}: ❌ ERROR (${error.message})</div>`;
+                }
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            const allOk = results.every(r => r.ok);
+            container.innerHTML += `<h3>${allOk ? '✅ ALL ENDPOINTS OK' : '❌ SOME ENDPOINTS FAILED'}</h3>`;
+        }
+        
+        function captureConsole() {
+            const output = document.getElementById('console-output');
+            const logs = [];
+            
+            const originalLog = console.log;
+            const originalError = console.error;
+            
+            console.log = function(...args) {
+                logs.push('[LOG] ' + args.join(' '));
+                originalLog.apply(console, args);
+            };
+            
+            console.error = function(...args) {
+                logs.push('[ERROR] ' + args.join(' '));
+                originalError.apply(console, args);
+            };
+            
+            // Trigger some console activity
+            console.log('Debug page console capture started');
+            console.error('Test error message');
+            
+            setTimeout(() => {
+                console.log = originalLog;
+                console.error = originalError;
+                output.textContent = logs.join('\n');
+            }, 1000);
+        }
+        
+        // Run on load
+        testAllEndpoints();
+        captureConsole();
+    </script>
+</body>
+</html>

@@ -1,0 +1,624 @@
+{
+  "version": "1.0",
+  "project_id": "5d9eb347ca5f038a6f52e2306cce47268a2e7828",
+  "worktree": "/home/mdwzrd/wzrd-redesign",
+  "consolidated_at": "2026-03-12",
+  "topics": [
+    {
+      "id": "wzrd-framework-core",
+      "name": "WZRD Framework Core",
+      "description": "Core framework development, architecture research, and performance optimization",
+      "status": "active",
+      "sessions": [
+        {
+          "session_id": "ses_338bc2357ffeDskA7w5C7G4ijW",
+          "slug": "glowing-cactus",
+          "first_message": "Hey there, we were doing some work to try and increase Remi's speed...",
+          "message_count": 422,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_32af7936affeb2DKfB56v2TNnt",
+          "slug": "clever-knight",
+          "first_message": "Hey Remi! Let's continue the WZRD.dev optimization project...",
+          "message_count": 436,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_325a46f35ffeVmX56oUnBOd6WI",
+          "slug": "mighty-forest",
+          "first_message": "Continue WZRD.dev framework implementation...",
+          "message_count": 296,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_327dd5f5dffeEWyB4QBtc8JN8d",
+          "slug": "cosmic-otter",
+          "first_message": "Subject: WZRD TUI Testing - Phase 2 Analysis...",
+          "message_count": 240,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31e515494ffecE2iP1U9JRS4Vr",
+          "slug": "calm-knight",
+          "first_message": "Do a COMPREHENSIVE deep research exploration...",
+          "message_count": 11,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31e51c665ffeB3SMhzwq7IGFll",
+          "slug": "proud-eagle",
+          "first_message": "Do a COMPREHENSIVE deep research exploration of interfaces/web...",
+          "message_count": 15,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31e263477ffeg5mr8lrtPcq5Ds",
+          "slug": "clever-island",
+          "first_message": "we havent fully started using them yet, but with cron jobs...",
+          "message_count": 34,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31e9f6bc2ffesB5IDg2V5g2iKq",
+          "slug": "glowing-river",
+          "first_message": "Explore the structure of web-ui-react...",
+          "message_count": 11,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_32134b386ffe7DpTQQHVE3Hs7f",
+          "slug": "glowing-cabin",
+          "first_message": "Framework Phase 3 status...",
+          "message_count": 240,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_327660e9effekmiAQkKdIVHdMY",
+          "slug": "lucky-meadow",
+          "first_message": "ive been trying to work for 3 weeks now to finish you...",
+          "message_count": 309,
+          "status": "active",
+          "archived": false
+        }
+      ]
+    },
+    {
+      "id": "wzrd-topic-system",
+      "name": "Topic System + Discord",
+      "description": "Multi-channel topic system, Discord integration, and session organization",
+      "status": "active",
+      "sessions": [
+        {
+          "session_id": "ses_31e5205c3ffeCLILuArf4BS4Co",
+          "slug": "quick-eagle",
+          "first_message": "i was working on the topic system and setting up discord etc...",
+          "message_count": 48,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3277cb6e8ffearK3sPaj7xvMD2",
+          "slug": "proud-comet",
+          "first_message": "so im currently doing a bunch of testing...check unified memory, topics, sandboxes...",
+          "message_count": 66,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31ea00c02ffe5lR8d035C4hRzJ",
+          "slug": "hidden-nebula",
+          "first_message": "so im currently setting up my discord with another chat...",
+          "message_count": 99,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3250900f1ffech1rEYP7MAJJdT",
+          "slug": "clever-panda",
+          "first_message": "hey remi i just finished a bunch of updates",
+          "message_count": 4,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_32509be77fferOkcrWrzuPbw2j",
+          "slug": "gentle-eagle",
+          "first_message": "hey Remi, I just finished making a tremendous amount of updates...",
+          "message_count": 2,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_31e51b51dffeo94aO2I6Vv1Sdm",
+          "slug": "misty-engine",
+          "first_message": "Search the codebase to understand multi-channel, multi-session topic system...",
+          "message_count": 13,
+          "status": "active",
+          "archived": false
+        }
+      ]
+    },
+    {
+      "id": "wzrd-web-ui",
+      "name": "Web UI Development",
+      "description": "Web interface development, React components, and UI optimization",
+      "status": "active",
+      "sessions": [
+        {
+          "session_id": "ses_3327350e7ffe1w6nVI3E4tEwTD",
+          "slug": "hidden-circuit",
+          "first_message": "trying to update wzrd-redesign...laggy and slow...",
+          "message_count": 43,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_33249a7d3ffe5td952W1pNNK9A",
+          "slug": "hidden-sailor",
+          "first_message": "final enhancements to remi...research on whats causing our lag...",
+          "message_count": 22,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3280cf996ffewXfdv2yGgF4csZ",
+          "slug": "stellar-engine",
+          "first_message": "Test auto-mode detection...",
+          "message_count": 322,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3327b6019ffeNh96UPC039ADxV",
+          "slug": "brave-rocket",
+          "first_message": "confirm you have the transcribe skill...",
+          "message_count": 38,
+          "status": "active",
+          "archived": false
+        }
+      ]
+    },
+    {
+      "id": "wzrd-documentation",
+      "name": "Documentation",
+      "description": "Skills documentation, getting started guides, and reference materials",
+      "status": "active",
+      "sessions": [
+        {
+          "session_id": "ses_3228efbeaffepTNNbgLrhtVe0g",
+          "slug": "crisp-pixel",
+          "first_message": "Create comprehensive documentation for the .agents/skills/ directory...",
+          "message_count": 4,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3228f262affeMBhhzu5fgcwjP4",
+          "slug": "mighty-engine",
+          "first_message": "Create comprehensive documentation for the remi/ directory...",
+          "message_count": 5,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3228ed9a6ffeY1xjshc7OOgJ1Z",
+          "slug": "sunny-sailor",
+          "first_message": "Create comprehensive documentation for the memory/ directory...",
+          "message_count": 4,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_3228eb0a3ffeoBUrNq3qHR31Ga",
+          "slug": "gentle-nebula",
+          "first_message": "Create a comprehensive getting started guide...",
+          "message_count": 3,
+          "status": "active",
+          "archived": false
+        },
+        {
+          "session_id": "ses_32297f161ffeqKkEx7esWgB00z",
+          "slug": "witty-lagoon",
+          "first_message": "documentation...",
+          "message_count": 6,
+          "status": "active",
+          "archived": false
+        }
+      ]
+    }
+  ],
+  "archived_sessions": [
+    {
+      "session_id": "ses_3374676d7ffe5T6ZIPU08UEIPw",
+      "slug": "calm-eagle",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3374ea791ffeCQhwpQkg2LEH2c",
+      "slug": "cosmic-lagoon",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3375fe961ffeyy4iX3a8DU5pTm",
+      "slug": "crisp-falcon",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3374c6f76ffeTMYb7H3BdZ4fXs",
+      "slug": "lucky-moon",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337705f34ffePDpgkEnn3i1Q0P",
+      "slug": "lucky-river",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337468a10ffe93vc3X5tZQtOat",
+      "slug": "tidy-cactus",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3374b28ffffehwl7aH1Ipb5RS8",
+      "slug": "quiet-cactus",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3374e25b8ffeav69g9YMVwlVv5",
+      "slug": "quiet-island",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3375ac1b2ffeP1d8meb3Z14yJ6",
+      "slug": "cosmic-wolf",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33762bcbdffeMFXwdSQ7zWJfnD",
+      "slug": "curious-orchid",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3377105a2ffeygfj46PzUZ9kq7",
+      "slug": "gentle-engine",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337dfda6fffeDYR8D4lUDni319",
+      "slug": "crisp-pixel",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337e283e3ffeAYtFsLT73MWHTF",
+      "slug": "crisp-panda",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338a6e1acffemq9T4TefW54ehk",
+      "slug": "neon-island",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338ab3f3fffeA3jXllyGM7eMev",
+      "slug": "quick-star",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338ad4a9bffevGu56QgWgrBK3o",
+      "slug": "tidy-cabin",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338ada621ffe6dLm3tj1tXo5jj",
+      "slug": "clever-sailor",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338adeb0bffeZZbdWKGnjx2u89",
+      "slug": "hidden-circuit",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338ae5517ffevAICTCBItvu1E3",
+      "slug": "glowing-garden",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338b125a7ffe0KCDge0JqkBz2E",
+      "slug": "jolly-cabin",
+      "reason": "echo test - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3230a1affffe2wHVHKHgxZPxJf",
+      "slug": "stellar-otter",
+      "reason": "status check - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3228f262affeMBhhzu5fgcwjP4",
+      "slug": "mighty-engine",
+      "reason": "status check - testing only",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3374c6ba5ffevO3i762nAdAdXT",
+      "slug": "shiny-falcon",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338b66c8bffeuVRZUdlWrr3kmj",
+      "slug": "swift-island",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_338b78b8effecTvROKEOmwDn2V",
+      "slug": "neon-wolf",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33afbe177ffeNjk3h158OPsloI",
+      "slug": "clever-orchid",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33afd4ed7ffeNNGOJEf0eQNZQh",
+      "slug": "shiny-wizard",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33b01b3b8ffecVzfbKPqy9iIJT",
+      "slug": "swift-garden",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33b03038fffeb7luhQad2OyDjf",
+      "slug": "sunny-engine",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_336e948eeffeCC3ygcbhWEwfVY",
+      "slug": "glowing-cactus",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_336ed54d2ffewr47Rjw3YNyPAu",
+      "slug": "crisp-mountain",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_336f38d36ffeQcDe0DfIcLK2Qi",
+      "slug": "tidy-squid",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337308b4affecCBBdQ7dqMnNGi",
+      "slug": "tidy-tiger",
+      "reason": "single message - no content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33740cd43ffe1xw2NSUSRXc5Wb",
+      "slug": "happy-tiger",
+      "reason": "general dev - general testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33743e130ffe2lz2fNGnifdsjp",
+      "slug": "kind-river",
+      "reason": "general dev - low content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_337442533ffeJ77B8DzEC7XDih",
+      "slug": "sunny-knight",
+      "reason": "general dev - low content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32328b8e7ffei7Sq91IBCztllI",
+      "slug": "tidy-falcon",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3279af627ffelI9F5RhxULdXal",
+      "slug": "swift-island",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3279bbf2bffesOzPLnge6h854x",
+      "slug": "jolly-orchid",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3279dd82bffeZUqa1w9VGHsj6r",
+      "slug": "quiet-cactus",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_327a01055ffebShkNk6z4ugKxy",
+      "slug": "glowing-harbor",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_327a134a3ffeBEWsMFa9YRy7rL",
+      "slug": "hidden-comet",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32ba4e489ffeif0mIxVVee31Rx",
+      "slug": "calm-star",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32ca077d5ffeaGckNwojevLIe4",
+      "slug": "nimble-circuit",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32cab0d2effecqeRkqTNe31Mlq",
+      "slug": "hidden-falcon",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32cb41633ffes9qqrhOu6B2lF3",
+      "slug": "kind-tiger",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32d09ca74ffe1YqWNWEXVYHuoc",
+      "slug": "misty-falcon",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32d978262ffeK4KSumhfhKl57f",
+      "slug": "jolly-meadow",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3325e3a9affewykNvBmaZ6L8fz",
+      "slug": "witty-harbor",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3326152a9ffee5112yP0rlZJVg",
+      "slug": "cosmic-tiger",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3327122c7ffe2hTfSg65NbcVJ3",
+      "slug": "cosmic-wolf",
+      "reason": "general dev - testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b6f8354ffevVUabwuisaciem",
+      "slug": "silent-mountain",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b78cd93ffei7uY3IiKPyau59",
+      "slug": "neon-lagoon",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b8e618effeT6R8QASMuShoJ6",
+      "slug": "kind-falcon",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b979470ffely60f0c1OmRpp3",
+      "slug": "calm-wolf",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32ba4e489ffeif0mIxVVee31Rx",
+      "slug": "calm-star",
+      "reason": "general testing",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b588f45ffej4FDQk6946Q2pY",
+      "slug": "quiet-island",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32b6546a9ffeuafQit6pOXDJgJ",
+      "slug": "neon-tiger",
+      "reason": "global project - not wzrd-specific",
+      "archived": true
+    },
+    {
+      "session_id": "ses_3230611f7ffe70GYD3wghtjxxP",
+      "slug": "gentle-lagoon",
+      "first_message": "hey remi",
+      "reason": "general greeting - low content",
+      "archived": true
+    },
+    {
+      "session_id": "ses_32d62ec8cffeTga3F0jx55K0xe",
+      "slug": "glowing-nebula",
+      "first_message": "test",
+      "reason": "test session",
+      "archived": true
+    },
+    {
+      "session_id": "ses_33b017eddffe3UOl9NUt5PB6Tp",
+      "slug": "lucky-meadow",
+      "first_message": "test",
+      "reason": "test session",
+      "archived": true
+    },
+    {
+      "session_id": "ses_31dd57219ffeXmAXynRUftLlXW",
+      "slug": "hidden-moon",
+      "first_message": "custom openclaw...",
+      "reason": "future project - not current",
+      "archived": true
+    }
+  ],
+  "stats": {
+    "total_sessions": 81,
+    "active_sessions": 25,
+    "archived_sessions": 56,
+    "topics_defined": 4
+  }
+}

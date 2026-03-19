@@ -1,0 +1,16 @@
+{
+  "id": "memory-curator",
+  "name": "Memory Curator",
+  "schedule": "0 2 * * *",
+  "timeout": 300,
+  "command": "node bin/integrate-memory.js",
+  "description": "Consolidate daily logs, extract patterns, update memory summary",
+  "createdAt": "2026-03-18T14:05:57.690Z",
+  "updatedAt": "2026-03-18T14:05:57.690Z",
+  "metrics": {
+    "totalRuns": 0,
+    "successCount": 0,
+    "errorCount": 0,
+    "avgDuration": 0
+  }
+}

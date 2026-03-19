@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web UI Diagnostic Page</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        h1 {
+            color: #60a5fa;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 10px;
+        }
+        .section {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #334155;
+        }
+        .status {
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        .status.ok {
+            background: #14532d;
+            color: #86efac;
+        }
+        .status.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+        .status.warning {
+            background: #7c2d12;
+            color: #fdba74;
+        }
+        .endpoint {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid #60a5fa;
+        }
+        pre {
+            background: #0f172a;
+            padding: 12px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 14px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web UI Diagnostic Dashboard</h1>
+    
+    <div class="section">
+        <h2>System Services Status</h2>
+        <div class="grid">
+            <div id="webui-status" class="endpoint">
+                <h3>Web UI Dev Server (Port 5174)</h3>
+                <div class="status">Testing...</div>
+            </div>
+            <div id="api-status" class="endpoint">
+                <h3>API Server (Port 3000)</h3>
+                <div class="status">Testing...</div>
+            </div>
+            <div id="gateway-status" class="endpoint">
+                <h3>Gateway V2 (Port 18801)</h3>
+                <div class="status">Testing...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>API Endpoint Tests</h2>
+        <button onclick="testAllEndpoints()">Test All Endpoints</button>
+        
+        <div id="endpoint-results">
+            <div class="endpoint">
+                <h3>/api/topics</h3>
+                <div class="status">Not tested</div>
+                <pre id="topics-result" style="display:none"></pre>
+            </div>
+            <div class="endpoint">
+                <h3>/api/sandboxes</h3>
+                <div class="status">Not tested</div>
+                <pre id="sandboxes-result" style="display:none"></pre>
+            </div>
+            <div class="endpoint">
+                <h3>/api/memory/stats</h3>
+                <div class="status">Not tested</div>
+                <pre id="memory-result" style="display:none"></pre>
+            </div>
+            <div class="endpoint">
+                <h3>/api/gateway/v2/health</h3>
+                <div class="status">Not tested</div>
+                <pre id="gateway-result" style="display:none"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Browser Console</h2>
+        <div id="console-output" class="endpoint">
+            <pre>JavaScript console will appear here...</pre>
+        </div>
+        <button onclick="captureConsole()">Capture Console Output</button>
+    </div>
+
+    <div class="section">
+        <h2>Quick Actions</h2>
+        <button onclick="window.open('http://localhost:5174/overview', '_blank')">Open Overview Page</button>
+        <button onclick="clearBrowserCache()">Clear Browser Cache</button>
+        <button onclick="location.reload(true)">Hard Refresh Page</button>
+    </div>
+
+    <script>
+        // Test Web UI Dev Server
+        async function testWebUI() {
+            const element = document.getElementById('webui-status');
+            const status = element.querySelector('.status');
+            
+            try {
+                const response = await fetch('http://localhost:5174/');
+                if (response.ok) {
+                    status.textContent = '✅ Running';
+                    status.className = 'status ok';
+                } else {
+                    status.textContent = '❌ Error: ' + response.status;
+                    status.className = 'status error';
+                }
+            } catch (error) {
+                status.textContent = '❌ Connection Failed';
+                status.className = 'status error';
+            }
+        }
+
+        // Test API Server
+        async function testAPI() {
+            const element = document.getElementById('api-status');
+            const status = element.querySelector('.status');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    status.textContent = '✅ Healthy';
+                    status.className = 'status ok';
+                } else {
+                    status.textContent = '❌ Error: ' + response.status;
+                    status.className = 'status error';
+                }
+            } catch (error) {
+                status.textContent = '❌ Connection Failed';
+                status.className = 'status error';
+            }
+        }
+
+        // Test Gateway V2 via API Server
+        async function testGateway() {
+            const element = document.getElementById('gateway-status');
+            const status = element.querySelector('.status');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/gateway/v2/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    status.textContent = '✅ Healthy (uptime: ' + Math.floor(data.uptime / 3600) + 'h)';
+                    status.className = 'status ok';
+                } else {
+                    status.textContent = '❌ Error: ' + response.status;
+                    status.className = 'status error';
+                }
+            } catch (error) {
+                status.textContent = '❌ Connection Failed';
+                status.className = 'status error';
+            }
+        }
+
+        // Test specific endpoint
+        async function testEndpoint(url, resultId) {
+            const preElement = document.getElementById(resultId);
+            const endpointDiv = preElement.parentElement.parentElement;
+            const status = endpointDiv.querySelector('.status');
+            
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    status.textContent = '✅ Working';
+                    status.className = 'status ok';
+                    preElement.textContent = JSON.stringify(data, null, 2);
+                    preElement.style.display = 'block';
+                } else {
+                    status.textContent = '❌ Error ' + response.status;
+                    status.className = 'status error';
+                    preElement.textContent = 'Error: ' + response.status;
+                    preElement.style.display = 'block';
+                }
+            } catch (error) {
+                status.textContent = '❌ Connection Failed';
+                status.className = 'status error';
+                preElement.textContent = 'Error: ' + error.message;
+                preElement.style.display = 'block';
+            }
+        }
+
+        // Test all endpoints
+        async function testAllEndpoints() {
+            const endpoints = [
+                { url: 'http://localhost:3000/api/topics', id: 'topics-result' },
+                { url: 'http://localhost:3000/api/sandboxes', id: 'sandboxes-result' },
+                { url: 'http://localhost:3000/api/memory/stats', id: 'memory-result' },
+                { url: 'http://localhost:3000/api/gateway/v2/health', id: 'gateway-result' }
+            ];
+
+            for (const endpoint of endpoints) {
+                await testEndpoint(endpoint.url, endpoint.id);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+
+        // Capture console output
+        function captureConsole() {
+            const consoleOutput = document.getElementById('console-output').querySelector('pre');
+            const originalLog = console.log;
+            const originalError = console.error;
+            const originalWarn = console.warn;
+            
+            const logs = [];
+            
+            console.log = function(...args) {
+                logs.push('[LOG] ' + args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' '));
+                originalLog.apply(console, args);
+            };
+            
+            console.error = function(...args) {
+                logs.push('[ERROR] ' + args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' '));
+                originalError.apply(console, args);
+            };
+            
+            console.warn = function(...args) {
+                logs.push('[WARN] ' + args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' '));
+                originalWarn.apply(console, args);
+            };
+            
+            // Trigger some console logs
+            console.log('Test log message from diagnostic page');
+            console.warn('Test warning message');
+            
+            setTimeout(() => {
+                console.log = originalLog;
+                console.error = originalError;
+                console.warn = originalWarn;
+                
+                consoleOutput.textContent = logs.join('\n');
+            }, 1000);
+        }
+
+        // Clear browser cache simulation
+        function clearBrowserCache() {
+            alert('Press Ctrl+F5 or Ctrl+Shift+R to clear browser cache.\n\nFor Chrome: Developer Tools → Network → Disable cache (checked)\nThen refresh page.');
+        }
+
+        // Run initial tests
+        document.addEventListener('DOMContentLoaded', () => {
+            testWebUI();
+            testAPI();
+            testGateway();
+            
+            // Capture any existing console errors
+            setTimeout(captureConsole, 1000);
+        });
+    </script>
+</body>
+</html>

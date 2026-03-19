@@ -34,13 +34,13 @@ case "${1:-start}" in
     start)
         log "Starting Discord bot..."
         cd "$WZRD_ROOT/interfaces"
-        node discord-bot.js
+        node test-discord-bot.js
         ;;
     test)
         log "Starting in TEST MODE..."
         log "Mock WebSocket server will start on ws://localhost:8765"
         cd "$WZRD_ROOT/interfaces"
-        TEST_MODE=true node discord-bot.js
+        TEST_MODE=true node test-discord-bot.js
         ;;
     stop)
         log "Stopping Discord bot..."

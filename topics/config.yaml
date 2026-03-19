@@ -1,27 +1,65 @@
-"system":
-  name: "System Design"
-  description: "System architecture and design discussions"
-  discord_channel_id: undefined
-  web_ui_tab: "system-design"
-  cli_alias: "system"
-  project_path: undefined
-  tags: undefined
-  is_active: undefined
-"dilution":
-  name: "Dilution Agent"
-  description: "SEC filings and due diligence agent"
-  discord_channel_id: undefined
-  web_ui_tab: "dilution"
-  cli_alias: "dilution"
-  project_path: "/projects/dilution-agent"
-  tags: undefined
-  is_active: undefined
+system:
+  name: System Design
+  description: System architecture and design discussions
+  discord_channel_id: null
+  web_ui_tab: system-design
+  cli_alias: system
+  project_path: null
+  tags: []
+  is_active: true
+
+dilution:
+  name: Dilution Agent
+  description: SEC filings and due diligence agent
+  discord_channel_id: null
+  web_ui_tab: dilution
+  cli_alias: dilution
+  project_path: /projects/dilution-agent
+  tags: []
+  is_active: true
+
 parallel-background-agents:
   name: Parallel Background Agents
   description: True parallel agent execution system
-  discord_channel_id: undefined
-  web_ui_tab: undefined
+  discord_channel_id: null
+  web_ui_tab: null
   cli_alias: parallel-background-agents
-  project_path: undefined
-  tags: 
+  project_path: null
+  tags: []
+  is_active: true
+
+ContainerDemo:
+  name: ContainerDemo
+  description: Isolated project agent for ContainerDemo
+  discord_channel_id: null
+  web_ui_tab: null
+  cli_alias: ContainerDemo
+  project_path: /home/mdwzrd/wzrd-projects/ContainerDemo
+  tags: project-agent
+  is_active: true
+
+CoherenceFixed:
+  name: CoherenceFixed
+  description: Isolated project agent for CoherenceFixed
+  discord_channel_id: null
+  web_ui_tab: null
+  cli_alias: CoherenceFixed
+  project_path: /home/mdwzrd/wzrd-redesign/.worktrees/CoherenceFixed
+  tags: project-agent
+  is_active: true
+
+wzrd-redesign:
+  name: WZRD Redesign
+  description: "Framework Phase 3 - Web UI Development"
+  discord_channel_ids:
+    - "1473755847548207198"
+    - "1473755847548207199"
+    - "1473755847548207200"
+  web_ui_tab: wzrd-redesign
+  cli_alias: wzrd
+  project_path: /home/mdwzrd/wzrd-redesign
+  tags:
+    - framework
+    - phase-3
+    - web-ui
   is_active: true

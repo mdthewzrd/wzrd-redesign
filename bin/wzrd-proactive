@@ -1,0 +1,257 @@
+#!/usr/bin/env node
+/**
+ * WZRD Proactive Agent Controller
+ * Unified interface for proactive agent features
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+
+class ProactiveController {
+  constructor() {
+    this.basePath = path.join(__dirname, '..');
+    this.jobScheduler = null;
+    this.fileMonitor = null;
+    this.triggerParser = null;
+    
+    this.loadModules();
+  }
+
+  /**
+   * Load required modules
+   */
+  loadModules() {
+    try {
+      const JobScheduler = require('./job-scheduler');
+      this.jobScheduler = new JobScheduler();
+    } catch (error) {
+      console.warn('Job scheduler not available:', error.message);
+    }
+
+    try {
+      const FileMonitor = require('./file-monitor');
+      this.fileMonitor = new FileMonitor();
+    } catch (error) {
+      console.warn('File monitor not available:', error.message);
+    }
+
+    try {
+      const TriggerParser = require('./trigger-parser');
+      this.triggerParser = new TriggerParser();
+    } catch (error) {
+      console.warn('Trigger parser not available:', error.message);
+    }
+  }
+
+  /**
+   * Start all proactive systems
+   */
+  async startAll() {
+    console.log('🚀 Starting Proactive Agent Systems\n');
+    
+    // Start job scheduler
+    if (this.jobScheduler) {
+      console.log('⏰ Starting job scheduler...');
+      await this.jobScheduler.initialize();
+      console.log('✅ Job scheduler ready\n');
+    }
+    
+    // Start file monitor
+    if (this.fileMonitor) {
+      console.log('👁️  Starting file monitor...');
+      await this.fileMonitor.initialize();
+      console.log('✅ File monitor ready\n');
+    }
+    
+    console.log('📊 Proactive systems status:');
+    console.log(`  • Scheduled jobs: ${this.jobScheduler ? '✅' : '❌'}`);
+    console.log(`  • File monitoring: ${this.fileMonitor ? '✅' : '❌'}`);
+    console.log(`  • Trigger parsing: ${this.triggerParser ? '✅' : '❌'}`);
+    console.log('\n🎯 Systems ready!');
+    console.log('Use commands:');
+    console.log('  wzrd-proactive list-jobs');
+    console.log('  wzrd-proactive add-trigger "<text>"');
+    console.log('  wzrd-proactive monitor-logs');
+  }
+
+  /**
+   * Add trigger from natural language
+   */
+  async addTrigger(triggerText) {
+    if (!this.triggerParser) {
+      console.log('❌ Trigger parser not available');
+      return;
+    }
+    
+    const parsed = this.triggerParser.parse(triggerText);
+    
+    if (!parsed.parsed) {
+      console.log('❌ Could not parse trigger');
+      return;
+    }
+    
+    console.log(`🧠 Parsed trigger: ${parsed.type}`);
+    
+    if (parsed.schedule) {
+      console.log(`⏰ Schedule: ${parsed.humanReadable}`);
+    }
+    
+    if (parsed.command) {
+      console.log(`📝 Command: ${parsed.command}`);
+    }
+    
+    // Create job
+    const job = await this.triggerParser.createJob(parsed);
+    console.log(`✅ Created trigger job: ${job.name}`);
+    
+    return job;
+  }
+
+  /**
+   * List all active jobs
+   */
+  listJobs() {
+    if (!this.jobScheduler) {
+      console.log('❌ Job scheduler not available');
+      return;
+    }
+    
+    this.jobScheduler.initialize();
+    this.jobScheduler.listJobs();
+  }
+
+  /**
+   * List all triggers
+   */
+  listTriggers() {
+    if (!this.triggerParser) {
+      console.log('❌ Trigger parser not available');
+      return;
+    }
+    
+    this.triggerParser.listTriggers();
+  }
+
+  /**
+   * Show monitor logs
+   */
+  showLogs() {
+    const logsDir = path.join(this.basePath, 'logs');
+    
+    if (!fs.existsSync(logsDir)) {
+      console.log('📁 No logs directory found');
+      return;
+    }
+    
+    console.log('📁 Log files:');
+    
+    const files = fs.readdirSync(logsDir);
+    for (const file of files) {
+      const filePath = path.join(logsDir, file);
+      const stats = fs.statSync(filePath);
+      
+      console.log(`  • ${file} (${Math.round(stats.size / 1024)}KB)`);
+    }
+  }
+
+  /**
+   * Stop all systems
+   */
+  stopAll() {
+    console.log('🛑 Stopping all proactive systems...');
+    
+    if (this.jobScheduler) {
+      this.jobScheduler.stopAll();
+    }
+    
+    if (this.fileMonitor) {
+      this.fileMonitor.stopAll();
+    }
+    
+    console.log('✅ All systems stopped');
+  }
+}
+
+// CLI interface
+if (require.main === module) {
+  const controller = new ProactiveController();
+  const command = process.argv[2];
+
+  switch (command) {
+    case 'start':
+      controller.startAll();
+      
+      // Keep process alive
+      console.log('\n🔁 Running in foreground. Press Ctrl+C to stop.');
+      process.stdin.resume();
+      break;
+
+    case 'add-trigger':
+      const triggerText = process.argv.slice(3).join(' ');
+      if (!triggerText) {
+        console.log('Usage: wzrd-proactive add-trigger "<trigger text>"');
+        console.log('Example: wzrd-proactive add-trigger "@Remi every Monday at 8am, compile news"');
+        break;
+      }
+      
+      controller.addTrigger(triggerText);
+      break;
+
+    case 'list-jobs':
+      controller.listJobs();
+      break;
+
+    case 'list-triggers':
+      controller.listTriggers();
+      break;
+
+    case 'logs':
+      controller.showLogs();
+      break;
+
+    case 'stop':
+      controller.stopAll();
+      break;
+
+    case 'test':
+      // Test the system
+      console.log('🧪 Testing proactive agent system...\n');
+      
+      const testTriggers = [
+        '@Remi check disk space daily at 9am',
+        'if src/index.js changes, restart server',
+        'every Friday at 5pm, send weekly report'
+      ];
+      
+      for (const trigger of testTriggers) {
+        console.log(`Testing: "${trigger}"`);
+        controller.addTrigger(trigger);
+        console.log('');
+      }
+      break;
+
+    default:
+      console.log('🚀 WZRD Proactive Agent Controller');
+      console.log('===================================\n');
+      
+      console.log('Commands:');
+      console.log('  start                  - Start all proactive systems');
+      console.log('  add-trigger "<text>"   - Add trigger from natural language');
+      console.log('  list-jobs             - List scheduled jobs');
+      console.log('  list-triggers         - List active triggers');
+      console.log('  logs                  - Show log files');
+      console.log('  stop                  - Stop all systems');
+      console.log('  test                  - Run test cases');
+      
+      console.log('\nExamples:');
+      console.log('  wzrd-proactive start');
+      console.log('  wzrd-proactive add-trigger "@Remi every Monday at 8am, compile news"');
+      console.log('  wzrd-proactive add-trigger "if ./src changes, run tests"');
+      
+      console.log('\n💡 Tip: Run "start" first, then add triggers');
+      break;
+  }
+}
+
+module.exports = ProactiveController;

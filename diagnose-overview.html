@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagnose Overview Page</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+    </style>
+</head>
+<body>
+    <h1>Overview Page Diagnostic</h1>
+    
+    <div id="results">
+        <h2>Testing connections...</h2>
+        <p id="web-ui">Web UI: Testing...</p>
+        <p id="api-server">API Server: Testing...</p>
+        <p id="gateway-v2">Gateway V2: Testing...</p>
+        <p id="discord-bot">Discord Bot: Testing...</p>
+        <p id="overview-data">Overview Data: Testing...</p>
+    </div>
+    
+    <script>
+        async function testConnection(url, elementId) {
+            try {
+                const response = await fetch(url);
+                const status = response.ok ? 'success' : 'error';
+                const text = await response.text();
+                document.getElementById(elementId).innerHTML = 
+                    `${elementId}: <span class="${status}">${response.status} ${response.statusText}</span>`;
+                return response.ok;
+            } catch (error) {
+                document.getElementById(elementId).innerHTML = 
+                    `${elementId}: <span class="error">${error.message}</span>`;
+                return false;
+            }
+        }
+        
+        async function runTests() {
+            console.log('Running diagnostic tests...');
+            
+            // Test Web UI dev server
+            await testConnection('http://localhost:5174/', 'web-ui');
+            
+            // Test API server
+            await testConnection('http://localhost:3000/api/health', 'api-server');
+            
+            // Test Gateway V2
+            await testConnection('http://localhost:3000/api/gateway/v2/health', 'gateway-v2');
+            
+            // Test Discord bot (via API)
+            await testConnection('http://localhost:3000/api/discord/status', 'discord-bot');
+            
+            // Test Overview data endpoint
+            await testConnection('http://localhost:3000/api/topics', 'overview-data');
+            
+            console.log('Tests complete');
+        }
+        
+        // Run tests on load
+        runTests();
+        
+        // Log browser info
+        console.log('Browser:', navigator.userAgent);
+        console.log('Console should show any JavaScript errors');
+    </script>
+</body>
+</html>

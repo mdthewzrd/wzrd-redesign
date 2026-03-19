@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WZRD.dev Frontend Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .healthy { background: #d4edda; color: #155724; }
+        .warning { background: #fff3cd; color: #856404; }
+        .error { background: #f8d7da; color: #721c24; }
+        .test { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>WZRD.dev Frontend Test</h1>
+    
+    <div class="test">
+        <h2>1. Web UI (Port 5174)</h2>
+        <div id="ui-status" class="status">Testing...</div>
+        <button onclick="testUI()">Test Web UI</button>
+    </div>
+    
+    <div class="test">
+        <h2>2. API Server (Port 3000)</h2>
+        <div id="api-status" class="status">Testing...</div>
+        <button onclick="testAPI()">Test API Server</button>
+    </div>
+    
+    <div class="test">
+        <h2>3. Gateway V2 (Port 18801)</h2>
+        <div id="gateway-status" class="status">Testing...</div>
+        <button onclick="testGateway()">Test Gateway V2</button>
+    </div>
+    
+    <div class="test">
+        <h2>Open Web UI Dashboard</h2>
+        <p>If all tests pass, open the dashboard:</p>
+        <a href="http://localhost:5174/" target="_blank" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            Open Dashboard
+        </a>
+    </div>
+    
+    <script>
+        function setStatus(elementId, healthy, message) {
+            const element = document.getElementById(elementId);
+            element.className = 'status ' + (healthy ? 'healthy' : 'error');
+            element.innerHTML = '<strong>' + (healthy ? '✅' : '❌') + '</strong> ' + message;
+        }
+        
+        async function testUI() {
+            try {
+                const response = await fetch('http://localhost:5174/');
+                setStatus('ui-status', response.ok, 
+                    `Web UI responding (Status: ${response.status}) - Open <a href="http://localhost:5174/" target="_blank">http://localhost:5174/</a>`);
+            } catch (error) {
+                setStatus('ui-status', false, `Web UI error: ${error.message}`);
+            }
+        }
+        
+        async function testAPI() {
+            try {
+                const response = await fetch('http://localhost:3000/api/memory/stats');
+                const data = await response.json();
+                setStatus('api-status', response.ok, 
+                    `API responding - Memory: ${data.memoryUsage.percent}% used, ${data.totalTopics} topics`);
+            } catch (error) {
+                setStatus('api-status', false, `API error: ${error.message}`);
+            }
+        }
+        
+        async function testGateway() {
+            try {
+                const response = await fetch('http://127.0.0.1:18801/health');
+                const data = await response.json();
+                setStatus('gateway-status', data.status === 'healthy', 
+                    `Gateway V2 ${data.status} - Uptime: ${Math.floor(data.uptime/1000)}s, Requests: ${data.requests}`);
+            } catch (error) {
+                setStatus('gateway-status', false, `Gateway error: ${error.message}`);
+            }
+        }
+        
+        // Run all tests on page load
+        window.onload = function() {
+            testUI();
+            testAPI();
+            testGateway();
+        };
+    </script>
+</body>
+</html>

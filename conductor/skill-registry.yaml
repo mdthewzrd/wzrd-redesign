@@ -1,0 +1,143 @@
+# WZRD.dev Skill Registry
+# Maps skills to agent roles and provides metadata
+
+skills:
+  # Core Skills (required by all agents)
+  gold-standard:
+    name: gold-standard
+    description: Gold Standard enforcement - validation, verification, and quality protocols
+    location: file:///home/mdwzrd/.claude/skills/gold-standard/SKILL.md
+    required_for: [coder, thinker, researcher, general]
+    priority: 1
+
+  # Coder Agent Skills
+  coding:
+    name: coding
+    description: Code implementation across all languages and frameworks
+    location: file:///home/mdwzrd/.claude/skills/coding/SKILL.md
+    required_for: [coder]
+    recommended_for: [general]
+    dependencies: [gold-standard]
+
+  debugging:
+    name: debugging
+    description: Debugging strategies, troubleshooting, and problem-solving
+    location: file:///home/mdwzrd/.claude/skills/debugging/SKILL.md
+    required_for: [coder]
+    recommended_for: [general, thinker]
+    dependencies: [coding]
+
+  testing:
+    name: testing
+    description: QA, test strategy, test writing, and validation
+    location: file:///home/mdwzrd/.claude/skills/testing/SKILL.md
+    required_for: [coder]
+    recommended_for: [general]
+    dependencies: [coding]
+
+  # Thinker Agent Skills
+  architecture:
+    name: architecture
+    description: System design, API design, and architectural decisions
+    location: file:///home/mdwzrd/.claude/skills/architecture/SKILL.md
+    required_for: [thinker]
+    recommended_for: [coder, general]
+    dependencies: [gold-standard]
+
+  planning:
+    name: planning
+    description: Task breakdown, project planning, dependency resolution, and roadmap creation
+    location: file:///home/mdwzrd/.claude/skills/planning/SKILL.md
+    required_for: [thinker]
+    recommended_for: [coder, general]
+    dependencies: [architecture]
+
+  # Researcher Agent Skills
+  research:
+    name: research
+    description: Research, investigation, and information gathering
+    location: file:///home/mdwzrd/.claude/skills/research/SKILL.md
+    required_for: [researcher]
+    recommended_for: [thinker, general]
+    dependencies: [gold-standard]
+
+  web-search:
+    name: web-search
+    description: Advanced web searching, source verification, and information discovery
+    location: file:///home/mdwzrd/.claude/skills/web-search/SKILL.md
+    required_for: [researcher]
+    recommended_for: [thinker, general]
+    dependencies: [research]
+
+  # General Agent Skills
+  context:
+    name: context
+    description: Context monitoring, progressive disclosure, and token management
+    location: file:///home/mdwzrd/.claude/skills/context/SKILL.md
+    required_for: [general]
+    recommended_for: [coder, thinker, researcher]
+    priority: 2
+
+  cli:
+    name: cli
+    description: Command line operations, Bash scripting, and terminal workflows
+    location: file:///home/mdwzrd/.claude/skills/cli/SKILL.md
+    recommended_for: [coder, general]
+    dependencies: [coding]
+
+  file-ops:
+    name: file-ops
+    description: File operations - reading, writing, searching, and managing files
+    location: file:///home/mdwzrd/.claude/skills/file-ops/SKILL.md
+    recommended_for: [coder, general]
+
+# Agent Role Definitions
+roles:
+  coder:
+    description: Specialized for coding tasks and implementation
+    default_skills: [gold-standard, coding, debugging, testing]
+    optional_skills: [cli, file-ops, architecture]
+
+  thinker:
+    description: Focused on architecture, planning, and system design
+    default_skills: [gold-standard, architecture, planning]
+    optional_skills: [research, context]
+
+  researcher:
+    description: Specialized in investigation, analysis, and information gathering
+    default_skills: [gold-standard, research, web-search]
+    optional_skills: [context, planning]
+
+  general:
+    description: All-purpose agent with auto-mode switching
+    default_skills: [gold-standard, context]
+    optional_skills: [coding, architecture, research, cli, file-ops]
+
+# Project Type Mappings
+project_types:
+  web-development:
+    recommended_roles: [coder, general]
+    recommended_skills: [coding, debugging, testing]
+
+  api-development:
+    recommended_roles: [coder, thinker]
+    recommended_skills: [coding, architecture, api]
+
+  research-project:
+    recommended_roles: [researcher, thinker]
+    recommended_skills: [research, web-search, planning]
+
+  system-design:
+    recommended_roles: [thinker, general]
+    recommended_skills: [architecture, planning, context]
+
+# Skill Loading Rules
+loading_rules:
+  - if: agent_role == "coder"
+    then: load_skills [gold-standard, coding, debugging, testing]
+  - if: agent_role == "thinker"
+    then: load_skills [gold-standard, architecture, planning]
+  - if: agent_role == "researcher"
+    then: load_skills [gold-standard, research, web-search]
+  - if: agent_role == "general"
+    then: load_skills [gold-standard, context]

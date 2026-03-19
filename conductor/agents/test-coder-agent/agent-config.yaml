@@ -1,0 +1,23 @@
+# Agent Configuration
+agent:
+  id: "test-coder-agent"
+  role: "coder"
+  created: "Sat Mar 14 08:02:00 PM UTC 2026"
+  project: "."
+  
+skills:
+  # Auto-loaded from skill-registry.yaml
+  registry: "/home/mdwzrd/wzrd-redesign/conductor/skill-registry.yaml"
+  
+gateway:
+  url: "http://127.0.0.1:18801"
+  registration: true
+  
+lifecycle:
+  auto_restart: true
+  health_check_interval: 30
+  max_memory_mb: 512
+  
+logging:
+  file: "/home/mdwzrd/wzrd-redesign/conductor/agents/test-coder-agent/agent.log"
+  level: "info"

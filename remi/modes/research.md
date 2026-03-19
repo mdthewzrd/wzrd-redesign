@@ -24,8 +24,10 @@ Specialized mode for research, investigation, competitive analysis, learning new
 ## Model: nvidia/moonshotai/kimi-k2.5
 - **Research**: Excellent for investigation and analysis
 - **Cost**: Free via NVIDIA API
-- **Context**: 128K tokens
+- **Context**: 64K tokens (optimized to prevent formatting degradation)
 - **Best for**: Research, analysis, learning, investigation
+- **Formatting Fix**: Enhanced system prompt prevents plain text output
+- **Usage**: Use `kimi-research-formatted` command for better formatting
 
 ## Key Capabilities
 1. **Research**: Gather and synthesize information from multiple sources
@@ -57,6 +59,8 @@ Specialized mode for research, investigation, competitive analysis, learning new
 - Token usage: Higher for comprehensive analysis
 - Memory: Excellent at maintaining research context
 - Style: Curious, analytical, thorough, synthesizing
+- **Formatting Stability**: Requires reinforced prompts to prevent degradation
+- **Context Optimization**: 64K tokens recommended for consistent formatting
 
 ## Fallback Options
 If primary model fails:
@@ -75,12 +79,15 @@ If primary model fails:
 - **From Research → Chat**: When research complete or coordination needed
 
 ## Output Standards
-1. **Comprehensive Overview**: Clear summary of topic
-2. **Key Findings**: Highlight most important insights
-3. **Comparative Analysis**: Compare options with pros/cons
-4. **Recommendations**: Actionable suggestions based on research
-5. **References**: Cite sources and additional reading
-6. **Knowledge Integration**: Connect to existing systems/context
+1. **Proper Formatting**: Always use markdown with line breaks, headings, code blocks
+2. **Comprehensive Overview**: Clear summary of topic
+3. **Key Findings**: Highlight most important insights
+4. **Comparative Analysis**: Compare options with pros/cons
+5. **Recommendations**: Actionable suggestions based on research
+6. **References**: Cite sources and additional reading
+7. **Knowledge Integration**: Connect to existing systems/context
+
+**Formatting Enforcement**: The enhanced system prompt ensures Kimi maintains formatting throughout extended conversations.
 
 ## Quality Indicators
 - **Depth**: Goes beyond surface-level information

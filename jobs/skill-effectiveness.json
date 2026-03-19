@@ -1,0 +1,16 @@
+{
+  "id": "skill-effectiveness",
+  "name": "Skill Effectiveness Tracking",
+  "schedule": "0 4 * * 0",
+  "timeout": 180,
+  "command": "node bin/analyze-skill-usage.js",
+  "description": "Track which skills are most effective for different tasks",
+  "createdAt": "2026-03-18T14:05:57.692Z",
+  "updatedAt": "2026-03-18T14:05:57.692Z",
+  "metrics": {
+    "totalRuns": 0,
+    "successCount": 0,
+    "errorCount": 0,
+    "avgDuration": 0
+  }
+}

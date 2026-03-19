@@ -1,0 +1,28 @@
+{
+  "version": "2.0",
+  "updated": "2026-03-11",
+  "mappings": [
+    {
+      "topic_uuid": "wzrd-redesign",
+      "topic_name": "WZRD Redesign",
+      "sessions": {
+        "discord": {
+          "channel_id": "1481800346253660290",
+          "server_id": "1473755847548207195",
+          "server_name": "wzrd.dev",
+          "status": "active"
+        },
+        "tui": {
+          "worktree": "/home/mdwzrd/wzrd-redesign",
+          "session_id": "opencode-plugin-test",
+          "status": "active"
+        },
+        "web": {
+          "status": "pending"
+        }
+      },
+      "created": "2026-03-11",
+      "updated": "2026-03-12"
+    }
+  ]
+}

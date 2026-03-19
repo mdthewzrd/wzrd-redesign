@@ -1,0 +1,16 @@
+{
+  "id": "cost-analysis",
+  "name": "Cost Analysis",
+  "schedule": "0 6 * * *",
+  "timeout": 90,
+  "command": "node bin/token-dashboard.js --daily-report",
+  "description": "Analyze daily cost trends and budget usage",
+  "createdAt": "2026-03-18T14:05:57.692Z",
+  "updatedAt": "2026-03-18T14:05:57.692Z",
+  "metrics": {
+    "totalRuns": 0,
+    "successCount": 0,
+    "errorCount": 0,
+    "avgDuration": 0
+  }
+}

@@ -154,10 +154,18 @@ class TopicRegistry {
     }
     /**
      * Get topic by Discord channel ID
+     * Supports both single channel (backward compatibility) and multiple channels
      */
     getTopicByDiscordChannel(channelId) {
         for (const topic of this.topics.values()) {
-            if (topic.discord_channel_id === channelId) {
+            // Check if topic has discord_channel_ids array
+            if (topic.discord_channel_ids && topic.discord_channel_ids.length > 0) {
+                if (topic.discord_channel_ids.includes(channelId)) {
+                    return topic;
+                }
+            }
+            // Backward compatibility: check single discord_channel_id
+            else if (topic.discord_channel_id === channelId) {
                 return topic;
             }
         }

@@ -1,0 +1,19 @@
+{
+  "id": "trigger_1773794399092_jiob39fvd",
+  "name": "Trigger: check disk space daily at 9am",
+  "schedule": "0 0 9 * * *",
+  "timeout": 300,
+  "command": "echo \"Executing: check disk space daily at 9am\" && wzrd \"check disk space daily at 9am\"",
+  "description": "Created from trigger: @Remi check disk space daily at 9am",
+  "createdBy": "system",
+  "createdAt": "2026-03-18T00:39:59.104Z",
+  "type": "scheduled",
+  "conditions": [],
+  "updatedAt": "2026-03-18T00:39:59.104Z",
+  "metrics": {
+    "totalRuns": 0,
+    "successCount": 0,
+    "errorCount": 0,
+    "avgDuration": 0
+  }
+}

@@ -6,9 +6,10 @@
 set -e
 
 # Configuration
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BLUEPRINT_CONFIG="./conductor/blueprint-engine.yaml"
 CONTEXT_RULES="./conductor/context-rules.yaml"
-VALIDATION_PIPELINE="./conductor/validation-pipeline.sh"
+VALIDATION_PIPELINE="${SCRIPT_DIR}/validation-pipeline.sh"
 LOG_FILE="./logs/blueprint-$(date +%Y%m%d-%H%M%S).log"
 
 # Colors for output
@@ -50,7 +51,8 @@ detect_blueprint() {
     local request="$1"
     local request_lower="${request,,}"
     
-    log_info "Detecting blueprint for request: $request"
+    # Log to stderr to avoid polluting stdout output
+    echo -e "${BLUE}[INFO]${NC} Detecting blueprint for request: $request" >&2
     
     # Check for bug fixing keywords first (most critical)
     if [[ "$request_lower" =~ (fix|bug|error|broken|"not working"|fail|crash|issue) ]]; then
@@ -77,8 +79,8 @@ detect_blueprint() {
     fi
     
     # Default to feature implementation
+    echo -e "${YELLOW}[WARNING]${NC} Could not detect specific blueprint type, defaulting to feature_implementation" >&2
     echo "feature_implementation"
-    log_warning "Could not detect specific blueprint type, defaulting to feature_implementation"
 }
 
 # Run validation for a blueprint phase
@@ -156,9 +158,13 @@ execute_blueprint() {
         *) mode="coding" ;;
     esac
     
-    # Apply context optimization rules
-    log_info "Applying context optimization for mode: $mode"
-    ./conductor/context-optimizer.sh "$user_request" "10000" 2>&1 | grep -v "Detected Mode:" | tee -a "$LOG_FILE"
+# Apply context optimization rules
+log_info "Applying context optimization for mode: $mode"
+if [ -f "${SCRIPT_DIR}/context-optimizer.sh" ]; then
+    ${SCRIPT_DIR}/context-optimizer.sh "$user_request" "10000" 2>&1 | grep -v "Detected Mode:" | tee -a "$LOG_FILE"
+else
+    log_info "Context optimizer not found, skipping (this is OK for testing)"
+fi
     
     # Execute blueprint based on type
     case "$clean_blueprint_type" in
@@ -402,9 +408,13 @@ execute_planning() {
 # Main function
 main() {
     if [[ $# -lt 1 ]]; then
-        echo "Usage: $0 <user_request> [blueprint_type]"
+        echo "Usage: $0 <command> [args...]"
         echo ""
-        echo "Examples:"
+        echo "Commands:"
+        echo "  execute <job_id> <topic> <sandbox_id>  Execute blueprint for sandbox job"
+        echo "  <topic> [blueprint_type]               Direct blueprint execution"
+        echo ""
+        echo "Direct usage examples:"
         echo "  $0 'Write a function to parse JSON'"
         echo "  $0 'Fix the login error bug'"
         echo "  $0 'Research React state management'"
@@ -415,32 +425,87 @@ main() {
         exit 1
     fi
     
-    local user_request="$1"
-    local blueprint_type="$2"
+    local command="$1"
     
-    # Auto-detect blueprint type if not specified
-    if [[ -z "$blueprint_type" ]]; then
-        blueprint_type=$(detect_blueprint "$user_request")
-    fi
-    
-    log_info "Starting Blueprint Engine"
-    log_info "Request: $user_request"
-    log_info "Blueprint: $blueprint_type"
-    
-    # Execute the blueprint
-    if execute_blueprint "$blueprint_type" "$user_request"; then
-        log_success "Blueprint execution successful"
-        echo ""
-        echo "=== BLUEPRINT SUMMARY ==="
-        echo "Type: $blueprint_type"
-        echo "Request: $user_request"
-        echo "Status: COMPLETED"
-        echo "Log: $LOG_FILE"
-        echo "========================"
-    else
-        log_error "Blueprint execution failed"
-        return 1
-    fi
+    case "$command" in
+        "execute")
+            if [[ $# -lt 4 ]]; then
+                echo "Error: execute requires job_id, topic, sandbox_id"
+                echo "Usage: $0 execute <job_id> <topic> <sandbox_id>"
+                exit 1
+            fi
+            
+            local job_id="$2"
+            local topic="$3"
+            local sandbox_id="$4"
+            
+            log_info "Executing blueprint for job: $job_id"
+            log_info "Topic: $topic"
+            log_info "Sandbox: $sandbox_id"
+            
+            # Auto-detect blueprint type
+            local blueprint_type=$(detect_blueprint "$topic")
+            
+            log_info "Starting Blueprint Engine"
+            log_info "Request: $topic"
+            log_info "Blueprint: $blueprint_type"
+            
+            # Update job status to running (in case sandbox creation didn't)
+            WZRD_SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+            python3 "${WZRD_SCRIPT_DIR}/lib/db.py" update-status "$job_id" "running"
+            
+            # Execute the blueprint
+            if execute_blueprint "$blueprint_type" "$topic"; then
+                log_success "Blueprint execution successful"
+                # Update job status to completed
+                python3 "${WZRD_SCRIPT_DIR}/lib/db.py" update-status "$job_id" "completed"
+                echo ""
+                echo "=== BLUEPRINT SUMMARY ==="
+                echo "Job ID: $job_id"
+                echo "Type: $blueprint_type"
+                echo "Request: $topic"
+                echo "Sandbox: $sandbox_id"
+                echo "Status: COMPLETED"
+                echo "Log: $LOG_FILE"
+                echo "========================"
+            else
+                log_error "Blueprint execution failed"
+                # Update job status to failed
+                python3 "${WZRD_SCRIPT_DIR}/lib/db.py" update-status "$job_id" "failed"
+                return 1
+            fi
+            ;;
+            
+        *)
+            # Direct blueprint execution (backward compatibility)
+            local user_request="$1"
+            local blueprint_type="$2"
+            
+            # Auto-detect blueprint type if not specified
+            if [[ -z "$blueprint_type" ]]; then
+                blueprint_type=$(detect_blueprint "$user_request")
+            fi
+            
+            log_info "Starting Blueprint Engine"
+            log_info "Request: $user_request"
+            log_info "Blueprint: $blueprint_type"
+            
+            # Execute the blueprint
+            if execute_blueprint "$blueprint_type" "$user_request"; then
+                log_success "Blueprint execution successful"
+                echo ""
+                echo "=== BLUEPRINT SUMMARY ==="
+                echo "Type: $blueprint_type"
+                echo "Request: $user_request"
+                echo "Status: COMPLETED"
+                echo "Log: $LOG_FILE"
+                echo "========================"
+            else
+                log_error "Blueprint execution failed"
+                return 1
+            fi
+            ;;
+    esac
 }
 
 # Run main with all arguments

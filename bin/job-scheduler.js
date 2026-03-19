@@ -103,7 +103,7 @@ class JobScheduler {
         () => this.executeJob(config),
         null, // onComplete
         true, // start immediately
-        'America/Los_Angeles'
+        'America/New_York'
       );
 
       this.jobs.set(config.id, job);

@@ -1,0 +1,45 @@
+{
+  "enabled": true,
+  "watchPaths": [
+    {
+      "path": "./src",
+      "events": ["add", "change"],
+      "triggers": [
+        {
+          "pattern": "**/*.test.js",
+          "action": "run tests",
+          "command": "npm test"
+        },
+        {
+          "pattern": "**/*.ts",
+          "action": "check types",
+          "command": "npx tsc --noEmit"
+        }
+      ]
+    },
+    {
+      "path": "./package.json",
+      "events": ["change"],
+      "triggers": [
+        {
+          "pattern": "package.json",
+          "action": "install dependencies",
+          "command": "npm install"
+        }
+      ]
+    },
+    {
+      "path": "./.git",
+      "events": ["change"],
+      "triggers": [
+        {
+          "pattern": "**/HEAD",
+          "action": "git status check",
+          "command": "git status"
+        }
+      ]
+    }
+  ],
+  "debounceMs": 1000,
+  "maxConcurrent": 2
+}

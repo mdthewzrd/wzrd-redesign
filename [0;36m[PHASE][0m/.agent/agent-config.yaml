@@ -1,0 +1,34 @@
+# Agent Configuration for Sandbox -20260317-165513-b00d0561
+agent:
+  id: "-20260317-165513-b00d0561"
+  role: "coder"
+  created: "Tue Mar 17 04:55:14 PM UTC 2026"
+  project: "[0;36m[PHASE][0m"
+  blueprint: "feature_implementation"
+  
+sandbox:
+  id: "-20260317-165513-b00d0561"
+  path: "[0;36m[PHASE][0m"
+  type: "git_worktree"
+  
+skills:
+  registry: "/home/mdwzrd/wzrd-redesign/conductor/skill-registry.yaml"
+  
+gateway:
+  url: "http://127.0.0.1:18801"
+  registration: true
+  
+lifecycle:
+  auto_restart: true
+  health_check_interval: 30
+  max_memory_mb: 512
+  
+logging:
+  file: "[0;36m[PHASE][0m/.agent/agent.log"
+  level: "info"
+  
+blueprint_execution:
+  blueprint: "feature_implementation"
+  status: "pending"
+  started_at: ""
+  completed_at: ""

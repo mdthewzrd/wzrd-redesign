@@ -1,70 +1,90 @@
 {
-  "topics": [
+"topics": [
     {
-      "id": "topics_1772686491919_862m6srp6",
+      "id": "System_Design_1773307681590_hbvjeqvys",
       "config": {
-        "name": "\"System Design\"",
-        "description": "\"System architecture and design discussions\"",
-        "web_ui_tab": "\"system-design\"",
-        "cli_alias": "\"system\""
-      },
-      "created_at": 1772686491919,
-      "updated_at": 1772686491919,
-      "memory_path": "/home/mdwzrd/wzrd-redesign/topics/topics",
-      "web_ui_tab": "\"system-design\"",
-      "cli_alias": "\"system\"",
-      "progress": {
-        "status": "active",
-        "tasks_completed": 0,
-        "tasks_total": 0,
-        "last_update": "2026-03-05T04:54:51.919Z"
-      }
-    },
-    {
-      "id": "implementation_1772686491919_xbn3lun2s",
-      "config": {
-        "name": "\"Dilution Agent\"",
-        "description": "\"SEC filings and due diligence agent\"",
-        "web_ui_tab": "\"dilution\"",
-        "cli_alias": "\"dilution\"",
-        "project_path": "\"/projects/dilution-agent\""
-      },
-      "created_at": 1772686491919,
-      "updated_at": 1772686491919,
-      "memory_path": "/home/mdwzrd/wzrd-redesign/topics/implementation",
-      "web_ui_tab": "\"dilution\"",
-      "cli_alias": "\"dilution\"",
-      "project_path": "\"/projects/dilution-agent\"",
-      "progress": {
-        "status": "active",
-        "tasks_completed": 0,
-        "tasks_total": 0,
-        "last_update": "2026-03-05T04:54:51.919Z"
-      }
-    },
-    {
-      "id": "Parallel_Background_Agents_1772686491920_vj2f03hm5",
-      "config": {
-        "name": "Parallel Background Agents",
-        "description": "True parallel agent execution system",
+        "id": "System_Design_1773307681590_hbvjeqvys",
+        "name": "System Design",
+        "description": "System architecture and design discussions",
+        "discord_channel_ids": [],
+        "web_ui_tab": "system-design",
+        "cli_alias": "system",
+        "project_path": null,
+        "memory_path": "/topics/System_Design_1773307681590_hbvjeqvys",
         "is_active": true,
-        "tags": [],
-        "permissions": {
-          "remi": "read_write",
-          "users": "read_write"
+        "progress": {
+          "status": "active",
+          "tasks_completed": 0,
+          "tasks_total": 0,
+          "last_update": "2026-03-12T15:28:01.590Z"
         }
       },
-      "created_at": 1772686491920,
-      "updated_at": 1772686491920,
-      "memory_path": "/home/mdwzrd/wzrd-redesign/topics/parallel-background-agents",
-      "cli_alias": "parallel-background-agents",
+      "created_at": "2026-03-12T15:28:01.590Z",
+      "updated_at": "2026-03-12T15:28:01.590Z",
+      "discord_channel_ids": [],
+      "web_ui_tab": "system-design",
+      "cli_alias": "system",
+      "project_path": null,
+      "memory_path": "/topics/System_Design_1773307681590_hbvjeqvys",
+      "is_active": true,
       "progress": {
         "status": "active",
         "tasks_completed": 0,
         "tasks_total": 0,
-        "last_update": "2026-03-05T04:54:51.920Z"
+        "last_update": "2026-03-12T15:28:01.590Z"
+      }
+    },
+    {
+      "id": "WZRD_Redesign_1773271745123_live",
+      "config": {
+        "id": "WZRD_Redesign_1773271745123_live",
+        "uuid": "wzrd-redesign",
+        "name": "WZRD Redesign",
+        "description": "Framework Redesign Phases 1-6: Topics, Discord, Web UI, Update System, Heartbeat, Launch",
+        "discord_channel_ids": ["1473755847548207198"],
+        "web_ui_tab": "wzrd-redesign",
+        "cli_alias": "wzrd",
+        "project_path": "/home/mdwzrd/wzrd-redesign",
+        "memory_path": "/topics/WZRD_Redesign_1773271745123_live",
+        "is_active": true,
+        "progress": {
+          "status": "in_progress",
+          "tasks_completed": 2,
+          "tasks_total": 6,
+          "last_update": "2026-03-12T15:28:01.590Z",
+          "phases": {
+            "1": {"name": "Topics", "status": "completed"},
+            "2": {"name": "Discord", "status": "completed"},
+            "3": {"name": "Web UI", "status": "in_progress"},
+            "4": {"name": "Update System", "status": "pending"},
+            "5": {"name": "Heartbeat", "status": "pending"},
+            "6": {"name": "Launch", "status": "pending"}
+          }
+        }
+      },
+      "created_at": "2026-03-12T15:28:01.590Z",
+      "updated_at": "2026-03-12T15:28:01.590Z",
+      "discord_channel_ids": ["1473755847548207198"],
+      "web_ui_tab": "wzrd-redesign",
+      "cli_alias": "wzrd",
+      "project_path": "/home/mdwzrd/wzrd-redesign",
+      "memory_path": "/topics/WZRD_Redesign_1773271745123_live",
+      "is_active": true,
+      "progress": {
+        "status": "in_progress",
+        "tasks_completed": 2,
+        "tasks_total": 6,
+        "last_update": "2026-03-12T15:28:01.590Z",
+        "phases": {
+          "1": {"name": "Topics", "status": "completed"},
+          "2": {"name": "Discord", "status": "completed"},
+          "3": {"name": "Web UI", "status": "in_progress"},
+          "4": {"name": "Update System", "status": "pending"},
+          "5": {"name": "Heartbeat", "status": "pending"},
+          "6": {"name": "Launch", "status": "pending"}
+        }
       }
     }
   ],
-  "updated_at": 1772686491920
+  "updated_at": 1773307681590
 }

@@ -18,6 +18,7 @@ import { spawn, execSync } from 'child_process';
 import TopicRegistry from '../topics/registry';
 import { InterfaceSyncManager } from './sync-manager';
 import { KeyManager, keyManager, getAPIKey, recordTokenUsage, getUsageStats } from './key-manager';
+import TopicCommandHandler, { ParsedCommand } from './topic-commands';
 
 // Interface for CLI commands
 interface CLIOptions {
@@ -45,14 +46,16 @@ interface CommandResult {
 export class CLIWrapper {
   private topicRegistry: TopicRegistry;
   private syncManager: InterfaceSyncManager;
+  private topicCommandHandler: TopicCommandHandler;
   private logFile: string;
   private activeTopics: Set<string> = new Set();
 
   constructor(logFile?: string) {
     this.topicRegistry = new TopicRegistry();
     this.syncManager = new InterfaceSyncManager();
+    this.topicCommandHandler = new TopicCommandHandler();
     this.logFile = logFile || '/home/mdwzrd/wzrd-redesign/logs/cli.log';
-    
+
     // Ensure log directory exists
     const logDir = path.dirname(this.logFile);
     if (!fs.existsSync(logDir)) {
@@ -133,37 +136,46 @@ export class CLIWrapper {
     const startTime = Date.now();
     const timestamp = startTime;
     const topic = options.topic || 'general';
-    
+
     // Track active topic
     this.activeTopics.add(topic);
-    
+
     // Update topic progress
     this.topicRegistry.updateTopicProgress(topic, {
       last_update: new Date().toISOString(),
       cli_commands: (this.getTopicProgress(topic)?.cli_commands || 0) + 1,
     });
-    
+
     // Log command execution
     this.log('info', `Executing command: ${options.command} ${options.args.join(' ')} in topic: ${topic}`);
-    
+
     let result: CommandResult;
-    
+
     try {
-    // Handle special WZRD commands
-    if (options.command === 'wzrd' || options.command.startsWith('wzrd-')) {
-      result = await this.executeWZRDCommand(options);
-    } else if (options.command === 'opencode') {
-      result = await this.executeOpenCodeCommand(options);
-    } else if (options.command === 'topic') {
-      result = await this.executeTopicCommand(options);
-    } else if (options.command === 'discord') {
-      result = await this.executeDiscordCommand(options);
-    } else if (options.command === 'status') {
-      result = await this.getSystemStatusCommand();
-    } else {
-      // Execute as generic shell command
-      result = await this.executeShellCommand(options);
-    }
+      // Check for natural language topic/channel commands
+      const naturalLanguageResult = await this.handleNaturalLanguageCommand(
+        options.command + ' ' + options.args.join(' '),
+        options.topic
+      );
+      if (naturalLanguageResult) {
+        return naturalLanguageResult;
+      }
+
+      // Handle special WZRD commands
+      if (options.command === 'wzrd' || options.command.startsWith('wzrd-')) {
+        result = await this.executeWZRDCommand(options);
+      } else if (options.command === 'opencode') {
+        result = await this.executeOpenCodeCommand(options);
+      } else if (options.command === 'topic') {
+        result = await this.executeTopicCommand(options);
+      } else if (options.command === 'discord') {
+        result = await this.executeDiscordCommand(options);
+      } else if (options.command === 'status') {
+        result = await this.getSystemStatusCommand();
+      } else {
+        // Execute as generic shell command
+        result = await this.executeShellCommand(options);
+      }
       
       // Add topic context
       result.topic = topic;
@@ -952,15 +964,61 @@ Sync:
   private log(level: 'info' | 'warn' | 'error', message: string): void {
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}\n`;
-    
+
     console.log(logMessage.trim());
-    
+
     // Write to log file
     try {
       fs.appendFileSync(this.logFile, logMessage);
     } catch (error) {
       console.error('[CLIWrapper] Failed to write to log file:', error);
     }
+  }
+
+  /**
+   * Handle natural language topic/channel commands
+   * Returns CommandResult if a command was handled, null otherwise
+   */
+  private async handleNaturalLanguageCommand(
+    input: string,
+    currentSessionId?: string
+  ): Promise<CommandResult | null> {
+    // Skip if input looks like a standard command
+    if (input.startsWith('/') || input.startsWith('-') || input.startsWith('--')) {
+      return null;
+    }
+
+    // Initialize command handler if needed
+    await this.topicCommandHandler.initialize();
+
+    // Parse the command
+    const parsed = this.topicCommandHandler.parseCommand(input);
+
+    if (parsed.type === 'unknown') {
+      return null;
+    }
+
+    // Check if confirmation is needed
+    if (parsed.requiresConfirmation) {
+      return {
+        success: true,
+        output: `⚠️ ${parsed.confirmationReason}\n\nRun with --confirm to execute: /${parsed.type} ${parsed.target}`,
+        topic: currentSessionId,
+        interface: 'cli',
+        timestamp: Date.now(),
+      };
+    }
+
+    // Execute the command
+    const result = await this.topicCommandHandler.executeCommand(parsed, currentSessionId);
+
+    return {
+      success: result.success,
+      output: result.message,
+      topic: currentSessionId,
+      interface: 'cli',
+      timestamp: Date.now(),
+    };
   }
 }
 

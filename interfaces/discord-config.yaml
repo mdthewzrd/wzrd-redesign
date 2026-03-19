@@ -3,7 +3,7 @@
 
 discord:
   # Bot credentials
-  bot_token: "MTQ3Mzc1MDc5MjkyMTAyNjcwMA.GstCJX.TfXjF-Xm1ocfhfvwgVTjnZ7SFnggBqFDndH1j4"
+  bot_token: "MTQ4MTM0ODU0NDkyMDI4OTM5Ng.GwZrya.dVZI3fycdXbg0sW3PWUFAAda_UatTXQ18xnMHk"
   client_id: "677335430336610315"
   client_secret: ""  # Not needed for bot
   
@@ -12,21 +12,29 @@ discord:
   
   # Channel to topic mappings
   channels:
-    # System topics (for WZRD management)
-    system-design: "112233445566778899"      # Placeholder - replace with actual channel ID
-    implementation: "998877665544332211"     # Placeholder - replace with actual channel ID
-    planning: "556677889900112233"           # Placeholder - replace with actual channel ID
+    # WZRD Framework Core
+    framework: "1481800155220148296"
     
-    # Project topics (existing WZRD projects)
-    edge-dev: "667788990011223344"           # Placeholder - replace with actual channel ID
-    dilution-agent: "778899001122334455"     # Placeholder - replace with actual channel ID
-    press-agent: "889900112233445566"        # Placeholder - replace with actual channel ID
+    # Topic System + Discord
+    topics: "1481800251806580757"
     
-    # Utility channels
-    logs: "990011223344556677"               # Placeholder - replace with actual channel ID
-    alerts: "001122334455667788"             # Placeholder - replace with actual channel ID
-    general: "112233445566778899"            # Placeholder - replace with actual channel ID
-  
+    # Web UI Development
+    web-ui: "1481800276330418279"
+    
+    # Documentation
+    docs: "1481800409478725652"
+    
+    # Projects
+    wzrd-redesign: "1481800346253660290"
+    
+    # System
+    general: "1481800429523308624"
+    testing: "1481800445465723012"
+    
+    # Legacy (for backward compatibility)
+    logs: "1473755847548207198"
+    alerts: "1473755847548207198"
+
   # Bot permissions
   permissions:
     remi: ["VIEW_CHANNEL", "SEND_MESSAGES", "READ_MESSAGE_HISTORY", "MANAGE_MESSAGES"]

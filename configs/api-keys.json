@@ -11,7 +11,7 @@
     "api_key": "YOUR_OPENAI_API_KEY_HERE"
   },
   "github": {
-    "token": "YOUR_GITHUB_TOKEN_HERE"
+    "token": "YOUR_DISCORD_BOT_TOKEN_HERE"
   },
   "stripe": {
     "secret_key": "YOUR_STRIPE_SECRET_KEY_HERE",

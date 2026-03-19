@@ -4,7 +4,7 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 
 // NEW TOKEN from Discord Developer Portal
-const NEW_TOKEN = "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GPUt2q.bFA5mUMsiell_8CW0aRonPZYBJcdh3xCPxfayA";
+const NEW_TOKEN = "YOUR_DISCORD_BOT_TOKEN_HERE";
 
 console.log('🚀 Starting FINAL BOT with NEW TOKEN...');
 console.log('🔑 Token length:', NEW_TOKEN.length);

@@ -38,7 +38,7 @@ function startBot() {
   // Set environment
   const env = {
     ...process.env,
-    DISCORD_BOT_TOKEN: "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE"
+    DISCORD_BOT_TOKEN: "YOUR_DISCORD_BOT_TOKEN_HERE"
   };
   
   botProcess = spawn('node', [BOT_SCRIPT], {
@@ -93,7 +93,7 @@ function checkBackend() {
   return new Promise((resolve) => {
     const req = https.get('https://discord.com/api/v9/users/@me', {
       headers: {
-        'Authorization': `Bot MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE`
+        'Authorization': `Bot YOUR_DISCORD_BOT_TOKEN_HERE
       },
       timeout: 10000
     }, (res) => {

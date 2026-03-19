@@ -1,7 +1,7 @@
 // Test Discord token validity
 const axios = require('axios');
 
-const token = "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE";
+const token = "YOUR_DISCORD_BOT_TOKEN_HERE";
 
 console.log('🔍 Testing Discord Token Validity...\n');
 
@@ -10,7 +10,7 @@ async function testToken() {
     // Test 1: Basic format check
     console.log('1. Token format check:');
     console.log('   Length:', token.length);
-    console.log('   Starts with MTQ4:', token.startsWith('MTQ4'));
+    console.log('   Starts with YOUR_DISCORD_BOT_TOKEN_HERE
     console.log('   Has three dots:', (token.match(/\./g) || []).length === 3);
     
     // Test 2: Direct API call

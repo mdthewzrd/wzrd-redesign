@@ -4,7 +4,7 @@ const axios = require('axios');
 
 console.log('🔍 COMPREHENSIVE BOT VALIDATION\n');
 
-const YOUR_TOKEN = "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE";
+const YOUR_TOKEN = "YOUR_DISCORD_BOT_TOKEN_HERE";
 
 async function validateEverything() {
   console.log('=== PHASE 1: TOKEN VALIDATION ===');
@@ -12,7 +12,7 @@ async function validateEverything() {
   // 1. Check token format
   console.log('1. Token format check:');
   console.log('   Length:', YOUR_TOKEN.length);
-  console.log('   Format:', YOUR_TOKEN.startsWith('MTQ4') ? '✅ Looks like Discord token' : '❌ Unexpected format');
+  console.log('   Format:', YOUR_TOKEN.startsWith('YOUR_DISCORD_BOT_TOKEN_HERE
   console.log('   App ID in token:', YOUR_TOKEN.split('.')[0]);
   
   // 2. Create test client

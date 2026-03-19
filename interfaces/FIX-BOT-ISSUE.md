@@ -1,7 +1,7 @@
 # FIX: Discord Bot Showing Offline
 
 ## **Root Cause**
-Token `MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE` is **partially valid** but Discord API is rejecting presence/status updates.
+Token `YOUR_DISCORD_BOT_TOKEN_HERE
 
 ## **Symptoms**
 - ✅ Bot can login (`Remi#6734`)
@@ -43,7 +43,7 @@ Required scopes:
 ### **4. UPDATE CODE WITH NEW TOKEN**
 Replace in all bot files:
 ```javascript
-const token = "YOUR_NEW_TOKEN_HERE";
+const token = "YOUR_DISCORD_BOT_TOKEN_HERE";
 ```
 
 ## **Files to Update**

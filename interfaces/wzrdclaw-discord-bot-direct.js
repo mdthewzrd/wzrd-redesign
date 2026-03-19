@@ -5,7 +5,7 @@ const { Client, GatewayIntentBits, Events } = require('discord.js');
 const axios = require('axios');
 
 // YOUR BOT TOKEN - app ID 1483078080535986187
-const YOUR_BOT_TOKEN = "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE";
+const YOUR_BOT_TOKEN = "YOUR_DISCORD_BOT_TOKEN_HERE";
 
 // Channel mappings for YOUR bot
 const CHANNEL_MAPPINGS = {

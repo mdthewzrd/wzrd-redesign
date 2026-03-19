@@ -3,7 +3,7 @@
 
 const { Client, GatewayIntentBits } = require('discord.js');
 
-const token = "MTQ4MzA3ODA4MDUzNTk4NjE4Nw.GmiZM1.6s1YxbEOtuoxMMIJy5qy_XEhPhbHQyqWzxeAdE";
+const token = "YOUR_DISCORD_BOT_TOKEN_HERE";
 
 console.log('🤖 Starting SIMPLE keep-alive bot...');
 

@@ -112,7 +112,7 @@ class DebugWZRDClawDiscordBot {
   }
 
   async start() {
-    const token = config.discord?.bot_token || process.env.DISCORD_BOT_TOKEN;
+    const token = "YOUR_DISCORD_BOT_TOKEN_HERE";
     
     if (!token) {
       console.error('[DEBUG] ❌ No token');

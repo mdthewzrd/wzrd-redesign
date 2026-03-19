@@ -3,8 +3,8 @@
 
 discord:
   # Bot credentials
-  bot_token: "MTQ4MTM0ODU0NDkyMDI4OTM5Ng.GwZrya.dVZI3fycdXbg0sW3PWUFAAda_UatTXQ18xnMHk"
-  client_id: "677335430336610315"
+  bot_token: "YOUR_DISCORD_BOT_TOKEN_HERE"
+  client_id: "YOUR_DISCORD_CLIENT_ID_HERE"
   client_secret: ""  # Not needed for bot
   
   # Server configuration

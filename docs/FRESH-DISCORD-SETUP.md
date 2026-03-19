@@ -29,7 +29,7 @@
 3. Click **Yes, do it!**
 4. Under **Token**, click **Reset Token**
 5. Copy the new token (starts with MT...)
-6. **This is your BOT_TOKEN** (keep secret!) MTQ4MTM0ODU0NDkyMDI4OTM5Ng.GzCr-J.b2zfJHq1Ij1a6Zr7LTnuQETTny21eIaRlmr_fM 
+6. **This is your BOT_TOKEN** (keep secret!) YOUR_DISCORD_BOT_TOKEN_HERE.GzCr-J.b2zfJHq1Ij1a6Zr7LTnuQETTny21eIaRlmr_fM 
 
 ---
 
